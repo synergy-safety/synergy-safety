@@ -1,0 +1,5 @@
+# Private source assets (not for publication)
+business-card.jpg
+logo-source.png
+**/business-card*.jpg
+**/logo-source*.png
