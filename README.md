@@ -22,6 +22,10 @@ python3 -m http.server 8080
 
 ## GitHub Pages
 
-網站由 `main` 分支根目錄發佈。公開網址通常為：
+建議使用 **Settings → Pages → Build and deployment → Deploy from a branch**，來源分支 **`main`**、資料夾 **`/ (root)`**。
+
+公開網址（啟用後）：
 
 https://tonysafety.github.io/synergy-safety/
+
+若儲存庫為 **Private**，需先改為 **Public**（或使用支援私人 Pages 的 GitHub 方案），並在 Pages 設定中啟用網站；此 Cloud Agent 的整合權限無法代為開啟 Pages API。
