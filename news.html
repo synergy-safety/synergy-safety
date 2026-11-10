@@ -150,7 +150,17 @@
         }
       }
 
-      function renderItem(item) {
+      function buildAnalysisMap(analyses) {
+        var map = Object.create(null);
+        (analyses || []).forEach(function (analysis) {
+          if (!analysis || !analysis.id) return;
+          if (analysis.newsId) map[analysis.newsId] = analysis.id;
+          if (!map[analysis.id]) map[analysis.id] = analysis.id;
+        });
+        return map;
+      }
+
+      function renderItem(item, analysisByNewsId) {
         var li = document.createElement('li');
         li.className = 'news-card';
         if (item.id) li.id = 'news-' + item.id;
@@ -249,6 +259,18 @@
           li.appendChild(details);
         }
 
+        var analysisId = item.id && analysisByNewsId ? analysisByNewsId[item.id] : null;
+        if (analysisId) {
+          var analysisWrap = document.createElement('p');
+          analysisWrap.className = 'news-analysis-link';
+          var analysisA = document.createElement('a');
+          analysisA.className = 'news-analysis-cta';
+          analysisA.href = 'analysis.html#analysis-' + analysisId;
+          analysisA.textContent = '閱讀意外分析';
+          analysisWrap.appendChild(analysisA);
+          li.appendChild(analysisWrap);
+        }
+
         var sources = Array.isArray(item.sources) ? item.sources : [];
         if (sources.length) {
           var sourcesWrap = document.createElement('div');
@@ -279,13 +301,27 @@
         return li;
       }
 
-      fetch('data/news.json', { credentials: 'same-origin' })
-        .then(function (res) {
+      Promise.all([
+        fetch('data/news.json', { credentials: 'same-origin' }).then(function (res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           return res.json();
-        })
-        .then(function (data) {
+        }),
+        fetch('data/analyses.json', { credentials: 'same-origin' })
+          .then(function (res) {
+            if (!res.ok) return { items: [] };
+            return res.json();
+          })
+          .catch(function () {
+            return { items: [] };
+          }),
+      ])
+        .then(function (results) {
           hideStatus();
+          var data = results[0];
+          var analysesData = results[1];
+          var analysisByNewsId = buildAnalysisMap(
+            analysesData && Array.isArray(analysesData.items) ? analysesData.items : []
+          );
           var items = (data && Array.isArray(data.items)) ? data.items.slice() : [];
           items.sort(function (a, b) {
             var ta = new Date(a && a.publishedAt).getTime() || 0;
@@ -300,7 +336,7 @@
 
           listEl.hidden = false;
           items.forEach(function (item) {
-            listEl.appendChild(renderItem(item));
+            listEl.appendChild(renderItem(item, analysisByNewsId));
           });
         })
         .catch(function () {

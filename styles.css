@@ -955,6 +955,31 @@ a:hover {
   font-weight: 500;
 }
 
+.news-analysis-link {
+  margin: 0.85rem 0 0;
+}
+
+.news-analysis-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  background: var(--teal-soft);
+  border: 1px solid rgba(13, 148, 136, 0.35);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--teal-dark);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.news-analysis-cta:hover {
+  background: #fff;
+  border-color: var(--teal);
+  color: var(--teal-muted);
+}
+
 .news-sources-label {
   margin: 0 0 0.4rem;
   font-size: 0.8rem;
@@ -1197,7 +1222,11 @@ a:hover {
   gap: 1rem;
 }
 
-.analysis-card,
+.analysis-card {
+  scroll-margin-top: 5.5rem;
+}
+
+.analysis-list .analysis-card,
 .alert-card {
   background: var(--bg-soft);
   border: 1px solid var(--line);
