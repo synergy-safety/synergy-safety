@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T08:19:24+00:00",
+  "generatedAt": "2026-11-10T09:13:34+00:00",
   "dataStart": "2026-10-01",
   "dataStartLabel": "2026年10月",
   "source": "data/news.json",
@@ -11,9 +11,9 @@
   },
   "disclaimer": "下列數字及意外類別分佈僅反映本網站依公開報導收錄之個案，並非勞工處、僱主或傷者呈報之官方統計。意外類別由本站對照勞工處《僱員補償條例》表格2（Rev.17）第K部「意外類別」歸類，不代表官方調查或呈報定性。",
   "totals": {
-    "all": 9,
+    "all": 10,
     "fatal": 1,
-    "non_fatal": 8
+    "non_fatal": 9
   },
   "byMonth": [
     {
@@ -26,12 +26,16 @@
     {
       "month": "2026-11",
       "label": "2026年11月",
-      "total": 2,
+      "total": 3,
       "fatal": 1,
-      "non_fatal": 1
+      "non_fatal": 2
     }
   ],
   "byRegion": [
+    {
+      "label": "西灣河",
+      "count": 1
+    },
     {
       "label": "沙田",
       "count": 1
@@ -104,7 +108,7 @@
       "code": "13",
       "label": "觸及開動中的機器或觸及以機器製造中的物件",
       "chartLabel": "13 觸及開動中的機器或觸及以機器製造中的物件",
-      "count": 2
+      "count": 3
     },
     {
       "code": "15",
@@ -114,5 +118,5 @@
     }
   ],
   "unclassifiedAccidentType": 0,
-  "itemCount": 9
+  "itemCount": 10
 }
