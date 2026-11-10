@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="協同安全顧問公司 — 香港工地及工業安全相關新聞摘要。" />
+  <meta name="theme-color" content="#0d9488" />
+  <title>新聞｜協同安全顧問公司</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <!--
+    data/news.json 每筆 items[] 欄位：
+    id, publishedAt (ISO 8601), severity ("fatal"|"non-fatal"), title, location?,
+    occurredAt?, summary, contractor?, contractorConfidence?, sources[{outlet, url}],
+  image? (相對路徑，建議置於 assets/news/)
+  -->
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="協同安全顧問公司首頁">
+        <img src="assets/logo.png" alt="" width="44" height="44" class="brand-logo" />
+        <span class="brand-text">
+          <span class="brand-zh">協同安全顧問公司</span>
+          <span class="brand-en">Synergy Safety Consultant Company</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟選單">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="主要導航">
+        <ul>
+          <li><a href="index.html#services">服務</a></li>
+          <li><a href="index.html#about">關於我們</a></li>
+          <li><a href="news.html" aria-current="page">新聞</a></li>
+          <li><a href="index.html#contact">聯絡</a></li>
+          <li><a class="nav-cta" href="index.html#contact">立即查詢</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="news-hero" aria-labelledby="news-title">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Safety News</p>
+          <h1 id="news-title">安全新聞</h1>
+          <p class="section-lead">匯編香港及相關地區工地、工業安全事件與報導摘要，方便查閱及風險意識參考。</p>
+        </header>
+      </div>
+    </section>
+
+    <section class="news-list-section" aria-labelledby="news-feed-label">
+      <div class="container">
+        <h2 id="news-feed-label" class="visually-hidden">新聞列表</h2>
+        <div id="news-status" class="news-status" role="status" aria-live="polite">載入中…</div>
+        <ul id="news-list" class="news-list" hidden></ul>
+        <div id="news-empty" class="news-empty" hidden>
+          <p class="news-empty-title">暫無新聞項目</p>
+          <p class="news-empty-text">當有新資料加入 <code>data/news.json</code> 後，列表會自動顯示於此。</p>
+          <a class="btn btn-secondary" href="index.html">返回首頁</a>
+        </div>
+        <div id="news-error" class="news-error" hidden>
+          <p>無法載入新聞資料，請稍後再試。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="" width="36" height="36" />
+        <div>
+          <p class="footer-zh">協同安全顧問公司</p>
+          <p class="footer-en">Synergy Safety Consultant Company</p>
+        </div>
+      </div>
+      <p class="footer-copy">© <span id="year"></span> 協同安全顧問公司. 版權所有.</p>
+      <a class="footer-top" href="#top">返回頂部</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var toggle = document.querySelector('.nav-toggle');
+      var nav = document.getElementById('site-nav');
+      if (toggle && nav) {
+        toggle.addEventListener('click', function () {
+          var open = toggle.getAttribute('aria-expanded') === 'true';
+          toggle.setAttribute('aria-expanded', String(!open));
+          nav.classList.toggle('is-open', !open);
+          document.body.classList.toggle('nav-open', !open);
+        });
+        nav.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
+            toggle.setAttribute('aria-expanded', 'false');
+            nav.classList.remove('is-open');
+            document.body.classList.remove('nav-open');
+          });
+        });
+      }
+      var year = document.getElementById('year');
+      if (year) year.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+  <script>
+    (function () {
+      var statusEl = document.getElementById('news-status');
+      var listEl = document.getElementById('news-list');
+      var emptyEl = document.getElementById('news-empty');
+      var errorEl = document.getElementById('news-error');
+
+      var dateFmt = new Intl.DateTimeFormat('zh-Hant-HK', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+
+      function formatDate(iso) {
+        if (!iso) return '';
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        return dateFmt.format(d);
+      }
+
+      function severityLabel(severity) {
+        if (severity === 'fatal') return '致命';
+        if (severity === 'non-fatal') return '非致命';
+        return severity || '';
+      }
+
+      function hideStatus() {
+        if (statusEl) {
+          statusEl.hidden = true;
+          statusEl.textContent = '';
+        }
+      }
+
+      function renderItem(item) {
+        var li = document.createElement('li');
+        li.className = 'news-card';
+        if (item.id) li.id = 'news-' + item.id;
+
+        var sev = item.severity === 'fatal' ? 'fatal' : 'non-fatal';
+        var badgeClass = 'news-badge news-badge--' + sev;
+
+        var head = document.createElement('div');
+        head.className = 'news-card-head';
+
+        var time = document.createElement('time');
+        time.className = 'news-date';
+        time.dateTime = item.publishedAt || '';
+        time.textContent = formatDate(item.publishedAt) || '—';
+
+        var badge = document.createElement('span');
+        badge.className = badgeClass;
+        badge.textContent = severityLabel(item.severity);
+
+        head.appendChild(time);
+        head.appendChild(badge);
+
+        var title = document.createElement('h3');
+        title.className = 'news-card-title';
+        title.textContent = item.title || '（無標題）';
+
+        li.appendChild(head);
+        li.appendChild(title);
+
+        if (item.image) {
+          var figure = document.createElement('figure');
+          figure.className = 'news-figure';
+          var img = document.createElement('img');
+          img.src = item.image;
+          img.alt = '';
+          img.loading = 'lazy';
+          img.decoding = 'async';
+          figure.appendChild(img);
+          li.appendChild(figure);
+        }
+
+        if (item.summary) {
+          var summary = document.createElement('p');
+          summary.className = 'news-summary';
+          summary.textContent = item.summary;
+          li.appendChild(summary);
+        }
+
+        var details = document.createElement('dl');
+        details.className = 'news-meta';
+
+        if (item.location) {
+          var locRow = document.createElement('div');
+          locRow.className = 'news-meta-row';
+          var locDt = document.createElement('dt');
+          locDt.textContent = '地點';
+          var locDd = document.createElement('dd');
+          locDd.textContent = item.location;
+          locRow.appendChild(locDt);
+          locRow.appendChild(locDd);
+          details.appendChild(locRow);
+        }
+
+        if (item.occurredAt) {
+          var occRow = document.createElement('div');
+          occRow.className = 'news-meta-row';
+          var occDt = document.createElement('dt');
+          occDt.textContent = '事發日期';
+          var occDd = document.createElement('dd');
+          occDd.textContent = formatDate(item.occurredAt);
+          occRow.appendChild(occDt);
+          occRow.appendChild(occDd);
+          details.appendChild(occRow);
+        }
+
+        if (item.contractor) {
+          var conRow = document.createElement('div');
+          conRow.className = 'news-meta-row';
+          var conDt = document.createElement('dt');
+          conDt.textContent = '承建商';
+          var conDd = document.createElement('dd');
+          conDd.textContent = item.contractor;
+          if (item.contractorConfidence) {
+            conDd.appendChild(document.createTextNode(' '));
+            var conf = document.createElement('span');
+            conf.className = 'news-confidence';
+            conf.textContent = '（' + item.contractorConfidence + '）';
+            conDd.appendChild(conf);
+          }
+          conRow.appendChild(conDt);
+          conRow.appendChild(conDd);
+          details.appendChild(conRow);
+        }
+
+        if (details.childElementCount) {
+          li.appendChild(details);
+        }
+
+        var sources = Array.isArray(item.sources) ? item.sources : [];
+        if (sources.length) {
+          var sourcesWrap = document.createElement('div');
+          sourcesWrap.className = 'news-sources';
+          var sourcesLabel = document.createElement('p');
+          sourcesLabel.className = 'news-sources-label';
+          sourcesLabel.textContent = '資料來源';
+          sourcesWrap.appendChild(sourcesLabel);
+          var ul = document.createElement('ul');
+          ul.className = 'news-sources-list';
+          sources.forEach(function (src) {
+            if (!src || !src.url) return;
+            var sli = document.createElement('li');
+            var a = document.createElement('a');
+            a.href = src.url;
+            a.textContent = src.outlet || src.url;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            sli.appendChild(a);
+            ul.appendChild(sli);
+          });
+          if (ul.childElementCount) {
+            sourcesWrap.appendChild(ul);
+            li.appendChild(sourcesWrap);
+          }
+        }
+
+        return li;
+      }
+
+      fetch('data/news.json', { credentials: 'same-origin' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          hideStatus();
+          var items = (data && Array.isArray(data.items)) ? data.items.slice() : [];
+          items.sort(function (a, b) {
+            var ta = new Date(a && a.publishedAt).getTime() || 0;
+            var tb = new Date(b && b.publishedAt).getTime() || 0;
+            return tb - ta;
+          });
+
+          if (!items.length) {
+            emptyEl.hidden = false;
+            return;
+          }
+
+          listEl.hidden = false;
+          items.forEach(function (item) {
+            listEl.appendChild(renderItem(item));
+          });
+        })
+        .catch(function () {
+          hideStatus();
+          errorEl.hidden = false;
+        });
+    })();
+  </script>
+</body>
+</html>
