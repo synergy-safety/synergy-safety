@@ -1,6 +1,24 @@
 {
-  "updatedAt": "2026-11-10T16:25:00+08:00",
+  "updatedAt": "2026-11-10T18:30:00+08:00",
   "items": [
+    {
+      "id": "2026-11-10-kwaichung-forklift",
+      "publishedAt": "2026-11-10T18:30:00+08:00",
+      "severity": "non-fatal",
+      "title": "葵涌物流中心剷車跌落平台司機受傷被困",
+      "location": "葵涌貨櫃碼頭南路18號物流中心（和黃物流中心）",
+      "occurredAt": "2026-11-10T17:27:00+08:00",
+      "summary": "今日（11月10日）下午約5時27分，葵涌貨櫃碼頭南路18號一物流中心（和黃物流中心），一輛剷車失事跌落平台，司機受傷一度被困。消防到場把司機救出，事主清醒送往瑪嘉烈醫院治理。警方正調查意外原因。",
+      "contractor": "報道未有點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/2wCNGl"
+        }
+      ],
+      "image": "assets/news/2026-11-10-kwaichung-forklift.jpg"
+    },
     {
       "id": "2026-11-10-saiwanho-taihong",
       "publishedAt": "2026-11-10T16:25:00+08:00",
