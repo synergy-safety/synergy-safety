@@ -48,7 +48,9 @@
 
 `schemaVersion`: **2** — 每則新聞一份公開資料分析報告（非官方調查）。
 
-每個 `items[]` 主要欄位：`id`, `newsId`, `reportNo`, `title`, `publishedAt`, `writtenAt`, `hazardTags[]`, `lead`（列表摘要）, `reportNotice`（報告置頂聲明）, `sections[]`（十個章節：`heading`、可含 `rows`、`paragraphs`、`bullets`、`timeline`、`subsections`、`legalRefs`、`refs`）。
+每個 `items[]` 主要欄位：`id`, `newsId`, `reportNo`, `title`, `publishedAt`, `writtenAt`, `hazardTags[]`, `lead`（列表摘要）, `reportNotice`（報告置頂聲明）, `sections[]`（十個章節：`heading`、可含 `rows`、`paragraphs`、`bullets`、`timeline`、`subsections`、`legalTiers`、`legalRefs`、`refs`）。
+
+`相關法例及守則` 建議使用 `legalTiers[]` 三層結構：`tierLabel` ＋ `refs[]`（`title`, `provision`, `url`, `applicability`, `relevance`）；每條須為可核對之官方文件連結，並標示【可能適用】及與個案之相關說明。
 
 舊版 `causes` / `lessons` / `legalRefs` / `summary` 仍可由 `analysis.html` 後備顯示，但新稿請使用 `sections`。
 

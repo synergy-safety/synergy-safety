@@ -177,26 +177,56 @@
 
       function renderLegalRefs(refs) {
         var ul = document.createElement('ul');
-        ul.className = 'ref-list';
+        ul.className = 'ref-list legal-ref-list';
         (refs || []).forEach(function (ref) {
           if (!ref || !ref.url) return;
-          var li = document.createElement('li');
-          var a = document.createElement('a');
-          a.href = ref.url;
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer';
-          a.textContent = ref.title || ref.url;
-          li.appendChild(a);
-          if (ref.note) {
-            var span = document.createElement('span');
-            span.className = 'legal-ref-note';
-            span.textContent = ' — ' + ref.note;
-            li.appendChild(span);
-          }
-          li.appendChild(document.createTextNode(''));
-          ul.appendChild(li);
+          ul.appendChild(renderLegalRefItem(ref));
         });
         return ul;
+      }
+
+      function renderLegalRefItem(ref) {
+        var li = document.createElement('li');
+        li.className = 'legal-ref-item';
+        var a = document.createElement('a');
+        a.href = ref.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.textContent = ref.title || ref.url;
+        li.appendChild(a);
+        var detail = document.createElement('p');
+        detail.className = 'legal-ref-detail';
+        var parts = [];
+        if (ref.provision) parts.push(ref.provision);
+        var applicability = ref.applicability || ref.note;
+        if (applicability) parts.push('【' + applicability + '】');
+        if (ref.relevance) parts.push(ref.relevance);
+        detail.textContent = parts.join(' ');
+        li.appendChild(detail);
+        return li;
+      }
+
+      function renderLegalTiers(tiers) {
+        var wrap = document.createElement('div');
+        wrap.className = 'legal-tiers';
+        (tiers || []).forEach(function (tier) {
+          if (!tier || !tier.refs || !tier.refs.length) return;
+          var block = document.createElement('div');
+          block.className = 'legal-tier-block';
+          if (tier.tierLabel) {
+            var h5 = document.createElement('h5');
+            h5.textContent = tier.tierLabel;
+            block.appendChild(h5);
+          }
+          var ul = document.createElement('ul');
+          ul.className = 'ref-list legal-ref-list';
+          tier.refs.forEach(function (ref) {
+            ul.appendChild(renderLegalRefItem(ref));
+          });
+          block.appendChild(ul);
+          wrap.appendChild(block);
+        });
+        return wrap;
       }
 
       function renderSection(section) {
@@ -238,7 +268,9 @@
             }
           });
         }
-        if (section.legalRefs && section.legalRefs.length) {
+        if (section.legalTiers && section.legalTiers.length) {
+          wrap.appendChild(renderLegalTiers(section.legalTiers));
+        } else if (section.legalRefs && section.legalRefs.length) {
           wrap.appendChild(renderLegalRefs(section.legalRefs));
         }
         if (section.refs && section.refs.length) {

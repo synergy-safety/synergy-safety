@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-10T20:00:00+08:00",
+  "updatedAt": "2026-11-10T21:30:00+08:00",
   "schemaVersion": 2,
   "items": [
     {
@@ -41,7 +41,7 @@
         {
           "heading": "意外摘要",
           "paragraphs": [
-            "2026年11月5日約10:59，沙田路往大埔方向近博康邨對開／T4主幹路工地，一名進行修路的女工被貨車撞倒並並輾過，當場死亡。",
+            "2026年11月5日約10:59，沙田路往大埔方向近博康邨對開／T4主幹路工地，一名進行修路的女工被貨車撞倒並輾過，當場死亡。",
             "本站對照表格2第K部歸類為「12 遭移動中的車輛撞倒」，僅供學習，非官方呈報。"
           ]
         },
@@ -131,23 +131,65 @@
         {
           "heading": "相關法例及守則",
           "paragraphs": [
-            "以下法例及守則可能適用於類似情境；是否適用、是否違反須由主管當局按事實調查後始能判斷。"
+            "以下按（1）法例及附屬規例、（2）勞工處工作守則／指引及職安警示、（3）建造業議會及其他業界指引分類；是否適用、是否違反須由主管當局按調查事實判定。本報告標示【可能適用】，並說明與本宗風險之關聯，不構成就本宗個案之法律意見。"
           ],
-          "legalRefs": [
+          "legalTiers": [
             {
-              "title": "《工廠及工業經營（安全管理）規例》（Cap. 59AE）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59AE!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（1）法例及附屬規例",
+              "refs": [
+                {
+                  "title": "《道路交通條例》（第374章）",
+                  "provision": "有關道路使用及車輛在道路上的安全責任",
+                  "url": "https://www.elegislation.gov.hk/hk/cap374!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "事件發生於營運道路進行修路工程，涉及移動車輛與在場工人之界面；用以理解道路上人車共處時各方須維持安全工作環境。"
+                },
+                {
+                  "title": "《工廠及工業經營條例》（第59章）",
+                  "provision": "一般責任條文",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "道路工程作業如屬工業經營活動，僱主及承擔人須確保工作在安全情況下進行，並採取措施保護受僱於該處的其他人。"
+                },
+                {
+                  "title": "《工廠及工業經營（安全管理）規例》（第59章，附屬法例AE）",
+                  "provision": "安全管理制度及風險評估的法定框架",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59AE!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "人車界面屬高風險作業，屬安全管理人員應識別及處理之危害；須透過風險評估及管控措施減低撞倒風險。"
+                }
+              ]
             },
             {
-              "title": "勞工處《安全工作守則：工作交通》",
-              "url": "https://www.labour.gov.hk/tc/public/pdf/wcp/SafetyWorksTraffic.pdf",
-              "note": "可能適用"
+              "tierLabel": "（2）勞工處工作守則／指引及職安警示",
+              "refs": [
+                {
+                  "title": "勞工處《建造業工業意外的一般統計及成因》相關公布（職安警示）",
+                  "provision": "職安警示索引頁",
+                  "url": "https://www.labour.gov.hk/tc/news/work_safety_alert.htm",
+                  "applicability": "可能適用",
+                  "relevance": "可查閱與車輛、移動機械及撞倒工人相關之警示個案及建議措施，作風險提示；並非就本宗個案之調查結論。"
+                }
+              ]
             },
             {
-              "title": "運輸署《道路工程手冊》",
-              "url": "https://www.td.gov.hk/filemanager/tc/content_4827/roadworks_manual.pdf",
-              "note": "可能適用"
+              "tierLabel": "（3）建造業議會及業界指引",
+              "refs": [
+                {
+                  "title": "建造業議會《建築地盤車輛及流動機械的安全指引》（2008年6月）",
+                  "provision": "業界指引（非香港法例）",
+                  "url": "https://www.cic.hk/files/page/19/guidelines_on_the_safety_of_vehicles_and_mobile_plant_at_construction_site-c.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "列明地盤內車輛動線、司機及行人分離、盲點及倒車等控制措施，與修路工地貨車撞倒工人之風險直接相關。"
+                },
+                {
+                  "title": "發展局《建築地盤安全手冊》第9章（2024年12月版）",
+                  "provision": "Industry safety manual — accident investigation（英文版）",
+                  "url": "https://www.devb.gov.hk/filemanager/en/content_191/9%20CSSM_C9.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "說明意外調查應聚焦行為、制度及系統成因；本網站分析參照其程序精神，但非替代官方調查。"
+                }
+              ]
             }
           ]
         },
@@ -157,6 +199,9 @@
             "落實人車分離、實體障礙及足夠照明／反光設施。",
             "車輛倒車警報、訊號員及改道後全體簡報。",
             "高風險時段增派監督並留存交通管理模式記錄。"
+          ],
+          "paragraphs": [
+            "下列建議對應上文法例及守則之管控思路（可能適用），供內部風險管理參考，非執法要求清單。"
           ]
         },
         {
@@ -313,23 +358,58 @@
         {
           "heading": "相關法例及守則",
           "paragraphs": [
-            "以下法例及守則可能適用於類似情境；是否適用、是否違反須由主管當局按事實調查後始能判斷。"
+            "以下按（1）法例及附屬規例、（2）勞工處工作守則／指引及職安警示、（3）建造業議會及其他業界指引分類；是否適用、是否違反須由主管當局按調查事實判定。本報告標示【可能適用】，並說明與本宗風險之關聯，不構成就本宗個案之法律意見。"
           ],
-          "legalRefs": [
+          "legalTiers": [
             {
-              "title": "《工廠及工業經營（機械的防護及操作）規例》（Cap. 59Q）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59Q!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（1）法例及附屬規例",
+              "refs": [
+                {
+                  "title": "《工廠及工業經營（機械的防護及操作）規例》（第59章，附屬法例Q）",
+                  "provision": "機械危險部分之防護及安全操作",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59Q!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "工人被運轉機械割傷，涉及危險部分是否已有效防護及安全操作安排。"
+                },
+                {
+                  "title": "《職業安全及健康條例》（第509章）",
+                  "provision": "工作地點安全及風險管理的通用責任",
+                  "url": "https://www.elegislation.gov.hk/hk/cap509!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "適用於非地盤工業處所；僱主須確保機械使用不危及受僱人安全。"
+                },
+                {
+                  "title": "《工廠及工業經營（安全管理）規例》（第59章，附屬法例AE）",
+                  "provision": "安全管理制度及風險評估",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59AE!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "機械割傷屬常見工業危害，應納入風險評估及安全操作程序。"
+                }
+              ]
             },
             {
-              "title": "《職業安全及健康條例》（Cap. 509）",
-              "url": "https://www.elegislation.gov.hk/hk/cap509!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（2）勞工處工作守則／指引及職安警示",
+              "refs": [
+                {
+                  "title": "勞工處《職安警示》",
+                  "provision": "職安警示索引頁",
+                  "url": "https://www.labour.gov.hk/tc/news/work_safety_alert.htm",
+                  "applicability": "可能適用",
+                  "relevance": "可查閱機械防護及手入危險區相關警示，支援內部培訓。"
+                }
+              ]
             },
             {
-              "title": "勞工處《機械安全歌》系列指引",
-              "url": "https://www.labour.gov.hk/tc/public/btc/OSH_Pub/I1656_13.pdf",
-              "note": "可能適用"
+              "tierLabel": "（3）建造業議會及業界指引",
+              "refs": [
+                {
+                  "title": "發展局《建築地盤安全手冊》第2章 — Legislation and Codes of Practice",
+                  "provision": "概述相關法例及守則架構（英文版）",
+                  "url": "https://www.devb.gov.hk/filemanager/en/content_191/chapter2.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "雖屬工廈而非地盤，仍可作理解機械安全法規框架之參考。"
+                }
+              ]
             }
           ]
         },
@@ -339,6 +419,9 @@
             "確認所有危險點有固定護罩及聯鎖，異常即停機檢查。",
             "清潔／調校採LOTO及雙人確認；張貼標準作業步驟。",
             "定期實操培訓，禁止徒手伸入運轉範圍。"
+          ],
+          "paragraphs": [
+            "下列建議對應上文法例及守則之管控思路（可能適用），供內部風險管理參考，非執法要求清單。"
           ]
         },
         {
@@ -487,18 +570,51 @@
         {
           "heading": "相關法例及守則",
           "paragraphs": [
-            "以下法例及守則可能適用於類似情境；是否適用、是否違反須由主管當局按事實調查後始能判斷。"
+            "以下按（1）法例及附屬規例、（2）勞工處工作守則／指引及職安警示、（3）建造業議會及其他業界指引分類；是否適用、是否違反須由主管當局按調查事實判定。本報告標示【可能適用】，並說明與本宗風險之關聯，不構成就本宗個案之法律意見。"
           ],
-          "legalRefs": [
+          "legalTiers": [
             {
-              "title": "《工廠及工業經營（機械的防護及操作）規例》（Cap. 59Q）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59Q!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（1）法例及附屬規例",
+              "refs": [
+                {
+                  "title": "《工廠及工業經營（機械的防護及操作）規例》（第59章，附屬法例Q）",
+                  "provision": "危險部分防護、運作控制及安全操作",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59Q!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "打包機壓縮／剪切區屬典型危險部分；手指被切斷與護罩、聯鎖及安全送料安排高度相關。"
+                },
+                {
+                  "title": "《工廠及工業經營（安全管理）規例》（第59章，附屬法例AE）",
+                  "provision": "風險評估及安全管理制度",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59AE!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "堵塞清理、手入壓縮腔等高風險步驟應在風險評估及安全操作程序中明確管制。"
+                }
+              ]
             },
             {
-              "title": "《工廠及工業經營（安全管理）規例》（Cap. 59AE）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59AE!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（2）勞工處工作守則／指引及職安警示",
+              "refs": [
+                {
+                  "title": "勞工處《職安警示》",
+                  "provision": "職安警示索引頁",
+                  "url": "https://www.labour.gov.hk/tc/news/work_safety_alert.htm",
+                  "applicability": "可能適用",
+                  "relevance": "可查閱機械防護、壓機及造紙／回收業相關警示（如有）。"
+                }
+              ]
+            },
+            {
+              "tierLabel": "（3）建造業議會及業界指引",
+              "refs": [
+                {
+                  "title": "發展局《建築地盤安全手冊》第9章（2024年12月版）",
+                  "provision": "意外調查程序（英文版）",
+                  "url": "https://www.devb.gov.hk/filemanager/en/content_191/9%20CSSM_C9.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "就系統成因及證據搜集提供方法論參考，非本宗調查報告。"
+                }
+              ]
             }
           ]
         },
@@ -508,6 +624,9 @@
             "壓縮及剪切區裝設不可旁路之聯鎖護罩；堵塞必須停機及LOTO後方可清理。",
             "張貼「禁止伸手入壓縮腔」及送料工具；監督抽查違規行為。",
             "定期由合資格人士檢驗急停及雙手控制（如裝設）。"
+          ],
+          "paragraphs": [
+            "下列建議對應上文法例及守則之管控思路（可能適用），供內部風險管理參考，非執法要求清單。"
           ]
         },
         {
@@ -661,18 +780,65 @@
         {
           "heading": "相關法例及守則",
           "paragraphs": [
-            "以下法例及守則可能適用於類似情境；是否適用、是否違反須由主管當局按事實調查後始能判斷。"
+            "以下按（1）法例及附屬規例、（2）勞工處工作守則／指引及職安警示、（3）建造業議會及其他業界指引分類；是否適用、是否違反須由主管當局按調查事實判定。本報告標示【可能適用】，並說明與本宗風險之關聯，不構成就本宗個案之法律意見。"
           ],
-          "legalRefs": [
+          "legalTiers": [
             {
-              "title": "《建築地盤（安全）規例》（Cap. 59I）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59I!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（1）法例及附屬規例",
+              "refs": [
+                {
+                  "title": "《建築地盤（安全）規例》（第59章，附屬法例I）",
+                  "provision": "地盤通行、整潔、防護及一般安全",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59I!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "公營房屋地盤失平衡跌倒並撞及鐵枝，涉及通道、突出物及工地整潔度。"
+                },
+                {
+                  "title": "《職業安全及健康條例》（第509章）",
+                  "provision": "工作地點安全",
+                  "url": "https://www.elegislation.gov.hk/hk/cap509!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "作地盤相關工作之通用職安責任框架。"
+                }
+              ]
             },
             {
-              "title": "發展局《建築地盤安全手冊》",
-              "url": "https://www.devb.gov.hk/filemanager/tc/content_1033/Safety_Manual.pdf",
-              "note": "可能適用"
+              "tierLabel": "（2）勞工處工作守則／指引及職安警示",
+              "refs": [
+                {
+                  "title": "勞工處《高處工作安全概覽》",
+                  "provision": "處長刊行的職安指引",
+                  "url": "https://www.labour.gov.hk/tc/public/os/D/Overview_of_Work_at_Height_Safety.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "本宗主因為同一平面失平衡跌倒；概覽亦涵蓋絆倒、邊緣及墜台等共同高處／平衡風險管理原則。"
+                },
+                {
+                  "title": "勞工處《職安警示》",
+                  "provision": "職安警示索引頁",
+                  "url": "https://www.labour.gov.hk/tc/news/work_safety_alert.htm",
+                  "applicability": "可能適用",
+                  "relevance": "可查閱地盤鐵枝、絆倒及離地／突出物相關警示。"
+                }
+              ]
+            },
+            {
+              "tierLabel": "（3）建造業議會及業界指引",
+              "refs": [
+                {
+                  "title": "發展局《建築地盤安全手冊》第3章 — Contractual Provisions on Construction Safety（2018年3月版）",
+                  "provision": "公營工程合約安全條款（英文版）",
+                  "url": "https://www.devb.gov.hk/filemanager/en/content_191/Chapter3_Ver.Mar.2018.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "房屋署公營地盤須符合合約安全要求及承建商責任；與地盤 housekeeping 及監督制度相關。"
+                },
+                {
+                  "title": "建造業議會《離地工作的安全指引》（2016年11月）",
+                  "provision": "業界指引（非香港法例）",
+                  "url": "https://www.cic.hk/content/dam/cic-data/cic/publications/media/guidelines/2016/guidelines-on-work-above-ground-safety-c.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "涵蓋地盤內離地／平台邊緣及墮跌風險；可參考其突出物防護及通道管理原則於紮鐵區。"
+                }
+              ]
             }
           ]
         },
@@ -682,6 +848,9 @@
             "外露鐵枝加標準護套／彎紮並納入每日巡查清單。",
             "保持通道暢通、排水及定向照明。",
             "新工人培訓含突出物及絆倒案例。"
+          ],
+          "paragraphs": [
+            "下列建議對應上文法例及守則之管控思路（可能適用），供內部風險管理參考，非執法要求清單。"
           ]
         },
         {
@@ -837,18 +1006,51 @@
         {
           "heading": "相關法例及守則",
           "paragraphs": [
-            "以下法例及守則可能適用於類似情境；是否適用、是否違反須由主管當局按事實調查後始能判斷。"
+            "以下按（1）法例及附屬規例、（2）勞工處工作守則／指引及職安警示、（3）建造業議會及其他業界指引分類；是否適用、是否違反須由主管當局按調查事實判定。本報告標示【可能適用】，並說明與本宗風險之關聯，不構成就本宗個案之法律意見。"
           ],
-          "legalRefs": [
+          "legalTiers": [
             {
-              "title": "《工廠及工業經營（起重機械及起重裝置）規例》（Cap. 59J）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59J!zh-Hant-HK",
-              "note": "可能適用：流動機械及起重裝置"
+              "tierLabel": "（1）法例及附屬規例",
+              "refs": [
+                {
+                  "title": "《工廠及工業經營（起重機械及起重裝置）規例》（第59章，附屬法例J）",
+                  "provision": "起重機械、流動機械及起重裝置之安全",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59J!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "泥頭車／搬運車挖斗翻側或車底困陷，涉及流動機械操作、穩固及支撐安排。"
+                },
+                {
+                  "title": "《工廠及工業經營（安全管理）規例》（第59章，附屬法例AE）",
+                  "provision": "風險評估及安全管理",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59AE!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "試車、維修及人員位置重疊屬須予識別之程序風險。"
+                }
+              ]
             },
             {
-              "title": "《工廠及工業經營（安全管理）規例》（Cap. 59AE）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59AE!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（2）勞工處工作守則／指引及職安警示",
+              "refs": [
+                {
+                  "title": "勞工處《職安警示》",
+                  "provision": "職安警示索引頁",
+                  "url": "https://www.labour.gov.hk/tc/news/work_safety_alert.htm",
+                  "applicability": "可能適用",
+                  "relevance": "可查閱移動機械、翻側及困陷相關警示。"
+                }
+              ]
+            },
+            {
+              "tierLabel": "（3）建造業議會及業界指引",
+              "refs": [
+                {
+                  "title": "建造業議會《建築地盤車輛及流動機械的安全指引》（2008年6月）",
+                  "provision": "業界指引（非香港法例）",
+                  "url": "https://www.cic.hk/files/page/19/guidelines_on_the_safety_of_vehicles_and_mobile_plant_at_construction_site-c.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "列明維修、試車、支撐及人員避開翻側／擠壓區之管制措施，與本宗兩類報道情境相吻合。"
+                }
+              ]
             }
           ]
         },
@@ -858,6 +1060,9 @@
             "維修採上鎖啤牌、機械支撐及「兩人規則」；嚴禁人員滯留車底未支撐範圍。",
             "試車前清空範圍、確認挖斗姿態及地面穩固，設專責指揮。",
             "對翻側風險作地面評估及額外鎖定銷。"
+          ],
+          "paragraphs": [
+            "下列建議對應上文法例及守則之管控思路（可能適用），供內部風險管理參考，非執法要求清單。"
           ]
         },
         {
@@ -1010,23 +1215,58 @@
         {
           "heading": "相關法例及守則",
           "paragraphs": [
-            "以下法例及守則可能適用於類似情境；是否適用、是否違反須由主管當局按事實調查後始能判斷。"
+            "以下按（1）法例及附屬規例、（2）勞工處工作守則／指引及職安警示、（3）建造業議會及其他業界指引分類；是否適用、是否違反須由主管當局按調查事實判定。本報告標示【可能適用】，並說明與本宗風險之關聯，不構成就本宗個案之法律意見。"
           ],
-          "legalRefs": [
+          "legalTiers": [
             {
-              "title": "《工廠及工業經營（工作地點）規例》（Cap. 59）相關條文",
-              "url": "https://www.elegislation.gov.hk/hk/cap59AB!zh-Hant-HK",
-              "note": "可能適用：工作地點安全"
+              "tierLabel": "（1）法例及附屬規例",
+              "refs": [
+                {
+                  "title": "《工廠及工業經營（工作地點）規例》（第59章，附屬法例AB）",
+                  "provision": "工作地點之安全、穩固及通路",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59AB!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "物流中心工人墮下約1米，涉及通道、邊緣及樓面開口之安全。"
+                },
+                {
+                  "title": "《職業安全及健康條例》（第509章）",
+                  "provision": "工作地點安全",
+                  "url": "https://www.elegislation.gov.hk/hk/cap509!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "適用於倉務及物流處所之一般職安責任。"
+                }
+              ]
             },
             {
-              "title": "《職業安全及健康條例》（Cap. 509）",
-              "url": "https://www.elegislation.gov.hk/hk/cap509!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（2）勞工處工作守則／指引及職安警示",
+              "refs": [
+                {
+                  "title": "勞工處《工作守則：防止人體從高處墮下》",
+                  "provision": "處長刊行工作守則",
+                  "url": "https://www.labour.gov.hk/tc/public/pdf/os/D/fall.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "涵蓋從不同高度墮下之風險控制；即使約1米仍可能造成嚴重傷害，須評估邊緣、護欄及照明。"
+                },
+                {
+                  "title": "勞工處《高處工作安全概覽》",
+                  "provision": "處長刊行的職安指引",
+                  "url": "https://www.labour.gov.hk/tc/public/os/D/Overview_of_Work_at_Height_Safety.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "說明高處工作危害辨識及管控清單，可作物流倉庫凌晨作業風險檢查參考。"
+                }
+              ]
             },
             {
-              "title": "勞工處《工作守則：防止人體從高處墮下》",
-              "url": "https://www.labour.gov.hk/tc/public/pdf/wcp/PersonsFalling_0.pdf",
-              "note": "可能適用（含低矮邊緣風險管理概念）"
+              "tierLabel": "（3）建造業議會及業界指引",
+              "refs": [
+                {
+                  "title": "建造業議會《離地工作的安全指引》（2016年11月）",
+                  "provision": "業界指引（非香港法例）",
+                  "url": "https://www.cic.hk/content/dam/cic-data/cic/publications/media/guidelines/2016/guidelines-on-work-above-ground-safety-c.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "平台邊緣、踏板及警戒線等建議，可轉用於物流設施之高低差區域。"
+                }
+              ]
             }
           ]
         },
@@ -1036,6 +1276,9 @@
             "為高度差位置加護欄、踏板及高對比標記；定期檢查照明。",
             "夜班及清晨班前聯合巡邏，查窗台積水及障礙物。",
             "培訓強調「低高度仍可致傷」，雙手保持空間。"
+          ],
+          "paragraphs": [
+            "下列建議對應上文法例及守則之管控思路（可能適用），供內部風險管理參考，非執法要求清單。"
           ]
         },
         {
@@ -1147,7 +1390,7 @@
         {
           "heading": "傷害及後果",
           "paragraphs": [
-            "兩名工人頭部受傷（不具名）；一人報称半昏迷，一人清醒（媒體用字）。"
+            "兩名工人頭部受傷（不具名）；一人報稱半昏迷，一人清醒（媒體用字）。"
           ]
         },
         {
@@ -1184,23 +1427,65 @@
         {
           "heading": "相關法例及守則",
           "paragraphs": [
-            "以下法例及守則可能適用於類似情境；是否適用、是否違反須由主管當局按事實調查後始能判斷。"
+            "以下按（1）法例及附屬規例、（2）勞工處工作守則／指引及職安警示、（3）建造業議會及其他業界指引分類；是否適用、是否違反須由主管當局按調查事實判定。本報告標示【可能適用】，並說明與本宗風險之關聯，不構成就本宗個案之法律意見。"
           ],
-          "legalRefs": [
+          "legalTiers": [
             {
-              "title": "《工廠及工業經營（起重機械及起重裝置）規例》（Cap. 59J）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59J!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（1）法例及附屬規例",
+              "refs": [
+                {
+                  "title": "《工廠及工業經營（吊船）規例》（第59章，附屬法例M）",
+                  "provision": "吊船之建造、檢驗及使用",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59M!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "外牆工程使用吊船／懸吊設備，須符合吊船規例之安全要求。"
+                },
+                {
+                  "title": "《工廠及工業經營（起重機械及起重裝置）規例》（第59章，附屬法例J）",
+                  "provision": "起重及懸吊裝置之安全",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59J!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "吊臂擺動與構築物淨空涉及起重裝置操作安全。"
+                },
+                {
+                  "title": "《個人防護設備（保護頭部）規例》（第59章，附屬法例W）",
+                  "provision": "頭部保護（安全帽）",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59W!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "兩名工人頭部受傷；須檢視頭盔佩戴及撞擊防護是否足夠。"
+                }
+              ]
             },
             {
-              "title": "《個人防護設備規例》（Cap. 59W）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59W!zh-Hant-HK",
-              "note": "可能適用：頭盔"
+              "tierLabel": "（2）勞工處工作守則／指引及職安警示",
+              "refs": [
+                {
+                  "title": "勞工處《安全使用吊船工作守則》",
+                  "provision": "處長認可工作守則",
+                  "url": "https://www.labour.gov.hk/tc/public/pdf/os/B/platform.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "規定吊船操作、懸掛、檢查及與構築物保持安全距離之實務要求。"
+                },
+                {
+                  "title": "勞工處《高處工作安全概覽》",
+                  "provision": "處長刊行的職安指引",
+                  "url": "https://www.labour.gov.hk/tc/public/os/D/Overview_of_Work_at_Height_Safety.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "懸吊平台作業之高空墮下及撞擊風險管理。"
+                }
+              ]
             },
             {
-              "title": "勞工處職安警示主頁",
-              "url": "https://www.labour.gov.hk/tc/news/work_safety_alert.htm",
-              "note": "參考同類高空／吊運警示"
+              "tierLabel": "（3）建造業議會及業界指引",
+              "refs": [
+                {
+                  "title": "建造業議會《離地工作的安全指引》（2016年11月）",
+                  "provision": "業界指引（非香港法例）",
+                  "url": "https://www.cic.hk/content/dam/cic-data/cic/publications/media/guidelines/2016/guidelines-on-work-above-ground-safety-c.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "外牆／離地作業之淨空、障礙物及平台工人保護。"
+                }
+              ]
             }
           ]
         },
@@ -1210,6 +1495,9 @@
             "作業前聯合標記吊臂禁區及淨空圖。",
             "複雜外牆慢速擺動＋地面訊號員三方通訊。",
             "確保頭盔及欄杆合格，異常制動即停。"
+          ],
+          "paragraphs": [
+            "下列建議對應上文法例及守則之管控思路（可能適用），供內部風險管理參考，非執法要求清單。"
           ]
         },
         {
@@ -1368,23 +1656,65 @@
         {
           "heading": "相關法例及守則",
           "paragraphs": [
-            "以下法例及守則可能適用於類似情境；是否適用、是否違反須由主管當局按事實調查後始能判斷。"
+            "以下按（1）法例及附屬規例、（2）勞工處工作守則／指引及職安警示、（3）建造業議會及其他業界指引分類；是否適用、是否違反須由主管當局按調查事實判定。本報告標示【可能適用】，並說明與本宗風險之關聯，不構成就本宗個案之法律意見。"
           ],
-          "legalRefs": [
+          "legalTiers": [
             {
-              "title": "《消防（建築物）條例》（Cap. 192）",
-              "url": "https://www.elegislation.gov.hk/hk/cap192!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（1）法例及附屬規例",
+              "refs": [
+                {
+                  "title": "《職業安全及健康條例》（第509章）",
+                  "provision": "工作地點安全及消防安全之一般責任",
+                  "url": "https://www.elegislation.gov.hk/hk/cap509!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "工業設施發生三級火，僱主須確保工作環境不危及僱員（包括火警及煙霧風險）。"
+                },
+                {
+                  "title": "《消防（建築物）條例》（第192章）",
+                  "provision": "建築物消防安全",
+                  "url": "https://www.elegislation.gov.hk/hk/cap192!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "綜合廢物設施屬特定工業建築物，須符合相關消防安全規定。"
+                },
+                {
+                  "title": "《工廠及工業經營條例》（第59章）",
+                  "provision": "工業經營的職安責任",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "設施營運及建築交接期之工業經營安全管理。"
+                }
+              ]
             },
             {
-              "title": "《職業安全及健康條例》（Cap. 509）",
-              "url": "https://www.elegislation.gov.hk/hk/cap509!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（2）勞工處工作守則／指引及職安警示",
+              "refs": [
+                {
+                  "title": "《工廠及工業經營(應呈報工場的防火設備)規例》簡介",
+                  "provision": "勞工處刊行簡介文件",
+                  "url": "https://www.labour.gov.hk/tc/public/pdf/os/A/Fire.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "說明應呈報工場須設置及維持合適防火設備；有助理解工業設施火警風險管理框架（非判定本設施已違規）。"
+                },
+                {
+                  "title": "勞工處《職安警示》",
+                  "provision": "職安警示索引頁",
+                  "url": "https://www.labour.gov.hk/tc/news/work_safety_alert.htm",
+                  "applicability": "可能適用",
+                  "relevance": "可查閱火警、熱工作及工業裝置相關警示。"
+                }
+              ]
             },
             {
-              "title": "勞工處《防火及爆炸性危險工作守則》",
-              "url": "https://www.labour.gov.hk/tc/public/pdf/wcp/FireAndExplosion.pdf",
-              "note": "可能適用"
+              "tierLabel": "（3）建造業議會及業界指引",
+              "refs": [
+                {
+                  "title": "發展局《建築地盤安全手冊》第9章（2024年12月版）",
+                  "provision": "意外調查及行為分析（英文版）",
+                  "url": "https://www.devb.gov.hk/filemanager/en/content_191/9%20CSSM_C9.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "試運／營運過渡期火警須採系統化調查；本報告僅作公開資料學習。"
+                }
+              ]
             }
           ]
         },
@@ -1394,6 +1724,9 @@
             "試運與營運期同級熱工作許可及可燃物管理。",
             "聯合疏散演練含人數點算及醫療鏈。",
             "火警後結構化根因分析再重啟接收廢物。"
+          ],
+          "paragraphs": [
+            "下列建議對應上文法例及守則之管控思路（可能適用），供內部風險管理參考，非執法要求清單。"
           ]
         },
         {
@@ -1555,23 +1888,72 @@
         {
           "heading": "相關法例及守則",
           "paragraphs": [
-            "以下法例及守則可能適用於類似情境；是否適用、是否違反須由主管當局按事實調查後始能判斷。"
+            "以下按（1）法例及附屬規例、（2）勞工處工作守則／指引及職安警示、（3）建造業議會及其他業界指引分類；是否適用、是否違反須由主管當局按調查事實判定。本報告標示【可能適用】，並說明與本宗風險之關聯，不構成就本宗個案之法律意見。"
           ],
-          "legalRefs": [
+          "legalTiers": [
             {
-              "title": "《工廠及工業經營（起重機械及起重裝置）規例》（Cap. 59J）",
-              "url": "https://www.elegislation.gov.hk/hk/cap59J!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（1）法例及附屬規例",
+              "refs": [
+                {
+                  "title": "《工廠及工業經營（吊船）規例》（第59章，附屬法例M）",
+                  "provision": "吊船之安全構造、檢驗及使用",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59M!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "吊船失控下墜與吊船規例下之制動、懸掛及檢驗要求相關。"
+                },
+                {
+                  "title": "《工廠及工業經營（起重機械及起重裝置）規例》（第59章，附屬法例J）",
+                  "provision": "懸吊裝置及起重機械",
+                  "url": "https://www.elegislation.gov.hk/hk/cap59J!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "補充規管懸吊式工作平台相關起重裝置之維護與操作。"
+                },
+                {
+                  "title": "《職業安全及健康條例》（第509章）",
+                  "provision": "工作地點安全",
+                  "url": "https://www.elegislation.gov.hk/hk/cap509!zh-Hant-HK",
+                  "applicability": "可能適用",
+                  "relevance": "外牆清潔屬高處作業，須確保防墮及緊急拯救措施。"
+                }
+              ]
             },
             {
-              "title": "勞工處《安全使用懸吊式工作平台工作守則》",
-              "url": "https://www.labour.gov.hk/tc/public/pdf/wcp/suspended_platform.pdf",
-              "note": "可能適用"
+              "tierLabel": "（2）勞工處工作守則／指引及職安警示",
+              "refs": [
+                {
+                  "title": "勞工處《安全使用吊船工作守則》",
+                  "provision": "處長認可工作守則",
+                  "url": "https://www.labour.gov.hk/tc/public/pdf/os/B/platform.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "涵蓋吊船檢查、操作、惡劣天氣、繫穩及緊急程序。"
+                },
+                {
+                  "title": "勞工處《安全帶及其繫穩系統的分類與使用指引》",
+                  "provision": "處長刊行指引",
+                  "url": "https://www.labour.gov.hk/tc/public/pdf/os/C/belt.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "報道指工人依賴安全帶及獨立救生繩待救；須對照正確佩帶及合適繫穩點。"
+                },
+                {
+                  "title": "勞工處《高處工作安全概覽》",
+                  "provision": "處長刊行的職安指引",
+                  "url": "https://www.labour.gov.hk/tc/public/os/D/Overview_of_Work_at_Height_Safety.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "雙重防墮、救援及惡劣天氣停工原則。"
+                }
+              ]
             },
             {
-              "title": "《職業安全及健康條例》（Cap. 509）",
-              "url": "https://www.elegislation.gov.hk/hk/cap509!zh-Hant-HK",
-              "note": "可能適用"
+              "tierLabel": "（3）建造業議會及業界指引",
+              "refs": [
+                {
+                  "title": "建造業議會《離地工作的安全指引》（2016年11月）",
+                  "provision": "業界指引（非香港法例）",
+                  "url": "https://www.cic.hk/content/dam/cic-data/cic/publications/media/guidelines/2016/guidelines-on-work-above-ground-safety-c.pdf",
+                  "applicability": "可能適用",
+                  "relevance": "懸吊式工作平台、拯救及工人培訓之業界建議（非法定要求）。"
+                }
+              ]
             }
           ]
         },
@@ -1581,6 +1963,9 @@
             "作業前核對平台檢驗、纜繩及懸掛點承載證明並簽署。",
             "設定風速停工及天台監測；強制雙重防墮。",
             "與消防及物業定期拯救演練及通訊頻道測試。"
+          ],
+          "paragraphs": [
+            "下列建議對應上文法例及守則之管控思路（可能適用），供內部風險管理參考，非執法要求清單。"
           ]
         },
         {
