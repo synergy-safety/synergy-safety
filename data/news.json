@@ -1,6 +1,24 @@
 {
-  "updatedAt": "2026-11-10T18:30:00+08:00",
+  "updatedAt": "2026-11-10T16:25:00+08:00",
   "items": [
+    {
+      "id": "2026-11-10-saiwanho-taihong",
+      "publishedAt": "2026-11-10T16:25:00+08:00",
+      "severity": "non-fatal",
+      "title": "西灣河太康街男工被機器割傷手掌",
+      "location": "西灣河太康街1號",
+      "occurredAt": "2026-11-10T14:38:00+08:00",
+      "summary": "今日（11月10日）下午約2時38分，西灣河太康街1號一名男工人工作期間，意外被機器割傷手掌，傷痕約10厘米。救護員到場初步敷治後，事主清醒送往東區醫院治理。警方列作「工業意外」跟進。",
+      "contractor": "報道未有點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/d1vmki"
+        }
+      ],
+      "image": "assets/news/2026-11-10-saiwanho-taihong.jpg"
+    },
     {
       "id": "2026-11-05-shatin-road",
       "publishedAt": "2026-11-05T12:22:00+08:00",
