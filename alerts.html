@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="勞工處職安警示摘要及官方連結 — 協同安全顧問公司。" />
+  <meta name="theme-color" content="#0d9488" />
+  <title>勞工處警示｜協同安全顧問公司</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="協同安全顧問公司首頁">
+        <img src="assets/logo.png" alt="" width="44" height="44" class="brand-logo" />
+        <span class="brand-text">
+          <span class="brand-zh">協同安全顧問公司</span>
+          <span class="brand-en">Synergy Safety Consultant Company</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟選單">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="主要導航">
+        <ul>
+          <li><a href="index.html">首頁</a></li>
+          <li><a href="index.html#services">服務</a></li>
+          <li><a href="index.html#about">關於</a></li>
+          <li class="nav-has-sub is-sub-open">
+            <button type="button" class="nav-sub-toggle" aria-expanded="true" aria-controls="nav-safety-submenu">職安資訊</button>
+            <ul class="nav-submenu" id="nav-safety-submenu">
+              <li><a href="news.html">新聞</a></li>
+              <li><a href="analysis.html">意外分析</a></li>
+              <li><a href="stats.html">統計</a></li>
+              <li><a href="alerts.html" aria-current="page">勞工處警示</a></li>
+            </ul>
+          </li>
+          <li><a href="index.html#contact">聯絡</a></li>
+          <li><a class="nav-cta" href="index.html#contact">立即查詢</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="content-hero" aria-labelledby="alerts-title">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">LD Work Safety Alerts</p>
+          <h1 id="alerts-title">勞工處警示</h1>
+          <p class="section-lead">以下為勞工處「職安警示」之<strong>簡短摘要</strong>及官方連結；全文、圖像及法律效力以<a id="alerts-landing" href="https://www.labour.gov.hk/tc/news/work_safety_alert.htm" target="_blank" rel="noopener noreferrer">勞工處官方網站</a>為準。</p>
+        </header>
+      </div>
+    </section>
+
+    <section class="content-list-section" aria-labelledby="alerts-feed-label">
+      <div class="container">
+        <h2 id="alerts-feed-label" class="visually-hidden">警示列表</h2>
+        <div id="alerts-status" class="content-status" role="status" aria-live="polite">載入中…</div>
+        <ul id="alerts-list" class="alert-list" hidden></ul>
+        <div id="alerts-error" class="content-error" hidden>
+          <p>無法載入警示資料，請稍後再試。</p>
+        </div>
+        <p class="content-note">本頁不取代勞工處刊物；若連結失效，請直接瀏覽 <a href="https://www.labour.gov.hk/tc/news/work_safety_alert.htm" target="_blank" rel="noopener noreferrer">職安警示主頁</a>。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="" width="36" height="36" />
+        <div>
+          <p class="footer-zh">協同安全顧問公司</p>
+          <p class="footer-en">Synergy Safety Consultant Company</p>
+        </div>
+      </div>
+      <p class="footer-legal"><a href="disclaimer.html">免責聲明及使用條款</a></p>
+      <p class="footer-copy">© <span id="year"></span> 協同安全顧問公司. 版權所有.</p>
+      <a class="footer-top" href="#top">返回頂部</a>
+    </div>
+  </footer>
+
+  <a class="whatsapp-fab" href="https://wa.me/85268808830" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp 聯絡我們">
+    <span class="whatsapp-fab-text">WhatsApp</span>
+  </a>
+
+  <script src="assets/site.js"></script>
+  <script>
+    (function () {
+      var statusEl = document.getElementById('alerts-status');
+      var listEl = document.getElementById('alerts-list');
+      var errorEl = document.getElementById('alerts-error');
+      var landingEl = document.getElementById('alerts-landing');
+
+      var dateFmt = new Intl.DateTimeFormat('zh-Hant-HK', {
+        year: 'numeric',
+        month: 'long',
+      });
+
+      function formatDate(iso) {
+        if (!iso) return '';
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        return dateFmt.format(d);
+      }
+
+      function renderItem(item) {
+        var li = document.createElement('li');
+        li.className = 'alert-card';
+
+        var head = document.createElement('div');
+        head.className = 'alert-card-head';
+
+        var time = document.createElement('time');
+        time.className = 'content-date';
+        time.dateTime = item.publishedAt || '';
+        time.textContent = formatDate(item.publishedAt) || '—';
+
+        var cat = document.createElement('span');
+        cat.className = 'alert-category';
+        cat.textContent = item.category || '職安警示';
+
+        head.appendChild(time);
+        head.appendChild(cat);
+
+        var title = document.createElement('h3');
+        title.className = 'alert-card-title';
+        title.textContent = item.title || '（無標題）';
+
+        var summary = document.createElement('p');
+        summary.className = 'alert-summary';
+        summary.textContent = item.summary || '';
+
+        var foot = document.createElement('p');
+        foot.className = 'alert-official';
+        var a = document.createElement('a');
+        a.href = item.officialUrl || '#';
+        a.textContent = '瀏覽勞工處官方版本';
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        foot.appendChild(a);
+
+        li.appendChild(head);
+        li.appendChild(title);
+        if (summary.textContent) li.appendChild(summary);
+        li.appendChild(foot);
+
+        return li;
+      }
+
+      fetch('data/alerts.json', { credentials: 'same-origin' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          if (landingEl && data && data.landingUrl) {
+            landingEl.href = data.landingUrl;
+          }
+          if (statusEl) {
+            statusEl.hidden = true;
+            statusEl.textContent = '';
+          }
+          var items = (data && Array.isArray(data.items)) ? data.items.slice() : [];
+          items.sort(function (a, b) {
+            var ta = new Date(a && a.publishedAt).getTime() || 0;
+            var tb = new Date(b && b.publishedAt).getTime() || 0;
+            return tb - ta;
+          });
+          if (!items.length) {
+            errorEl.hidden = false;
+            return;
+          }
+          listEl.hidden = false;
+          items.forEach(function (item) {
+            listEl.appendChild(renderItem(item));
+          });
+        })
+        .catch(function () {
+          if (statusEl) statusEl.hidden = true;
+          errorEl.hidden = false;
+        });
+    })();
+  </script>
+</body>
+</html>

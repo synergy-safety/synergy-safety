@@ -37,9 +37,18 @@
       </button>
       <nav class="site-nav" id="site-nav" aria-label="主要導航">
         <ul>
+          <li><a href="index.html">首頁</a></li>
           <li><a href="index.html#services">服務</a></li>
-          <li><a href="index.html#about">關於我們</a></li>
-          <li><a href="news.html" aria-current="page">新聞</a></li>
+          <li><a href="index.html#about">關於</a></li>
+          <li class="nav-has-sub is-sub-open">
+            <button type="button" class="nav-sub-toggle" aria-expanded="true" aria-controls="nav-safety-submenu">職安資訊</button>
+            <ul class="nav-submenu" id="nav-safety-submenu">
+              <li><a href="news.html" aria-current="page">新聞</a></li>
+              <li><a href="analysis.html">意外分析</a></li>
+              <li><a href="stats.html">統計</a></li>
+              <li><a href="alerts.html">勞工處警示</a></li>
+            </ul>
+          </li>
           <li><a href="index.html#contact">聯絡</a></li>
           <li><a class="nav-cta" href="index.html#contact">立即查詢</a></li>
         </ul>
@@ -84,34 +93,17 @@
           <p class="footer-en">Synergy Safety Consultant Company</p>
         </div>
       </div>
+      <p class="footer-legal"><a href="disclaimer.html">免責聲明及使用條款</a></p>
       <p class="footer-copy">© <span id="year"></span> 協同安全顧問公司. 版權所有.</p>
       <a class="footer-top" href="#top">返回頂部</a>
     </div>
   </footer>
 
-  <script>
-    (function () {
-      var toggle = document.querySelector('.nav-toggle');
-      var nav = document.getElementById('site-nav');
-      if (toggle && nav) {
-        toggle.addEventListener('click', function () {
-          var open = toggle.getAttribute('aria-expanded') === 'true';
-          toggle.setAttribute('aria-expanded', String(!open));
-          nav.classList.toggle('is-open', !open);
-          document.body.classList.toggle('nav-open', !open);
-        });
-        nav.querySelectorAll('a').forEach(function (link) {
-          link.addEventListener('click', function () {
-            toggle.setAttribute('aria-expanded', 'false');
-            nav.classList.remove('is-open');
-            document.body.classList.remove('nav-open');
-          });
-        });
-      }
-      var year = document.getElementById('year');
-      if (year) year.textContent = String(new Date().getFullYear());
-    })();
-  </script>
+  <a class="whatsapp-fab" href="https://wa.me/85268808830" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp 聯絡我們">
+    <span class="whatsapp-fab-text">WhatsApp</span>
+  </a>
+
+  <script src="assets/site.js"></script>
   <script>
     (function () {
       var statusEl = document.getElementById('news-status');

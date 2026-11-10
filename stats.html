@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="香港職安事故統計 — 協同安全顧問公司（預覽版）。" />
+  <meta name="theme-color" content="#0d9488" />
+  <title>統計｜協同安全顧問公司</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="協同安全顧問公司首頁">
+        <img src="assets/logo.png" alt="" width="44" height="44" class="brand-logo" />
+        <span class="brand-text">
+          <span class="brand-zh">協同安全顧問公司</span>
+          <span class="brand-en">Synergy Safety Consultant Company</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟選單">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="主要導航">
+        <ul>
+          <li><a href="index.html">首頁</a></li>
+          <li><a href="index.html#services">服務</a></li>
+          <li><a href="index.html#about">關於</a></li>
+          <li class="nav-has-sub is-sub-open">
+            <button type="button" class="nav-sub-toggle" aria-expanded="true" aria-controls="nav-safety-submenu">職安資訊</button>
+            <ul class="nav-submenu" id="nav-safety-submenu">
+              <li><a href="news.html">新聞</a></li>
+              <li><a href="analysis.html">意外分析</a></li>
+              <li><a href="stats.html" aria-current="page">統計</a></li>
+              <li><a href="alerts.html">勞工處警示</a></li>
+            </ul>
+          </li>
+          <li><a href="index.html#contact">聯絡</a></li>
+          <li><a class="nav-cta" href="index.html#contact">立即查詢</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="content-hero" aria-labelledby="stats-title">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Statistics</p>
+          <h1 id="stats-title">職安統計</h1>
+          <p class="section-lead">本頁為 Phase 1 預留版：日後將匯整公開統計及本網站新聞收錄趨勢。現階段請參考政府官方數據。</p>
+        </header>
+      </div>
+    </section>
+
+    <section class="stub-section" aria-labelledby="stats-stub-label">
+      <div class="container">
+        <div class="stub-card">
+          <h2 id="stats-stub-label" class="stub-title">即將推出</h2>
+          <p>我們正計劃結合勞工處公佈之工業傷亡數字與本網站已收錄之新聞事件類型，提供可視化趨勢圖。任何自行匯整數據均將在<a href="disclaimer.html">免責聲明</a>中說明樣本限制。</p>
+          <ul class="stub-links">
+            <li><a href="https://www.labour.gov.hk/tc/osh/" target="_blank" rel="noopener noreferrer">勞工處職安健資訊</a></li>
+            <li><a href="news.html">瀏覽本網安全新聞</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="" width="36" height="36" />
+        <div>
+          <p class="footer-zh">協同安全顧問公司</p>
+          <p class="footer-en">Synergy Safety Consultant Company</p>
+        </div>
+      </div>
+      <p class="footer-legal"><a href="disclaimer.html">免責聲明及使用條款</a></p>
+      <p class="footer-copy">© <span id="year"></span> 協同安全顧問公司. 版權所有.</p>
+      <a class="footer-top" href="#top">返回頂部</a>
+    </div>
+  </footer>
+
+  <a class="whatsapp-fab" href="https://wa.me/85268808830" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp 聯絡我們">
+    <span class="whatsapp-fab-text">WhatsApp</span>
+  </a>
+
+  <script src="assets/site.js"></script>
+</body>
+</html>

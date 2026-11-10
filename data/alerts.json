@@ -1,0 +1,70 @@
+{
+  "updatedAt": "2026-11-10T09:00:00+08:00",
+  "landingUrl": "https://www.labour.gov.hk/tc/news/work_safety_alert.htm",
+  "items": [
+    {
+      "id": "ld-wsa-landing",
+      "title": "勞工處職安警示（總覽）",
+      "publishedAt": "2026-01-01T00:00:00+08:00",
+      "category": "職安警示",
+      "summary": "勞工處發布之職安警示匯集，透過嚴重或致命工傷個案提醒僱主、承建商及僱員採取必要措施。本網站僅作索引，詳情以勞工處官方版本為準。",
+      "officialUrl": "https://www.labour.gov.hk/tc/news/work_safety_alert.htm"
+    },
+    {
+      "id": "ld-wsa-2026-index",
+      "title": "職安警示（文字版）— 2026",
+      "publishedAt": "2026-09-01T00:00:00+08:00",
+      "category": "職安警示",
+      "summary": "2026 年度職安警示文字版列表，涵蓋竹棚墮下、起重機械、被移動機械撞倒／輾壓等多類型個案及預防要點。",
+      "officialUrl": "https://www.labour.gov.hk/tc/news/work_safety_alert_2026.htm"
+    },
+    {
+      "id": "ld-wsa-bamboo-fall",
+      "title": "從懸空式竹棚架墮下",
+      "publishedAt": "2026-09-01T00:00:00+08:00",
+      "category": "墮下",
+      "summary": "勞工處警示：懸空式竹棚作業須確保搭建、檢查及繫穩符合標準，僱主須提供安全工作系統、適當防墮及監督。詳見官方 PDF。",
+      "officialUrl": "https://www.labour.gov.hk/tc/news/work_safety_alert_2026.htm"
+    },
+    {
+      "id": "ld-wsa-tower-crane",
+      "title": "塔式起重機倒塌",
+      "publishedAt": "2026-03-01T00:00:00+08:00",
+      "category": "起重機械",
+      "summary": "提醒承建商就塔式起重機安裝、地基、附著及檢驗制定嚴格程序；涉及吊運區域須有效圍封及監督。官方內容載於 2026 文字版列表。",
+      "officialUrl": "https://www.labour.gov.hk/tc/news/work_safety_alert_2026.htm"
+    },
+    {
+      "id": "ld-wsa-excavator",
+      "title": "工人被翻倒的挖土機撞倒",
+      "publishedAt": "2026-06-01T00:00:00+08:00",
+      "category": "移動機械",
+      "summary": "針對移動機械與工人共處風險，強調分區、訊號員、可見性及機械操作培訓。請參閱勞工處職安警示原文。",
+      "officialUrl": "https://www.labour.gov.hk/tc/news/work_safety_alert_2026.htm"
+    },
+    {
+      "id": "ld-wsa-gas-cylinder",
+      "title": "被墮下的氣樽擊中",
+      "publishedAt": "2026-01-01T00:00:00+08:00",
+      "category": "吊運",
+      "summary": "地盤吊運氣樽須使用合適盛器、繫穩及圍封吊運區；禁止在懸吊負荷下工作。官方 PDF 由勞工處網站提供。",
+      "officialUrl": "https://www.labour.gov.hk/common/osh/pdf/wsa/WSA-Struck_by_falling_gas_cylinders_TC.pdf"
+    },
+    {
+      "id": "ld-osh-branch",
+      "title": "職業安全及健康部 — 資訊主頁",
+      "publishedAt": "2025-06-01T00:00:00+08:00",
+      "category": "指引及刊物",
+      "summary": "勞工處職安健專題網網頁，匯集法例、指引、小冊子及培訓資訊，亦為查閱其他官方職安出版物的起點。",
+      "officialUrl": "https://www.labour.gov.hk/tc/osh/"
+    },
+    {
+      "id": "ld-wsa-mewp-trapped",
+      "title": "被夾於移動式升降工作平台與間牆之間",
+      "publishedAt": "2026-01-01T00:00:00+08:00",
+      "category": "升降工作台",
+      "summary": "涉及移動式升降工作台（MEWP）操作空間不足之警示，提示規劃移動路線、注意間牆及障礙物。詳見 2026 職安警示列表。",
+      "officialUrl": "https://www.labour.gov.hk/tc/news/work_safety_alert_2026.htm"
+    }
+  ]
+}
