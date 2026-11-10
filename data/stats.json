@@ -1,0 +1,89 @@
+{
+  "generatedAt": "2026-11-10T01:51:39+00:00",
+  "dataStart": "2026-10-01",
+  "dataStartLabel": "2026年10月",
+  "source": "data/news.json",
+  "disclaimer": "下列數字僅反映本網站公開報導收錄之個案，並非勞工處或政府官方工業意外統計。",
+  "totals": {
+    "all": 9,
+    "fatal": 1,
+    "non_fatal": 8
+  },
+  "byMonth": [
+    {
+      "month": "2026-10",
+      "label": "2026年10月",
+      "total": 7,
+      "fatal": 0,
+      "non_fatal": 7
+    },
+    {
+      "month": "2026-11",
+      "label": "2026年11月",
+      "total": 2,
+      "fatal": 1,
+      "non_fatal": 1
+    }
+  ],
+  "byRegion": [
+    {
+      "label": "沙田",
+      "count": 1
+    },
+    {
+      "label": "將軍澳",
+      "count": 1
+    },
+    {
+      "label": "葵涌",
+      "count": 1
+    },
+    {
+      "label": "上水",
+      "count": 1
+    },
+    {
+      "label": "西貢",
+      "count": 1
+    },
+    {
+      "label": "青衣",
+      "count": 1
+    },
+    {
+      "label": "香港仔",
+      "count": 1
+    },
+    {
+      "label": "離島／石鼓洲",
+      "count": 1
+    },
+    {
+      "label": "中環",
+      "count": 1
+    }
+  ],
+  "byHazard": [
+    {
+      "label": "車輛／交通界面",
+      "count": 2
+    },
+    {
+      "label": "機械受傷",
+      "count": 2
+    },
+    {
+      "label": "墮下／失平衡",
+      "count": 2
+    },
+    {
+      "label": "吊船／懸吊",
+      "count": 2
+    },
+    {
+      "label": "火警／火災",
+      "count": 1
+    }
+  ],
+  "itemCount": 9
+}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="香港職安事故統計 — 協同安全顧問公司（預覽版）。" />
+  <meta name="description" content="本網收錄之香港職安事故統計趨勢（2026年10月起）— 協同安全顧問公司。" />
   <meta name="theme-color" content="#0d9488" />
   <title>統計｜協同安全顧問公司</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -56,20 +56,88 @@
         <header class="section-head">
           <p class="eyebrow">Statistics</p>
           <h1 id="stats-title">職安統計</h1>
-          <p class="section-lead">本頁為 Phase 1 預留版：日後將匯整公開統計及本網站新聞收錄趨勢。現階段請參考政府官方數據。</p>
+          <p class="section-lead">依本網站<strong>公開報導收錄</strong>之事故整理趨勢（自 <span id="stats-range-label">2026年10月</span>起）。並非勞工處官方數字，詳見<a href="disclaimer.html">免責聲明</a>。</p>
         </header>
+        <div class="stats-disclaimer" role="note">
+          <p class="stats-disclaimer-text">統計範圍：本頁數字僅為本站已發布新聞摘要之個案計數，樣本受報導可見性、收錄準則及更新時間影響，<strong>不能代替</strong>政府工業傷亡統計。參考官方資料請見<a href="https://www.labour.gov.hk/tc/osh/" target="_blank" rel="noopener noreferrer">勞工處職安健網頁</a>。</p>
+        </div>
       </div>
     </section>
 
-    <section class="stub-section" aria-labelledby="stats-stub-label">
+    <section class="stats-section content-list-section" aria-labelledby="stats-dashboard-label">
       <div class="container">
-        <div class="stub-card">
-          <h2 id="stats-stub-label" class="stub-title">即將推出</h2>
-          <p>我們正計劃結合勞工處公佈之工業傷亡數字與本網站已收錄之新聞事件類型，提供可視化趨勢圖。任何自行匯整數據均將在<a href="disclaimer.html">免責聲明</a>中說明樣本限制。</p>
-          <ul class="stub-links">
-            <li><a href="https://www.labour.gov.hk/tc/osh/" target="_blank" rel="noopener noreferrer">勞工處職安健資訊</a></li>
-            <li><a href="news.html">瀏覽本網安全新聞</a></li>
-          </ul>
+        <h2 id="stats-dashboard-label" class="visually-hidden">統計儀表板</h2>
+        <div id="stats-status" class="content-status" role="status" aria-live="polite">載入中…</div>
+
+        <div id="stats-dashboard" class="stats-dashboard" hidden>
+          <p class="stats-meta"><span id="stats-updated">資料更新</span> · 涵蓋 <span id="stats-period"></span></p>
+
+          <div class="stats-kpi-grid" aria-label="概要數字">
+            <article class="stat-card stat-card-total">
+              <p class="stat-card-label">收錄總數</p>
+              <p class="stat-card-value" id="kpi-total">—</p>
+              <p class="stat-card-hint">公開報導個案</p>
+            </article>
+            <article class="stat-card stat-card-fatal">
+              <p class="stat-card-label">致命</p>
+              <p class="stat-card-value" id="kpi-fatal">—</p>
+              <p class="stat-card-hint">報道指死亡</p>
+            </article>
+            <article class="stat-card stat-card-nonfatal">
+              <p class="stat-card-label">非致命</p>
+              <p class="stat-card-value" id="kpi-nonfatal">—</p>
+              <p class="stat-card-hint">受傷／送院等</p>
+            </article>
+            <article class="stat-card stat-card-months">
+              <p class="stat-card-label">有資料月份</p>
+              <p class="stat-card-value" id="kpi-months">—</p>
+              <p class="stat-card-hint">按月統計</p>
+            </article>
+          </div>
+
+          <div class="stats-charts-grid">
+            <figure class="stats-chart-card">
+              <figcaption class="stats-chart-title">按月收錄數（致命 vs 非致命）</figcaption>
+              <div class="stats-chart-wrap" aria-hidden="true">
+                <canvas id="chart-monthly" role="img" aria-label="按月收錄數柱狀圖"></canvas>
+              </div>
+            </figure>
+            <figure class="stats-chart-card">
+              <figcaption class="stats-chart-title">嚴重程度分佈</figcaption>
+              <div class="stats-chart-wrap stats-chart-wrap-donut" aria-hidden="true">
+                <canvas id="chart-severity" role="img" aria-label="嚴重程度圓餅圖"></canvas>
+              </div>
+            </figure>
+            <figure class="stats-chart-card stats-chart-card-wide">
+              <figcaption class="stats-chart-title">地區／區域（由標題及地點推斷）</figcaption>
+              <p class="stats-infer-note">地區標籤按新聞標題與地點欄位關鍵字推斷，僅供參考。</p>
+              <div class="stats-chart-wrap stats-chart-wrap-tall" aria-hidden="true">
+                <canvas id="chart-region" role="img" aria-label="地區分佈橫向圖"></canvas>
+              </div>
+            </figure>
+            <figure class="stats-chart-card stats-chart-card-wide">
+              <figcaption class="stats-chart-title">事故類型（由標題摘要推斷）</figcaption>
+              <p class="stats-infer-note">危害類型按關鍵字分類，一宗可對應最接近之主要類別。</p>
+              <div class="stats-chart-wrap stats-chart-wrap-tall" aria-hidden="true">
+                <canvas id="chart-hazard" role="img" aria-label="事故類型橫向圖"></canvas>
+              </div>
+            </figure>
+          </div>
+
+          <div class="stats-links">
+            <a class="btn btn-secondary" href="news.html">瀏覽收錄新聞</a>
+            <a class="btn btn-primary" href="https://www.labour.gov.hk/tc/osh/" target="_blank" rel="noopener noreferrer">勞工處官方職安資訊</a>
+          </div>
+        </div>
+
+        <div id="stats-empty" class="stats-empty" hidden>
+          <p class="stats-empty-title">暫無符合範圍的資料</p>
+          <p class="stats-empty-text">自 2026 年 10 月起尚未收錄任何新聞項目，或資料檔為空。新增 <code>data/news.json</code> 後可執行 <code>python3 scripts/build-stats.py</code> 更新統計檔。</p>
+          <a class="btn btn-secondary" href="news.html">前往新聞</a>
+        </div>
+
+        <div id="stats-error" class="content-error" hidden>
+          <p>無法載入統計資料，請稍後再試。</p>
         </div>
       </div>
     </section>
@@ -94,6 +162,291 @@
     <span class="whatsapp-fab-text">WhatsApp</span>
   </a>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js" crossorigin="anonymous"></script>
   <script src="assets/site.js"></script>
+  <script>
+    (function () {
+      var DATA_START = '2026-10-01';
+      var TEAL = '#0d9488';
+      var TEAL_SOFT = 'rgba(13, 148, 136, 0.75)';
+      var ORANGE = '#f97316';
+      var ORANGE_SOFT = 'rgba(249, 115, 22, 0.85)';
+      var MUTED = '#94a3b8';
+
+      var DISTRICTS = ['沙田', '將軍澳', '葵涌', '上水', '西貢', '青衣', '香港仔', '中環', '石鼓洲', '九龍', '新界', '港島'];
+      var HAZARD_RULES = [
+        ['火警／火災', ['火', '焚化', '起火']],
+        ['吊船／懸吊', ['吊船', '吊臂', '懸吊']],
+        ['車輛／交通界面', ['貨車', '夾斗', '輾', '泥頭車', '修路', '道路', '行車']],
+        ['機械受傷', ['機器', '打包機', '切斷', '割傷']],
+        ['墮下／失平衡', ['墮', '失足', '跌']],
+        ['墜物／尖物', ['鐵枝', '插傷']],
+        ['翻側／受困', ['翻側', '受困', '車底']]
+      ];
+
+      var statusEl = document.getElementById('stats-status');
+      var dashEl = document.getElementById('stats-dashboard');
+      var emptyEl = document.getElementById('stats-empty');
+      var errorEl = document.getElementById('stats-error');
+
+      var charts = [];
+
+      var dateFmt = new Intl.DateTimeFormat('zh-Hant-HK', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      function parseDate(iso) {
+        if (!iso) return null;
+        var d = new Date(iso);
+        return isNaN(d.getTime()) ? null : d;
+      }
+
+      function monthLabel(key) {
+        var parts = key.split('-');
+        return parts[0] + '年' + parseInt(parts[1], 10) + '月';
+      }
+
+      function inferRegion(location, title) {
+        var text = (location || '') + (title || '');
+        for (var i = 0; i < DISTRICTS.length; i++) {
+          if (text.indexOf(DISTRICTS[i]) !== -1) {
+            return DISTRICTS[i] === '石鼓洲' ? '離島／石鼓洲' : DISTRICTS[i];
+          }
+        }
+        return '其他／未標示';
+      }
+
+      function inferHazard(title, summary) {
+        var text = (title || '') + (summary || '');
+        for (var r = 0; r < HAZARD_RULES.length; r++) {
+          var keywords = HAZARD_RULES[r][1];
+          for (var k = 0; k < keywords.length; k++) {
+            if (text.indexOf(keywords[k]) !== -1) return HAZARD_RULES[r][0];
+          }
+        }
+        return '其他';
+      }
+
+      function normalizeSeverity(sev) {
+        return sev === 'fatal' ? 'fatal' : 'non_fatal';
+      }
+
+      function buildStatsFromNews(news) {
+        var start = new Date(DATA_START + 'T00:00:00+08:00');
+        var items = (news.items || []).filter(function (item) {
+          var occurred = parseDate(item.occurredAt) || parseDate(item.publishedAt);
+          return occurred && occurred >= start;
+        });
+
+        var fatal = 0;
+        var byMonthMap = {};
+        var regionMap = {};
+        var hazardMap = {};
+
+        items.forEach(function (item) {
+          var occurred = parseDate(item.occurredAt) || parseDate(item.publishedAt);
+          var sev = normalizeSeverity(item.severity);
+          if (sev === 'fatal') fatal++;
+          var key = occurred.getFullYear() + '-' + String(occurred.getMonth() + 1).padStart(2, '0');
+          if (!byMonthMap[key]) byMonthMap[key] = { total: 0, fatal: 0, non_fatal: 0 };
+          byMonthMap[key].total++;
+          byMonthMap[key][sev]++;
+
+          var region = inferRegion(item.location, item.title);
+          regionMap[region] = (regionMap[region] || 0) + 1;
+          var hazard = inferHazard(item.title, item.summary);
+          hazardMap[hazard] = (hazardMap[hazard] || 0) + 1;
+        });
+
+        var byMonth = Object.keys(byMonthMap).sort().map(function (key) {
+          return Object.assign({ month: key, label: monthLabel(key) }, byMonthMap[key]);
+        });
+
+        function counterToList(map) {
+          return Object.keys(map)
+            .map(function (label) { return { label: label, count: map[label] }; })
+            .sort(function (a, b) { return b.count - a.count; });
+        }
+
+        return {
+          generatedAt: news.updatedAt || new Date().toISOString(),
+          dataStart: DATA_START,
+          dataStartLabel: '2026年10月',
+          totals: { all: items.length, fatal: fatal, non_fatal: items.length - fatal },
+          byMonth: byMonth,
+          byRegion: counterToList(regionMap),
+          byHazard: counterToList(hazardMap)
+        };
+      }
+
+      function destroyCharts() {
+        charts.forEach(function (c) { c.destroy(); });
+        charts = [];
+      }
+
+      function makeChartOptions(isHorizontal) {
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: isHorizontal ? 'y' : 'x',
+          plugins: {
+            legend: {
+              labels: { font: { family: '"Noto Sans TC", sans-serif' }, color: '#334155' }
+            }
+          },
+          scales: isHorizontal ? {
+            x: { beginAtZero: true, ticks: { precision: 0, color: '#64748b' }, grid: { color: '#e2e8f0' } },
+            y: { ticks: { color: '#334155', font: { family: '"Noto Sans TC", sans-serif' } }, grid: { display: false } }
+          } : {
+            x: { ticks: { color: '#334155', font: { family: '"Noto Sans TC", sans-serif' } }, grid: { display: false } },
+            y: { beginAtZero: true, ticks: { precision: 0, color: '#64748b' }, grid: { color: '#e2e8f0' } }
+          }
+        };
+      }
+
+      function renderCharts(stats) {
+        destroyCharts();
+        var monthLabels = stats.byMonth.map(function (m) { return m.label; });
+        var fatalData = stats.byMonth.map(function (m) { return m.fatal; });
+        var nonFatalData = stats.byMonth.map(function (m) { return m.non_fatal; });
+
+        charts.push(new Chart(document.getElementById('chart-monthly'), {
+          type: 'bar',
+          data: {
+            labels: monthLabels,
+            datasets: [
+              { label: '致命', data: fatalData, backgroundColor: ORANGE_SOFT, borderColor: ORANGE, borderWidth: 1, borderRadius: 6 },
+              { label: '非致命', data: nonFatalData, backgroundColor: TEAL_SOFT, borderColor: TEAL, borderWidth: 1, borderRadius: 6 }
+            ]
+          },
+          options: Object.assign(makeChartOptions(false), {
+            plugins: {
+              legend: { position: 'top' },
+              tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+              x: { stacked: true, ticks: { color: '#334155', font: { family: '"Noto Sans TC", sans-serif' } }, grid: { display: false } },
+              y: { stacked: true, beginAtZero: true, ticks: { precision: 0, color: '#64748b' }, grid: { color: '#e2e8f0' } }
+            }
+          })
+        }));
+
+        charts.push(new Chart(document.getElementById('chart-severity'), {
+          type: 'doughnut',
+          data: {
+            labels: ['致命', '非致命'],
+            datasets: [{
+              data: [stats.totals.fatal, stats.totals.non_fatal],
+              backgroundColor: [ORANGE, TEAL],
+              borderWidth: 0,
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { font: { family: '"Noto Sans TC", sans-serif' } } }
+            }
+          }
+        }));
+
+        function horizontalBar(canvasId, rows, color) {
+          charts.push(new Chart(document.getElementById(canvasId), {
+            type: 'bar',
+            data: {
+              labels: rows.map(function (r) { return r.label; }),
+              datasets: [{ label: '宗數', data: rows.map(function (r) { return r.count; }), backgroundColor: color, borderRadius: 6 }]
+            },
+            options: Object.assign(makeChartOptions(true), {
+              plugins: { legend: { display: false } }
+            })
+          }));
+        }
+
+        horizontalBar('chart-region', stats.byRegion, TEAL_SOFT);
+        horizontalBar('chart-hazard', stats.byHazard, ORANGE_SOFT);
+      }
+
+      function renderKpis(stats) {
+        document.getElementById('kpi-total').textContent = String(stats.totals.all);
+        document.getElementById('kpi-fatal').textContent = String(stats.totals.fatal);
+        document.getElementById('kpi-nonfatal').textContent = String(stats.totals.non_fatal);
+        document.getElementById('kpi-months').textContent = String(stats.byMonth.length);
+
+        var updated = parseDate(stats.generatedAt);
+        document.getElementById('stats-updated').textContent =
+          '資料更新：' + (updated ? dateFmt.format(updated) : '—');
+        var first = stats.byMonth[0];
+        var last = stats.byMonth[stats.byMonth.length - 1];
+        document.getElementById('stats-period').textContent =
+          first && last ? first.label + ' 至 ' + last.label : stats.dataStartLabel || '2026年10月';
+        var rangeLabel = document.getElementById('stats-range-label');
+        if (rangeLabel) rangeLabel.textContent = stats.dataStartLabel || '2026年10月';
+      }
+
+      function showDashboard(stats) {
+        statusEl.hidden = true;
+        emptyEl.hidden = true;
+        errorEl.hidden = true;
+        dashEl.hidden = false;
+        renderKpis(stats);
+        if (typeof Chart !== 'undefined') {
+          renderCharts(stats);
+        } else {
+          console.warn('Chart.js not loaded');
+        }
+      }
+
+      function showEmpty() {
+        statusEl.hidden = true;
+        dashEl.hidden = true;
+        errorEl.hidden = true;
+        emptyEl.hidden = false;
+      }
+
+      function showError() {
+        statusEl.hidden = true;
+        dashEl.hidden = true;
+        emptyEl.hidden = true;
+        errorEl.hidden = false;
+      }
+
+      function load() {
+        fetch('data/stats.json', { cache: 'no-cache' })
+          .then(function (res) {
+            if (!res.ok) throw new Error('stats');
+            return res.json();
+          })
+          .then(function (stats) {
+            if (!stats.totals || stats.totals.all === 0) return fetchNewsAndRender();
+            showDashboard(stats);
+          })
+          .catch(function () {
+            return fetchNewsAndRender();
+          });
+      }
+
+      function fetchNewsAndRender() {
+        return fetch('data/news.json', { cache: 'no-cache' })
+          .then(function (res) {
+            if (!res.ok) throw new Error('news');
+            return res.json();
+          })
+          .then(function (news) {
+            var stats = buildStatsFromNews(news);
+            if (stats.totals.all === 0) showEmpty();
+            else showDashboard(stats);
+          })
+          .catch(showError);
+      }
+
+      load();
+    })();
+  </script>
 </body>
 </html>
