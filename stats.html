@@ -59,7 +59,7 @@
           <p class="section-lead">依本網站<strong>公開報導收錄</strong>之事故整理趨勢（自 <span id="stats-range-label">2026年10月</span>起）。並非勞工處官方數字，詳見<a href="disclaimer.html">免責聲明</a>。</p>
         </header>
         <div class="stats-disclaimer" role="note">
-          <p class="stats-disclaimer-text">統計範圍：本頁數字僅為本站已發布新聞摘要之個案計數，樣本受報導可見性、收錄準則及更新時間影響，<strong>不能代替</strong>政府工業傷亡統計。參考官方資料請見<a href="https://www.labour.gov.hk/tc/osh/" target="_blank" rel="noopener noreferrer">勞工處職安健網頁</a>。</p>
+          <p class="stats-disclaimer-text">統計範圍：本頁數字僅為本站已發布新聞摘要之個案計數，樣本受報導可見性、收錄準則及更新時間影響，<strong>不能代替</strong>政府工業傷亡統計。意外類別圖表依勞工處《僱員補償條例》<a href="https://www.labour.gov.hk/common/form/ecd/pdf/f2_c.pdf" target="_blank" rel="noopener noreferrer">表格2（Rev.17）第K部「意外類別」</a>用字，由本站依公開報導對照歸類，<strong>並非</strong>勞工處或僱主呈報之官方統計。參考職安資料請見<a href="https://www.labour.gov.hk/tc/osh/" target="_blank" rel="noopener noreferrer">勞工處職安健網頁</a>。</p>
         </div>
       </div>
     </section>
@@ -116,10 +116,10 @@
               </div>
             </figure>
             <figure class="stats-chart-card stats-chart-card-wide">
-              <figcaption class="stats-chart-title">事故類型（由標題摘要推斷）</figcaption>
-              <p class="stats-infer-note">危害類型按關鍵字分類，一宗可對應最接近之主要類別。</p>
+              <figcaption class="stats-chart-title">意外類別（表格2第K部）</figcaption>
+              <p class="stats-infer-note">依 <code>data/news.json</code> 各則之 <code>accidentType</code> 匯總；每宗新聞對應一項官方類別代號，由本站依報導內容對照，不代表官方調查定性。</p>
               <div class="stats-chart-wrap stats-chart-wrap-tall" aria-hidden="true">
-                <canvas id="chart-hazard" role="img" aria-label="事故類型橫向圖"></canvas>
+                <canvas id="chart-accident-type" role="img" aria-label="表格2意外類別橫向圖"></canvas>
               </div>
             </figure>
           </div>
@@ -174,15 +174,6 @@
       var MUTED = '#94a3b8';
 
       var DISTRICTS = ['沙田', '將軍澳', '葵涌', '上水', '西貢', '青衣', '香港仔', '中環', '石鼓洲', '九龍', '新界', '港島'];
-      var HAZARD_RULES = [
-        ['火警／火災', ['火', '焚化', '起火']],
-        ['吊船／懸吊', ['吊船', '吊臂', '懸吊']],
-        ['車輛／交通界面', ['貨車', '夾斗', '輾', '泥頭車', '修路', '道路', '行車']],
-        ['機械受傷', ['機器', '打包機', '切斷', '割傷']],
-        ['墮下／失平衡', ['墮', '失足', '跌']],
-        ['墜物／尖物', ['鐵枝', '插傷']],
-        ['翻側／受困', ['翻側', '受困', '車底']]
-      ];
 
       var statusEl = document.getElementById('stats-status');
       var dashEl = document.getElementById('stats-dashboard');
@@ -220,15 +211,15 @@
         return '其他／未標示';
       }
 
-      function inferHazard(title, summary) {
-        var text = (title || '') + (summary || '');
-        for (var r = 0; r < HAZARD_RULES.length; r++) {
-          var keywords = HAZARD_RULES[r][1];
-          for (var k = 0; k < keywords.length; k++) {
-            if (text.indexOf(keywords[k]) !== -1) return HAZARD_RULES[r][0];
-          }
-        }
-        return '其他';
+      function accidentTypeFromItem(item) {
+        var at = item && item.accidentType;
+        if (!at || !at.code || !at.label) return null;
+        var code = String(at.code).padStart(2, '0');
+        return {
+          code: code,
+          label: at.label,
+          chartLabel: code + ' ' + at.label
+        };
       }
 
       function normalizeSeverity(sev) {
@@ -245,7 +236,7 @@
         var fatal = 0;
         var byMonthMap = {};
         var regionMap = {};
-        var hazardMap = {};
+        var accidentMap = {};
 
         items.forEach(function (item) {
           var occurred = parseDate(item.occurredAt) || parseDate(item.publishedAt);
@@ -258,8 +249,12 @@
 
           var region = inferRegion(item.location, item.title);
           regionMap[region] = (regionMap[region] || 0) + 1;
-          var hazard = inferHazard(item.title, item.summary);
-          hazardMap[hazard] = (hazardMap[hazard] || 0) + 1;
+          var acc = accidentTypeFromItem(item);
+          if (acc) {
+            var mapKey = acc.code + '\t' + acc.label;
+            if (!accidentMap[mapKey]) accidentMap[mapKey] = { code: acc.code, label: acc.label, chartLabel: acc.chartLabel, count: 0 };
+            accidentMap[mapKey].count++;
+          }
         });
 
         var byMonth = Object.keys(byMonthMap).sort().map(function (key) {
@@ -272,6 +267,10 @@
             .sort(function (a, b) { return b.count - a.count; });
         }
 
+        var byAccidentType = Object.keys(accidentMap)
+          .map(function (k) { return accidentMap[k]; })
+          .sort(function (a, b) { return a.code.localeCompare(b.code); });
+
         return {
           generatedAt: news.updatedAt || new Date().toISOString(),
           dataStart: DATA_START,
@@ -279,8 +278,20 @@
           totals: { all: items.length, fatal: fatal, non_fatal: items.length - fatal },
           byMonth: byMonth,
           byRegion: counterToList(regionMap),
-          byHazard: counterToList(hazardMap)
+          byAccidentType: byAccidentType
         };
+      }
+
+      function accidentTypeRows(stats) {
+        if (stats.byAccidentType && stats.byAccidentType.length) {
+          return stats.byAccidentType.map(function (row) {
+            return {
+              label: row.chartLabel || (row.code + ' ' + row.label),
+              count: row.count
+            };
+          });
+        }
+        return [];
       }
 
       function destroyCharts() {
@@ -369,7 +380,7 @@
         }
 
         horizontalBar('chart-region', stats.byRegion, TEAL_SOFT);
-        horizontalBar('chart-hazard', stats.byHazard, ORANGE_SOFT);
+        horizontalBar('chart-accident-type', accidentTypeRows(stats), ORANGE_SOFT);
       }
 
       function renderKpis(stats) {

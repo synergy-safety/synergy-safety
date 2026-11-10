@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-import re
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -12,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 NEWS_PATH = ROOT / "data" / "news.json"
 STATS_PATH = ROOT / "data" / "stats.json"
+FORM2_TYPES_PATH = ROOT / "data" / "form2-accident-types.json"
 DATA_START = "2026-10-01"
 
 DISTRICTS = [
@@ -29,15 +29,12 @@ DISTRICTS = [
     "港島",
 ]
 
-HAZARD_RULES: list[tuple[str, list[str]]] = [
-    ("火警／火災", ["火", "焚化", "起火"]),
-    ("吊船／懸吊", ["吊船", "吊臂", "懸吊", "gondola"]),
-    ("車輛／交通界面", ["貨車", "夾斗", "輾", "泥頭車", "修路", "道路", "行車"]),
-    ("機械受傷", ["機器", "打包機", "切斷", "割傷"]),
-    ("墮下／失平衡", ["墮", "失足", "跌"]),
-    ("墜物／尖物", ["鐵枝", "插傷"]),
-    ("翻側／受困", ["翻側", "受困", "車底"]),
-]
+DISCLAIMER = (
+    "下列數字及意外類別分佈僅反映本網站依公開報導收錄之個案，"
+    "並非勞工處、僱主或傷者呈報之官方統計。"
+    "意外類別由本站對照勞工處《僱員補償條例》表格2（Rev.17）第K部「意外類別」歸類，"
+    "不代表官方調查或呈報定性。"
+)
 
 
 def parse_date(iso: str | None) -> datetime | None:
@@ -68,24 +65,46 @@ def infer_region(location: str | None, title: str) -> str:
     return "其他／未標示"
 
 
-def infer_hazard(title: str, summary: str) -> str:
-    text = title + (summary or "")
-    for label, keywords in HAZARD_RULES:
-        for kw in keywords:
-            if kw.lower() in text.lower() or kw in text:
-                return label
-    return "其他"
-
-
 def normalize_severity(severity: str | None) -> str:
     if severity == "fatal":
         return "fatal"
     return "non_fatal"
 
 
+def accident_type_key(item: dict) -> tuple[str, str] | None:
+    at = item.get("accidentType")
+    if not isinstance(at, dict):
+        return None
+    code = at.get("code")
+    label = at.get("label")
+    if not code or not label:
+        return None
+    return (str(code).zfill(2), label)
+
+
+def counter_to_accident_list(counter: Counter[tuple[str, str]]) -> list[dict]:
+    rows = []
+    for (code, label), count in counter.items():
+        rows.append(
+            {
+                "code": code,
+                "label": label,
+                "chartLabel": f"{code} {label}",
+                "count": count,
+            }
+        )
+    rows.sort(key=lambda r: r["code"])
+    return rows
+
+
 def main() -> None:
     with NEWS_PATH.open(encoding="utf-8") as f:
         news = json.load(f)
+
+    form2_meta = {}
+    if FORM2_TYPES_PATH.is_file():
+        with FORM2_TYPES_PATH.open(encoding="utf-8") as f:
+            form2_meta = json.load(f)
 
     start = datetime.fromisoformat(DATA_START + "T00:00:00+08:00")
     items_in_range = []
@@ -100,7 +119,6 @@ def main() -> None:
                 "_occurred": occurred,
                 "_severity": normalize_severity(item.get("severity")),
                 "_region": infer_region(item.get("location"), item.get("title", "")),
-                "_hazard": infer_hazard(item.get("title", ""), item.get("summary", "")),
             }
         )
 
@@ -123,9 +141,16 @@ def main() -> None:
     ]
 
     region_counter = Counter(i["_region"] for i in items_in_range)
-    hazard_counter = Counter(i["_hazard"] for i in items_in_range)
+    accident_counter: Counter[tuple[str, str]] = Counter()
+    unclassified = 0
+    for item in items_in_range:
+        key = accident_type_key(item)
+        if key:
+            accident_counter[key] += 1
+        else:
+            unclassified += 1
 
-    def counter_to_list(counter: Counter) -> list[dict]:
+    def region_to_list(counter: Counter) -> list[dict]:
         return [
             {"label": label, "count": count}
             for label, count in counter.most_common()
@@ -136,15 +161,25 @@ def main() -> None:
         "dataStart": DATA_START,
         "dataStartLabel": "2026年10月",
         "source": "data/news.json",
-        "disclaimer": "下列數字僅反映本網站公開報導收錄之個案，並非勞工處或政府官方工業意外統計。",
+        "accidentTypeBasis": {
+            "form": form2_meta.get("form", "L.D. 27(b)(s)(Rev.17)"),
+            "section": "K",
+            "sectionTitle": form2_meta.get("sectionTitle", "意外類別"),
+            "officialFormPdfZh": (form2_meta.get("officialUrls") or {}).get(
+                "formPdfZh",
+                "https://www.labour.gov.hk/common/form/ecd/pdf/f2_c.pdf",
+            ),
+        },
+        "disclaimer": DISCLAIMER,
         "totals": {
             "all": len(items_in_range),
             "fatal": fatal,
             "non_fatal": non_fatal,
         },
         "byMonth": by_month,
-        "byRegion": counter_to_list(region_counter),
-        "byHazard": counter_to_list(hazard_counter),
+        "byRegion": region_to_list(region_counter),
+        "byAccidentType": counter_to_accident_list(accident_counter),
+        "unclassifiedAccidentType": unclassified,
         "itemCount": len(items_in_range),
     }
 

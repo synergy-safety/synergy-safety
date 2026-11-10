@@ -8,12 +8,41 @@
 - 首頁：`index.html`、`styles.css`、`assets/site.js`
 - **職安資訊**：`news.html`（新聞）、`analysis.html`（意外分析）、`stats.html`（統計儀表板）、`alerts.html`（勞工處警示索引）
 - 法務：`disclaimer.html`（全站頁尾連結）
-- 資料：`data/news.json`、`data/analyses.json`、`data/alerts.json`、`data/stats.json`
+- 資料：`data/news.json`、`data/analyses.json`、`data/alerts.json`、`data/stats.json`、`data/form2-accident-types.json`（表格2第K部官方類別用字）
 - 品牌標誌：`assets/logo.png`；新聞圖片可放 `assets/news/`
 
 ### `data/news.json`
 
-每個 `items[]` 物件欄位：`id`, `publishedAt`, `severity`, `title`, `location`, `occurredAt`, `summary`, `contractor`, `contractorConfidence`, `sources[]`, `image`（選填）。
+每個 `items[]` 物件欄位：
+
+| 欄位 | 說明 |
+|------|------|
+| `id` | 穩定識別碼（建議 `YYYY-MM-DD-slug`） |
+| `publishedAt` | 收錄／發布時間（ISO 8601） |
+| `severity` | `fatal` 或 `non_fatal` |
+| `title`, `location`, `occurredAt`, `summary` | 報導摘要 |
+| **`accidentType`** | **意外類別（對照表格2第K部）**，見下表 |
+| `contractor`, `contractorConfidence` | 承建商（若有） |
+| `sources[]` | `{ outlet, url }` |
+| `image` | 選填，相對路徑 |
+
+#### `accidentType`（勞工處表格2 Rev.17 第K部 — 單選）
+
+官方類別名錄見 `data/form2-accident-types.json`；中文 PDF：<https://www.labour.gov.hk/common/form/ecd/pdf/f2_c.pdf>。
+
+```json
+"accidentType": {
+  "code": "12",
+  "label": "遭移動中的車輛撞倒"
+}
+```
+
+- **`code`**：字串 `"01"`–`"17"`（與表格2剔號一致）
+- **`label`**：必須使用官方中文名稱（與上列名錄一致，勿改寫）
+- **`fallDistanceMetres`**（選填）：僅當 `code` 為 `"04"` 且報導有墮下距離時填寫（數字，單位：米）
+- **`otherSpecify`**（選填）：僅當 `code` 為 `"17"` 時填寫簡短說明
+
+歸類由站方依公開報導對照表格2，**並非**勞工處或僱主呈報之官方定性。
 
 ### `data/analyses.json`
 
@@ -25,13 +54,13 @@
 
 ### `data/stats.json`
 
-由 `data/news.json` 匯總（自 **2026 年 10 月**起）：總數、致命／非致命、按月、地區及危害類型（部分為標題／地點關鍵字推斷）。更新新聞後可執行：
+由 `data/news.json` 匯總（自 **2026 年 10 月**起）：總數、致命／非致命、按月、地區（標題／地點關鍵字推斷）及 **`byAccidentType`**（各則新聞之 `accidentType` 計數）。更新新聞後可執行：
 
 ```bash
 python3 scripts/build-stats.py
 ```
 
-`stats.html` 會優先讀取此檔；若缺失則於頁面內從 `news.json` 即時計算。數字僅代表本站公開收錄，**並非**勞工處官方統計。
+`stats.html` 會優先讀取此檔；若缺失則於頁面內從 `news.json` 即時計算。數字及意外類別分佈僅代表本站公開收錄，**並非**勞工處官方統計。
 
 ## 本地預覽
 

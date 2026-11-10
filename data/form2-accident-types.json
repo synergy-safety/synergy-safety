@@ -1,0 +1,30 @@
+{
+  "form": "L.D. 27(b)(s)(Rev.17)",
+  "section": "K",
+  "sectionTitle": "意外類別",
+  "officialUrls": {
+    "formPdfZh": "https://www.labour.gov.hk/common/form/ecd/pdf/f2_c.pdf",
+    "formPdfEn": "https://www.labour.gov.hk/eng/form/ecd/pdf/f2.pdf",
+    "publicForms": "https://www.labour.gov.hk/chs/form/public_forms.htm"
+  },
+  "note": "第K部為單選。下列中文名稱與勞工處表格2 Rev.17 官方用字一致。",
+  "types": [
+    { "code": "01", "label": "受困於物件之內或物件之間" },
+    { "code": "02", "label": "提舉或搬運物件時受傷" },
+    { "code": "03", "label": "滑倒、絆倒或在同一高度跌倒" },
+    { "code": "04", "label": "人體從高處墮下" },
+    { "code": "05", "label": "與固定或不動的物件碰撞" },
+    { "code": "06", "label": "與移動的物件碰撞" },
+    { "code": "07", "label": "踏在物件上" },
+    { "code": "08", "label": "暴露於有害物質中或接觸有害物質" },
+    { "code": "09", "label": "觸電或接觸放出的電流" },
+    { "code": "10", "label": "受困於倒塌或翻側的物件" },
+    { "code": "11", "label": "遭移動或墮下的物件撞擊" },
+    { "code": "12", "label": "遭移動中的車輛撞倒" },
+    { "code": "13", "label": "觸及開動中的機器或觸及以機器製造中的物件" },
+    { "code": "14", "label": "遇溺" },
+    { "code": "15", "label": "火警燒傷" },
+    { "code": "16", "label": "爆炸受傷" },
+    { "code": "17", "label": "其他（請指明）" }
+  ]
+}

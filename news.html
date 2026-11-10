@@ -14,7 +14,9 @@
   <!--
     data/news.json 每筆 items[] 欄位：
     id, publishedAt (ISO 8601), severity ("fatal"|"non-fatal"|"non_fatal"), title, location?,
-    occurredAt?, summary, contractor?, contractorConfidence?, sources[{outlet, url}],
+    occurredAt?, summary, accidentType? { code ("01"–"17"), label (表格2官方用字),
+    fallDistanceMetres? (code 04), otherSpecify? (code 17) },
+    contractor?, contractorConfidence?, sources[{outlet, url}],
   image? (相對路徑，建議置於 assets/news/)
   -->
 </head>
@@ -234,6 +236,25 @@
           occRow.appendChild(occDt);
           occRow.appendChild(occDd);
           details.appendChild(occRow);
+        }
+
+        if (item.accidentType && item.accidentType.code && item.accidentType.label) {
+          var accRow = document.createElement('div');
+          accRow.className = 'news-meta-row';
+          var accDt = document.createElement('dt');
+          accDt.textContent = '意外類別';
+          var accDd = document.createElement('dd');
+          var accText = item.accidentType.code + ' ' + item.accidentType.label;
+          if (item.accidentType.code === '04' && item.accidentType.fallDistanceMetres != null) {
+            accText += '（墮下約 ' + item.accidentType.fallDistanceMetres + ' 米）';
+          }
+          if (item.accidentType.code === '17' && item.accidentType.otherSpecify) {
+            accText += '：' + item.accidentType.otherSpecify;
+          }
+          accDd.textContent = accText;
+          accRow.appendChild(accDt);
+          accRow.appendChild(accDd);
+          details.appendChild(accRow);
         }
 
         if (item.contractor) {
