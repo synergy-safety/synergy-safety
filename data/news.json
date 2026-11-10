@@ -1,3 +1,211 @@
 {
-  "items": []
+  "updatedAt": "2026-11-10T09:25:00+08:00",
+  "items": [
+    {
+      "id": "2026-11-05-shatin-road",
+      "publishedAt": "2026-11-05T12:22:00+08:00",
+      "severity": "fatal",
+      "title": "沙田路修路女工被夾斗車輾斃",
+      "location": "沙田路往大埔方向近博康邨對開／T4主幹路工地",
+      "occurredAt": "2026-11-05T10:59:00+08:00",
+      "summary": "今日（11月5日）早上約10時59分，沙田路往大埔方向近博康邨對開，一輛貨車撞倒一名正進行修路／道路工程的女工人；報道指女事主被貨車輾過，當場證實死亡，毋須送院。",
+      "contractor": "未公布",
+      "contractorConfidence": "preliminary",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/HxANV1"
+        },
+        {
+          "outlet": "HK01",
+          "url": "https://is.gd/UMbO2D"
+        },
+        {
+          "outlet": "星島頭條",
+          "url": "https://is.gd/KDPgaF"
+        }
+      ],
+      "image": "assets/news/2026-11-05-shatin-road.jpg"
+    },
+    {
+      "id": "2026-11-02-tko-chunyat",
+      "publishedAt": "2026-11-02T15:16:00+08:00",
+      "severity": "non_fatal",
+      "title": "將軍澳駿日街男工被機器割傷左手",
+      "location": "將軍澳工業邨駿日街16號",
+      "occurredAt": "2026-11-02T11:36:00+08:00",
+      "summary": "將軍澳工業邨駿日街16號今晨約11時36分，51歲姓林男工友工作期間意外被機器割傷左手，清醒送將軍澳醫院治理。警方列「工業意外—有人意外受傷」。",
+      "contractor": "不適用（公司未披露）",
+      "contractorConfidence": "n/a",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/gGcnrR"
+        }
+      ],
+      "image": "assets/news/2026-11-02-tko-chunyat.jpg"
+    },
+    {
+      "id": "2026-10-31-kwai-chung-paper",
+      "publishedAt": "2026-10-31T13:20:00+08:00",
+      "severity": "non_fatal",
+      "title": "葵涌葵德街廢紙廠男工手指被切斷",
+      "location": "葵涌葵德街7至13號工廈廢紙處理公司",
+      "occurredAt": "2026-10-31T10:41:00+08:00",
+      "summary": "葵涌葵德街7至13號工廈一間廢紙處理公司，69歲姓曾男工操作紙皮打包機壓縮紙皮期間，右手無名指指頭被切斷。傷者清醒，送瑪嘉烈醫院治理。警方列「工業意外—有人意外受傷」；勞工處已接報調查。",
+      "contractor": "不適用（工廈廢紙廠，公司名稱未見報道）",
+      "contractorConfidence": "n/a",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/qdoHUE"
+        },
+        {
+          "outlet": "HK01",
+          "url": "https://is.gd/GtyI0Q"
+        }
+      ],
+      "image": "assets/news/2026-10-31-kwai-chung-paper.jpg"
+    },
+    {
+      "id": "2026-10-30-sheungshui-rebar",
+      "publishedAt": "2026-10-30T13:32:00+08:00",
+      "severity": "non_fatal",
+      "title": "上水清曉路地盤男工鐵枝插傷下顎",
+      "location": "上水清曉路房屋署公營房屋地盤（地基工程）",
+      "occurredAt": "2026-10-30T10:50:00+08:00",
+      "summary": "男工工作期間失平衡跌倒，鐵枝插傷下顎。救援將鐵枝剪短後，連人帶鐵枝送沙田威爾斯親王醫院，傷者清醒。警方列「工業意外—有人受傷」。",
+      "contractor": "金門建築",
+      "contractorConfidence": "medium",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/TvJ4Dr"
+        },
+        {
+          "outlet": "HK01",
+          "url": "https://is.gd/DZ0n8f"
+        }
+      ],
+      "image": "assets/news/2026-10-30-sheungshui-rebar.jpg"
+    },
+    {
+      "id": "2026-10-30-saikung-dump",
+      "publishedAt": "2026-10-30T13:32:00+08:00",
+      "severity": "non_fatal",
+      "title": "西貢蠔涌男工腳部受傷",
+      "location": "西貢蠔涌路／蠔涌水口",
+      "occurredAt": "2026-10-30T10:54:00+08:00",
+      "summary": "約60歲男工工作期間腳部受傷（東網指困於泥頭車車底；星島指修理有挖斗小型搬運車後試車時挖斗翻側壓腳）。兩腳擦傷、清醒送將軍澳醫院。警方列工業意外跟進。",
+      "contractor": "報道未點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/aFM0vz"
+        },
+        {
+          "outlet": "星島頭條",
+          "url": "https://is.gd/nlYBdx"
+        }
+      ],
+      "image": "assets/news/2026-10-30-saikung-dump.jpg"
+    },
+    {
+      "id": "2026-10-29-tsingyi-logistics",
+      "publishedAt": "2026-10-29T12:00:00+08:00",
+      "severity": "non_fatal",
+      "title": "青衣航運路物流中心男工墮下受傷",
+      "location": "青衣航運路36號物流中心",
+      "occurredAt": "2026-10-29T03:41:00+08:00",
+      "summary": "約30歲男工人工作期間懷疑差錯腳，墮下約1米地面受傷；同事報警，救護員將清醒事主送院。警方列「工業意外有人意外受傷」，交相關部門跟進。",
+      "contractor": "報道未有點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/HvCDOz"
+        }
+      ],
+      "image": "assets/news/2026-10-29-tsingyi-logistics.jpg"
+    },
+    {
+      "id": "2026-10-29-aberdeen-gondola",
+      "publishedAt": "2026-10-29T12:00:00+08:00",
+      "severity": "non_fatal",
+      "title": "香港仔石排灣道吊船撞牆兩工人受傷",
+      "location": "香港仔石排灣道100A號（香港仔漁業及海事分署）",
+      "occurredAt": "2026-10-29T10:16:00+08:00",
+      "summary": "報道指工作期間吊船／吊臂撞向大廈外牆，兩名工人頭部受傷：62歲姓歐男工半昏迷、57歲姓盧女工後腦受傷但清醒，同送瑪麗醫院治理。警方正調查。",
+      "contractor": "報道未有點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "星島頭條",
+          "url": "https://is.gd/PGWUTh"
+        },
+        {
+          "outlet": "HK01",
+          "url": "https://is.gd/dYb7na"
+        }
+      ],
+      "image": "assets/news/2026-10-29-aberdeen-gondola.jpg"
+    },
+    {
+      "id": "2026-10-26-ipark1",
+      "publishedAt": "2026-10-26T18:00:00+08:00",
+      "severity": "non_fatal",
+      "title": "石鼓洲 I.PARK1 三級火一人不適送院",
+      "location": "石鼓洲旁人工島 I.PARK1 綜合廢物管理設施第一期",
+      "occurredAt": "2026-10-26T12:40:00+08:00",
+      "summary": "I.PARK1 主焚化爐大樓第三焚化模組屋頂約中午12:40起火，一度升為三級火，約下午4:45大致救熄。約970名建築／營運人員有序疏散；一名工作人員不適送院。設施暫停接收廢物，起火原因調查中。",
+      "contractor": "吉寶西格斯－振華聯營",
+      "contractorConfidence": "high",
+      "sources": [
+        {
+          "outlet": "政府新聞公報",
+          "url": "https://is.gd/zB7KPR"
+        },
+        {
+          "outlet": "港台",
+          "url": "https://da.gd/8GOZX"
+        },
+        {
+          "outlet": "星島",
+          "url": "https://is.gd/vWdLbx"
+        }
+      ],
+      "image": "assets/news/2026-10-26-ipark1.jpg"
+    },
+    {
+      "id": "2026-10-26-jardine-gondola",
+      "publishedAt": "2026-10-26T20:00:00+08:00",
+      "severity": "non_fatal",
+      "title": "中環怡和大廈吊船失控兩工人受困受傷",
+      "location": "中環怡和大廈",
+      "occurredAt": "2026-10-26T18:00:00+08:00",
+      "summary": "吊船懷疑失控墜近地面，兩名外牆清潔工人（約25歲菲律賓籍、約47歲尼泊爾籍）被困半空近兩小時，靠安全帶／獨立救生繩待救；消防游繩救出。兩人手部受傷，送瑪麗醫院治理。",
+      "contractor": "物業管理：置地公司；外牆工程承辦商未點名",
+      "contractorConfidence": "medium",
+      "sources": [
+        {
+          "outlet": "港台",
+          "url": "https://da.gd/74R0Iu"
+        },
+        {
+          "outlet": "無線",
+          "url": "https://is.gd/z7mfBt"
+        },
+        {
+          "outlet": "東方",
+          "url": "https://is.gd/tmM3lK"
+        },
+        {
+          "outlet": "SCMP",
+          "url": "https://is.gd/BWI0eM"
+        }
+      ],
+      "image": "assets/news/2026-10-26-jardine-gondola.jpg"
+    }
+  ]
 }
