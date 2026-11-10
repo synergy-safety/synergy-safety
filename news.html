@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="styles.css" />
   <!--
     data/news.json 每筆 items[] 欄位：
-    id, publishedAt (ISO 8601), severity ("fatal"|"non-fatal"), title, location?,
+    id, publishedAt (ISO 8601), severity ("fatal"|"non-fatal"|"non_fatal"), title, location?,
     occurredAt?, summary, contractor?, contractorConfidence?, sources[{outlet, url}],
   image? (相對路徑，建議置於 assets/news/)
   -->
@@ -132,9 +132,22 @@
         return dateFmt.format(d);
       }
 
+      function normalizeSeverity(severity) {
+        if (severity == null || severity === '') return '';
+        var s = String(severity).trim().toLowerCase().replace(/_/g, '-');
+        if (s === 'fatal') return 'fatal';
+        if (s === 'non-fatal' || s === 'nonfatal') return 'non-fatal';
+        var raw = String(severity).trim().toLowerCase();
+        if (/^non[-_]?fatal$/i.test(raw) || (raw.indexOf('non') === 0 && raw.indexOf('fatal') > 0)) {
+          return 'non-fatal';
+        }
+        return s;
+      }
+
       function severityLabel(severity) {
-        if (severity === 'fatal') return '致命';
-        if (severity === 'non-fatal') return '非致命';
+        var norm = normalizeSeverity(severity);
+        if (norm === 'fatal') return '致命';
+        if (norm === 'non-fatal') return '非致命';
         return severity || '';
       }
 
@@ -150,7 +163,7 @@
         li.className = 'news-card';
         if (item.id) li.id = 'news-' + item.id;
 
-        var sev = item.severity === 'fatal' ? 'fatal' : 'non-fatal';
+        var sev = normalizeSeverity(item.severity) === 'fatal' ? 'fatal' : 'non-fatal';
         var badgeClass = 'news-badge news-badge--' + sev;
 
         var head = document.createElement('div');
