@@ -46,7 +46,11 @@
 
 ### `data/analyses.json`
 
-每個 `items[]`：`id`, `newsId`（選填）, `title`, `publishedAt`, `hazardTags[]`, `causes[]`, `legalRefs[{title,url}]`, `lessons[]`, `summary`。
+`schemaVersion`: **2** — 每則新聞一份公開資料分析報告（非官方調查）。
+
+每個 `items[]` 主要欄位：`id`, `newsId`, `reportNo`, `title`, `publishedAt`, `writtenAt`, `hazardTags[]`, `lead`（列表摘要）, `reportNotice`（報告置頂聲明）, `sections[]`（十個章節：`heading`、可含 `rows`、`paragraphs`、`bullets`、`timeline`、`subsections`、`legalRefs`、`refs`）。
+
+舊版 `causes` / `lessons` / `legalRefs` / `summary` 仍可由 `analysis.html` 後備顯示，但新稿請使用 `sections`。
 
 ### `data/alerts.json`
 

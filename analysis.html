@@ -56,7 +56,7 @@
         <header class="section-head">
           <p class="eyebrow">Accident Analysis</p>
           <h1 id="analysis-title">意外分析</h1>
-          <p class="section-lead">由註冊安全主任觀點整理之流程與系統成因討論，供內部培訓及風險意識參考；內容不構成法律意見，詳見<a href="disclaimer.html">免責聲明</a>。</p>
+          <p class="section-lead">每份為註冊安全主任依公開報導撰寫之<strong>資料分析報告</strong>（非到場調查、非官方調查結論），供風險意識及培訓參考；不構成法律意見，詳見<a href="disclaimer.html">免責聲明</a>。</p>
         </header>
       </div>
     </section>
@@ -135,6 +135,140 @@
         return ul;
       }
 
+      function renderRowsFixed(rows) {
+        var dl = document.createElement('dl');
+        dl.className = 'analysis-report-rows';
+        (rows || []).forEach(function (row) {
+          if (!row || row.length < 2) return;
+          var wrap = document.createElement('div');
+          wrap.className = 'analysis-report-row';
+          var dt = document.createElement('dt');
+          dt.textContent = row[0];
+          var dd = document.createElement('dd');
+          dd.textContent = row[1];
+          wrap.appendChild(dt);
+          wrap.appendChild(dd);
+          dl.appendChild(wrap);
+        });
+        return dl;
+      }
+
+      function renderTimeline(items) {
+        var ol = document.createElement('ol');
+        ol.className = 'analysis-timeline';
+        (items || []).forEach(function (entry) {
+          var li = document.createElement('li');
+          if (entry.label) {
+            var strong = document.createElement('strong');
+            strong.textContent = entry.label + ' ';
+            li.appendChild(strong);
+          }
+          li.appendChild(document.createTextNode(entry.text || ''));
+          if (entry.caveat) {
+            var note = document.createElement('span');
+            note.className = 'analysis-timeline-note';
+            note.textContent = entry.caveat;
+            li.appendChild(note);
+          }
+          ol.appendChild(li);
+        });
+        return ol;
+      }
+
+      function renderLegalRefs(refs) {
+        var ul = document.createElement('ul');
+        ul.className = 'ref-list';
+        (refs || []).forEach(function (ref) {
+          if (!ref || !ref.url) return;
+          var li = document.createElement('li');
+          var a = document.createElement('a');
+          a.href = ref.url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = ref.title || ref.url;
+          li.appendChild(a);
+          if (ref.note) {
+            var span = document.createElement('span');
+            span.className = 'legal-ref-note';
+            span.textContent = ' — ' + ref.note;
+            li.appendChild(span);
+          }
+          li.appendChild(document.createTextNode(''));
+          ul.appendChild(li);
+        });
+        return ul;
+      }
+
+      function renderSection(section) {
+        var wrap = document.createElement('section');
+        wrap.className = 'analysis-report-section';
+        if (section.heading) {
+          var h = document.createElement('h4');
+          h.textContent = section.heading;
+          wrap.appendChild(h);
+        }
+        (section.paragraphs || []).forEach(function (p) {
+          var para = document.createElement('p');
+          para.textContent = p;
+          wrap.appendChild(para);
+        });
+        if (section.rows && section.rows.length) {
+          wrap.appendChild(renderRowsFixed(section.rows));
+        }
+        if (section.bullets && section.bullets.length) {
+          wrap.appendChild(renderBulletList(section.bullets));
+        }
+        if (section.timeline && section.timeline.length) {
+          wrap.appendChild(renderTimeline(section.timeline));
+        }
+        if (section.subsections && section.subsections.length) {
+          section.subsections.forEach(function (sub) {
+            if (sub.title) {
+              var h5 = document.createElement('h5');
+              h5.textContent = sub.title;
+              wrap.appendChild(h5);
+            }
+            (sub.paragraphs || []).forEach(function (p) {
+              var para = document.createElement('p');
+              para.textContent = p;
+              wrap.appendChild(para);
+            });
+            if (sub.bullets && sub.bullets.length) {
+              wrap.appendChild(renderBulletList(sub.bullets));
+            }
+          });
+        }
+        if (section.legalRefs && section.legalRefs.length) {
+          wrap.appendChild(renderLegalRefs(section.legalRefs));
+        }
+        if (section.refs && section.refs.length) {
+          wrap.appendChild(renderLegalRefs(section.refs));
+        }
+        return wrap;
+      }
+
+      function renderLegacyReport(item, body) {
+        if (item.causes && item.causes.length) {
+          var hCauses = document.createElement('h4');
+          hCauses.textContent = '可能系統成因（流程觀點）';
+          body.appendChild(hCauses);
+          body.appendChild(renderBulletList(item.causes));
+        }
+        if (item.lessons && item.lessons.length) {
+          var hLessons = document.createElement('h4');
+          hLessons.textContent = '建議跟進／學習要點';
+          body.appendChild(hLessons);
+          body.appendChild(renderBulletList(item.lessons));
+        }
+        var refs = Array.isArray(item.legalRefs) ? item.legalRefs : [];
+        if (refs.length) {
+          var hRefs = document.createElement('h4');
+          hRefs.textContent = '法例及參考資料';
+          body.appendChild(hRefs);
+          body.appendChild(renderLegalRefs(refs));
+        }
+      }
+
       function renderItem(item) {
         var li = document.createElement('li');
         li.className = 'analysis-card';
@@ -161,10 +295,10 @@
 
         li.appendChild(head);
 
-        if (item.summary) {
+        if (item.summary || item.lead) {
           var summary = document.createElement('p');
           summary.className = 'analysis-summary';
-          summary.textContent = item.summary;
+          summary.textContent = item.lead || item.summary;
           li.appendChild(summary);
         }
 
@@ -180,46 +314,29 @@
 
         var details = document.createElement('details');
         details.className = 'analysis-details';
+        details.open = true;
         var summaryToggle = document.createElement('summary');
-        summaryToggle.textContent = '閱讀完整分析';
+        summaryToggle.textContent = '收合／展開完整報告';
         details.appendChild(summaryToggle);
 
         var body = document.createElement('div');
         body.className = 'analysis-details-body';
 
-        if (item.causes && item.causes.length) {
-          var hCauses = document.createElement('h4');
-          hCauses.textContent = '可能系統成因（流程觀點）';
-          body.appendChild(hCauses);
-          body.appendChild(renderBulletList(item.causes));
+        var noticeText = item.reportNotice || item.reportPreamble;
+        if (noticeText) {
+          var notice = document.createElement('p');
+          notice.className = 'analysis-report-notice';
+          notice.setAttribute('role', 'note');
+          notice.textContent = noticeText;
+          body.appendChild(notice);
         }
 
-        if (item.lessons && item.lessons.length) {
-          var hLessons = document.createElement('h4');
-          hLessons.textContent = '建議跟進／學習要點';
-          body.appendChild(hLessons);
-          body.appendChild(renderBulletList(item.lessons));
-        }
-
-        var refs = Array.isArray(item.legalRefs) ? item.legalRefs : [];
-        if (refs.length) {
-          var hRefs = document.createElement('h4');
-          hRefs.textContent = '法例及參考資料';
-          body.appendChild(hRefs);
-          var ul = document.createElement('ul');
-          ul.className = 'ref-list';
-          refs.forEach(function (ref) {
-            if (!ref || !ref.url) return;
-            var rli = document.createElement('li');
-            var ra = document.createElement('a');
-            ra.href = ref.url;
-            ra.textContent = ref.title || ref.url;
-            ra.target = '_blank';
-            ra.rel = 'noopener noreferrer';
-            rli.appendChild(ra);
-            ul.appendChild(rli);
+        if (item.sections && item.sections.length) {
+          item.sections.forEach(function (section) {
+            body.appendChild(renderSection(section));
           });
-          body.appendChild(ul);
+        } else {
+          renderLegacyReport(item, body);
         }
 
         details.appendChild(body);

@@ -1313,6 +1313,100 @@ a:hover {
   margin-top: 0;
 }
 
+.analysis-report-notice {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.28);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.analysis-report-section + .analysis-report-section {
+  margin-top: 1.15rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--line);
+}
+
+.analysis-report-section h4 {
+  margin: 0 0 0.55rem;
+  font-size: 0.98rem;
+  color: var(--teal-muted);
+}
+
+.analysis-report-section h5 {
+  margin: 0.75rem 0 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.analysis-report-section p {
+  margin: 0 0 0.55rem;
+  font-size: 0.93rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.analysis-report-rows {
+  margin: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.analysis-report-row {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 7.5rem) 1fr;
+  gap: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+.analysis-report-row dt {
+  margin: 0;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.analysis-report-row dd {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.analysis-timeline {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--ink-soft);
+  font-size: 0.93rem;
+}
+
+.analysis-timeline li {
+  margin-bottom: 0.55rem;
+  line-height: 1.55;
+}
+
+.analysis-timeline-note {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.legal-ref-note {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+@media (max-width: 520px) {
+  .analysis-report-row {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
 .prose-list,
 .ref-list {
   margin: 0 0 0.5rem;
