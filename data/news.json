@@ -1,6 +1,32 @@
 {
-  "updatedAt": "2026-11-11T14:20:00+08:00",
+  "updatedAt": "2026-11-11T16:22:00+08:00",
   "items": [
+    {
+      "id": "2026-11-11-tsuenwan-wanglung-biscuit",
+      "publishedAt": "2026-11-11T16:22:00+08:00",
+      "severity": "non-fatal",
+      "title": "荃灣橫龍街食品工場女工操作餅乾切片機切斷手指一節",
+      "location": "荃灣橫龍街14至22號食品工場",
+      "occurredAt": "2026-11-11T11:23:00+08:00",
+      "summary": "今日（11月11日）上午11時23分，荃灣橫龍街14至22號一工廠大廈的食品製造工場，一名25歲女工在生產線操作餅乾切片機期間，左手一隻手指的其中一節被切斷。救援人員到場時事主清醒，被截斷的指節獲妥善保存，一併送往仁濟醫院以進行接駁手術。警方列作「有人意外受傷」跟進，並已通報勞工處。",
+      "accidentType": {
+        "code": "13",
+        "label": "觸及開動中的機器或觸及以機器製造中的物件"
+      },
+      "contractor": "報道未有點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/Te7lwQ"
+        },
+        {
+          "outlet": "星島頭條",
+          "url": "https://is.gd/fbc7QE"
+        }
+      ],
+      "image": "assets/news/2026-11-11-tsuenwan-wanglung-biscuit.jpg"
+    },
     {
       "id": "2026-11-11-saikung-hongting-paper",
       "publishedAt": "2026-11-11T14:20:00+08:00",
