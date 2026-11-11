@@ -1,6 +1,32 @@
 {
-  "updatedAt": "2026-11-11T08:18:02+08:00",
+  "updatedAt": "2026-11-11T11:30:00+08:00",
   "items": [
+    {
+      "id": "2026-11-10-central-harbourfront-drill",
+      "publishedAt": "2026-11-11T11:30:00+08:00",
+      "severity": "non-fatal",
+      "title": "中環新海濱用地女工用電鑽弄傷手指骨折",
+      "location": "中環新海濱用地",
+      "occurredAt": "2026-11-10T15:00:00+08:00",
+      "summary": "昨日（11月10日）下午約3時，一名55歲姓李女工在中環新海濱用地一處梯間使用電鑽鑽地期間失平衡，被機器弄傷右手手指（報道分別指拇指或食指），骨折及流血，其後自行乘的士到瑪麗醫院求治。",
+      "accidentType": {
+        "code": "13",
+        "label": "觸及開動中的機器或觸及以機器製造中的物件"
+      },
+      "contractor": "報道未有點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/L4HYPc"
+        },
+        {
+          "outlet": "HK01",
+          "url": "https://is.gd/wwdN7c"
+        }
+      ],
+      "image": "assets/news/2026-11-10-central-harbourfront-drill.jpg"
+    },
     {
       "id": "2026-11-11-sheungshui-onlokmun",
       "publishedAt": "2026-11-11T08:18:02+08:00",
