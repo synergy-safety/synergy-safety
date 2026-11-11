@@ -1,6 +1,36 @@
 {
-  "updatedAt": "2026-11-11T11:30:00+08:00",
+  "updatedAt": "2026-11-11T14:20:00+08:00",
   "items": [
+    {
+      "id": "2026-11-11-saikung-hongting-paper",
+      "publishedAt": "2026-11-11T14:20:00+08:00",
+      "severity": "non-fatal",
+      "title": "西貢康定路貨倉男工遭300公斤滾筒紙砸傷腳",
+      "location": "西貢康定路3號貨倉（碼頭對開）",
+      "occurredAt": "2026-11-11T11:49:00+08:00",
+      "summary": "今日（11月11日）上午11時49分，西貢康定路3號一貨倉（碼頭對開）一名男工在搬貨期間，疑遭一綑重約300公斤的印刷用滾筒紙砸傷腳部。工友聞呼救聲報案，救援人員到場時事主清醒，送往沙田威爾斯親王醫院治理。警方列作「工業意外—有人受傷」跟進。",
+      "accidentType": {
+        "code": "02",
+        "label": "被墮下的物件擊中"
+      },
+      "contractor": "報道未有點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/xKDd6L"
+        },
+        {
+          "outlet": "HK01",
+          "url": "https://is.gd/R2CUjt"
+        },
+        {
+          "outlet": "星島頭條",
+          "url": "https://is.gd/54KiqL"
+        }
+      ],
+      "image": "assets/news/2026-11-11-saikung-hongting-paper.jpg"
+    },
     {
       "id": "2026-11-10-central-harbourfront-drill",
       "publishedAt": "2026-11-11T11:30:00+08:00",
