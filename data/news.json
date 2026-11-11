@@ -1,6 +1,33 @@
 {
-  "updatedAt": "2026-11-10T18:30:00+08:00",
+  "updatedAt": "2026-11-11T08:18:02+08:00",
   "items": [
+    {
+      "id": "2026-11-11-sheungshui-onlokmun",
+      "publishedAt": "2026-11-11T08:18:02+08:00",
+      "severity": "non-fatal",
+      "title": "上水安樂門街男工搬貨墮下頭部受傷",
+      "location": "上水安樂門街",
+      "occurredAt": "2026-11-11T02:00:00+08:00",
+      "summary": "今日（11月11日）凌晨近2時，上水安樂門街一名52歲姓楊男工人在中型貨車上搬運貨物期間，意外從約一米高處墮下，頭部受傷。救援人員到場時事主清醒，送往北區醫院治理。警方列作「工業意外—有人意外受傷」跟進。",
+      "accidentType": {
+        "code": "04",
+        "label": "人體從高處墮下",
+        "fallDistanceMetres": 1
+      },
+      "contractor": "報道未有點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "星島頭條",
+          "url": "https://is.gd/iQigkx"
+        },
+        {
+          "outlet": "英文虎報",
+          "url": "https://is.gd/P4BtTs"
+        }
+      ],
+      "image": "assets/news/2026-11-11-sheungshui-onlokmun.jpg"
+    },
     {
       "id": "2026-11-10-kwaichung-forklift",
       "publishedAt": "2026-11-10T18:30:00+08:00",
