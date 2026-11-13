@@ -9,7 +9,7 @@
 - **職安資訊**：`news.html`（新聞）、`analysis.html`（意外分析）、`stats.html`（統計儀表板）、`alerts.html`（勞工處警示索引）
 - 法務：`disclaimer.html`（全站頁尾連結）
 - 資料：`data/news.json`、`data/analyses.json`、`data/alerts.json`、`data/stats.json`、`data/form2-accident-types.json`（表格2第K部官方類別用字）
-- 品牌標誌：`assets/logo.png`；新聞圖片可放 `assets/news/`
+- 品牌標誌：`assets/logo.png`；新聞圖片可放 `assets/news/`；個案 PDF 在 `assets/reports/`
 
 ### `data/news.json`
 
@@ -51,6 +51,17 @@
 每個 `items[]` 主要欄位：`id`, `newsId`, `reportNo`, `title`, `publishedAt`, `writtenAt`, `hazardTags[]`, `lead`（列表摘要）, `reportNotice`（報告置頂聲明）, `sections[]`（十個章節：`heading`、可含 `rows`、`paragraphs`、`bullets`、`timeline`、`subsections`、`legalTiers`、`legalRefs`、`refs`）。
 
 `相關法例及守則` 建議使用 `legalTiers[]` 三層結構：`tierLabel` ＋ `refs[]`（`title`, `provision`, `url`, `applicability`, `relevance`）；每條須為可核對之官方文件連結，並標示【可能適用】及與個案之相關說明。
+
+已有對應新聞的分析另設 `pdf`（相對路徑，例如 `assets/reports/SSC-2026-AR-011.pdf`）。`news.html` 在「閱讀意外分析」旁、`analysis.html` 在報告卡片上，只在該欄有值時顯示「下載 PDF」。沒有分析的新聞不產生 PDF，也不顯示下載按鈕。
+
+更新或新增分析後，於儲存庫根目錄重新產生 PDF，並把產出的 PDF 一併提交：
+
+```bash
+python3 -m pip install reportlab pillow fonttools
+python3 scripts/build-report-pdfs.py
+```
+
+首次執行會下載 Noto Sans TC 到 `scripts/.font-cache/`（不入庫），再把子集嵌入各 PDF。分析正文照 `analyses.json` 原文輸出；新聞摘要照 `news.json`，但會略去「姓X」形式的傷者姓氏。
 
 舊版 `causes` / `lessons` / `legalRefs` / `summary` 仍可由 `analysis.html` 後備顯示，但新稿請使用 `sections`。
 

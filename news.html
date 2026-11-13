@@ -156,10 +156,15 @@
         var map = Object.create(null);
         (analyses || []).forEach(function (analysis) {
           if (!analysis || !analysis.id) return;
-          if (analysis.newsId) map[analysis.newsId] = analysis.id;
-          if (!map[analysis.id]) map[analysis.id] = analysis.id;
+          if (analysis.newsId) map[analysis.newsId] = analysis;
+          if (!map[analysis.id]) map[analysis.id] = analysis;
         });
         return map;
+      }
+
+      function pdfFileName(pdfPath) {
+        var parts = String(pdfPath).split('/');
+        return parts[parts.length - 1] || 'report.pdf';
       }
 
       function renderItem(item, analysisByNewsId) {
@@ -280,15 +285,24 @@
           li.appendChild(details);
         }
 
-        var analysisId = item.id && analysisByNewsId ? analysisByNewsId[item.id] : null;
-        if (analysisId) {
+        var analysis = item.id && analysisByNewsId ? analysisByNewsId[item.id] : null;
+        if (analysis && analysis.id) {
           var analysisWrap = document.createElement('p');
           analysisWrap.className = 'news-analysis-link';
           var analysisA = document.createElement('a');
           analysisA.className = 'news-analysis-cta';
-          analysisA.href = 'analysis.html#analysis-' + analysisId;
+          analysisA.href = 'analysis.html#analysis-' + analysis.id;
           analysisA.textContent = '閱讀意外分析';
           analysisWrap.appendChild(analysisA);
+          if (analysis.pdf) {
+            var pdfA = document.createElement('a');
+            pdfA.className = 'news-analysis-cta';
+            pdfA.href = analysis.pdf;
+            pdfA.setAttribute('download', pdfFileName(analysis.pdf));
+            pdfA.type = 'application/pdf';
+            pdfA.textContent = '下載 PDF';
+            analysisWrap.appendChild(pdfA);
+          }
           li.appendChild(analysisWrap);
         }
 

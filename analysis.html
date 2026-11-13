@@ -334,13 +334,25 @@
           li.appendChild(summary);
         }
 
-        if (item.newsId) {
+        if (item.newsId || item.pdf) {
           var newsLink = document.createElement('p');
           newsLink.className = 'analysis-news-link';
-          var a = document.createElement('a');
-          a.href = 'news.html#news-' + item.newsId;
-          a.textContent = '對應新聞項目';
-          newsLink.appendChild(a);
+          if (item.newsId) {
+            var a = document.createElement('a');
+            a.href = 'news.html#news-' + item.newsId;
+            a.textContent = '對應新聞項目';
+            newsLink.appendChild(a);
+          }
+          if (item.pdf) {
+            var pdfA = document.createElement('a');
+            pdfA.className = 'news-analysis-cta';
+            pdfA.href = item.pdf;
+            var pdfName = String(item.pdf).split('/').pop() || 'report.pdf';
+            pdfA.setAttribute('download', pdfName);
+            pdfA.type = 'application/pdf';
+            pdfA.textContent = '下載 PDF';
+            newsLink.appendChild(pdfA);
+          }
           li.appendChild(newsLink);
         }
 

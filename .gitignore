@@ -3,3 +3,6 @@ business-card.jpg
 logo-source.png
 **/business-card*.jpg
 **/logo-source*.png
+
+# Noto Sans TC downloaded by scripts/build-report-pdfs.py
+scripts/.font-cache/
