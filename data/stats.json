@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T09:13:34+00:00",
+  "generatedAt": "2026-11-13T08:40:59+00:00",
   "dataStart": "2026-10-01",
   "dataStartLabel": "2026年10月",
   "source": "data/news.json",
@@ -11,9 +11,9 @@
   },
   "disclaimer": "下列數字及意外類別分佈僅反映本網站依公開報導收錄之個案，並非勞工處、僱主或傷者呈報之官方統計。意外類別由本站對照勞工處《僱員補償條例》表格2（Rev.17）第K部「意外類別」歸類，不代表官方調查或呈報定性。",
   "totals": {
-    "all": 10,
+    "all": 16,
     "fatal": 1,
-    "non_fatal": 9
+    "non_fatal": 15
   },
   "byMonth": [
     {
@@ -26,12 +26,36 @@
     {
       "month": "2026-11",
       "label": "2026年11月",
-      "total": 3,
+      "total": 9,
       "fatal": 1,
-      "non_fatal": 2
+      "non_fatal": 8
     }
   ],
   "byRegion": [
+    {
+      "label": "西貢",
+      "count": 2
+    },
+    {
+      "label": "中環",
+      "count": 2
+    },
+    {
+      "label": "上水",
+      "count": 2
+    },
+    {
+      "label": "葵涌",
+      "count": 2
+    },
+    {
+      "label": "粉嶺",
+      "count": 1
+    },
+    {
+      "label": "荃灣",
+      "count": 1
+    },
     {
       "label": "西灣河",
       "count": 1
@@ -45,18 +69,6 @@
       "count": 1
     },
     {
-      "label": "葵涌",
-      "count": 1
-    },
-    {
-      "label": "上水",
-      "count": 1
-    },
-    {
-      "label": "西貢",
-      "count": 1
-    },
-    {
       "label": "青衣",
       "count": 1
     },
@@ -67,13 +79,15 @@
     {
       "label": "離島／石鼓洲",
       "count": 1
-    },
-    {
-      "label": "中環",
-      "count": 1
     }
   ],
   "byAccidentType": [
+    {
+      "code": "02",
+      "label": "被墮下的物件擊中",
+      "chartLabel": "02 被墮下的物件擊中",
+      "count": 1
+    },
     {
       "code": "03",
       "label": "滑倒、絆倒或在同一高度跌倒",
@@ -84,7 +98,7 @@
       "code": "04",
       "label": "人體從高處墮下",
       "chartLabel": "04 人體從高處墮下",
-      "count": 2
+      "count": 3
     },
     {
       "code": "05",
@@ -99,6 +113,12 @@
       "count": 1
     },
     {
+      "code": "11",
+      "label": "遭移動或墮下的物件撞擊",
+      "chartLabel": "11 遭移動或墮下的物件撞擊",
+      "count": 1
+    },
+    {
       "code": "12",
       "label": "遭移動中的車輛撞倒",
       "chartLabel": "12 遭移動中的車輛撞倒",
@@ -108,7 +128,7 @@
       "code": "13",
       "label": "觸及開動中的機器或觸及以機器製造中的物件",
       "chartLabel": "13 觸及開動中的機器或觸及以機器製造中的物件",
-      "count": 3
+      "count": 5
     },
     {
       "code": "15",
@@ -117,6 +137,6 @@
       "count": 1
     }
   ],
-  "unclassifiedAccidentType": 0,
-  "itemCount": 10
+  "unclassifiedAccidentType": 1,
+  "itemCount": 16
 }
