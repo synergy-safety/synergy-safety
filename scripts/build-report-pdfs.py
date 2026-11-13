@@ -76,6 +76,8 @@ FORBIDDEN = (
     "姓李",
     "姓楊",
 )
+# PDF display order only. data/analyses.json and analysis.html keep the
+# stored sequence, which still places 相關法例及守則 before 預防再發建議.
 SECTION_HEADINGS = (
     "報告資料",
     "意外摘要",
@@ -83,8 +85,8 @@ SECTION_HEADINGS = (
     "事態經過",
     "傷害及後果",
     "成因分析",
-    "相關法例及守則",
     "預防再發建議",
+    "相關法例及守則",
     "參考資料",
     "免責聲明",
 )
@@ -708,6 +710,22 @@ def add_section(story: list, section: dict, styles: dict, width: float, bookmark
             add_legal_ref(story, ref, styles, width)
 
 
+def pdf_sections(sections: list | None) -> list:
+    """Return sections in PDF order without mutating the stored list."""
+    ranked = {heading: index for index, heading in enumerate(SECTION_HEADINGS)}
+    known = []
+    extra = []
+    for section in sections or []:
+        if isinstance(section, dict) and section.get("heading") in ranked:
+            known.append(section)
+        else:
+            extra.append(section)
+    known.sort(key=lambda section: ranked[section["heading"]])
+    if known and known[-1].get("heading") == "免責聲明":
+        return known[:-1] + extra + known[-1:]
+    return known + extra
+
+
 def build_story(analysis: dict, news: dict, styles: dict, width: float) -> list:
     from reportlab.lib.units import mm
     from reportlab.platypus import CondPageBreak, HRFlowable, Image, KeepTogether, Paragraph, Spacer, Table
@@ -845,7 +863,7 @@ def build_story(analysis: dict, news: dict, styles: dict, width: float) -> list:
         notice_block.append(Spacer(1, 2 * mm))
     story.append(KeepTogether(notice_block))
 
-    for index, section in enumerate(analysis.get("sections") or [], start=1):
+    for index, section in enumerate(pdf_sections(analysis.get("sections")), start=1):
         if isinstance(section, dict):
             add_section(story, section, styles, width, f"{report_no}-s{index}")
 
@@ -962,6 +980,12 @@ def compact(text: str) -> str:
     return re.sub(r"\s+", "", text)
 
 
+def heading_lines(text: str) -> list[str]:
+    """Section titles that occupy a line of their own, ignoring phrases such as 見參考資料."""
+    wanted = set(SECTION_HEADINGS)
+    return [line.strip() for line in text.splitlines() if line.strip() in wanted]
+
+
 def verify_pdf(path: Path, analysis: dict, news: dict) -> None:
     from pypdf import PdfReader
 
@@ -976,9 +1000,13 @@ def verify_pdf(path: Path, analysis: dict, news: dict) -> None:
         for hay in haystacks:
             if token.lower() in hay.lower():
                 raise SystemExit(f"{path.name} contains forbidden text: {token}")
-    for heading in ("新聞摘要", "報告性質說明", *SECTION_HEADINGS):
-        if compact(heading) not in folded:
+    lines = [line.strip() for line in extracted.splitlines()]
+    for heading in ("新聞摘要", "報告性質說明"):
+        if heading not in lines:
             raise SystemExit(f"{path.name} is missing heading: {heading}")
+    found = heading_lines(extracted)
+    if found != list(SECTION_HEADINGS):
+        raise SystemExit(f"{path.name} sections are not in PDF display order: {found}")
     if analysis["reportNo"] not in extracted and compact(analysis["reportNo"]) not in folded:
         raise SystemExit(f"{path.name} is missing report number")
     summary = redact_injured_surnames(news.get("summary") or "")
