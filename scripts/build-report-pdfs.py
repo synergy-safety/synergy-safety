@@ -22,6 +22,10 @@ The analysis body is copied from the JSON. It is not rewritten. The news
 summary is also copied, except a surname marker of the form 姓X immediately
 before 男, 女, 工, 友 or 人 is omitted. Published analyses already refer to
 injured people as 不具名; the PDF must not put those surnames back in.
+
+In the news summary, each outlet name links to its stored URL and sits beside
+a QR code for the same address. The raw URL is not printed again there.
+Reference and legal citations later in the report still show their URLs.
 """
 
 from __future__ import annotations
@@ -433,6 +437,9 @@ def build_styles() -> dict:
         "summary_label": ParagraphStyle(
             "summary_label", parent=parent, fontName=FONT_BOLD, fontSize=9, leading=13, textColor=teal_dark, spaceBefore=6, spaceAfter=2
         ),
+        "source_link": ParagraphStyle(
+            "source_link", parent=parent, fontName=FONT_BOLD, fontSize=10.5, leading=15, textColor=teal_dark
+        ),
     }
 
 
@@ -602,6 +609,72 @@ def add_timeline(story: list, timeline: list | None, styles: dict) -> None:
         note = P(caveat, styles["caveat"]) if caveat else None
         if note is not None:
             story.append(note)
+
+
+def linked_qr(url: str, size: float):
+    """QR flowable whose square is also a link to the same URL."""
+    from reportlab.graphics.barcode.qr import QrCodeWidget
+    from reportlab.graphics.shapes import Drawing
+    from reportlab.platypus import Flowable
+
+    class _LinkedQR(Flowable):
+        def __init__(self):
+            super().__init__()
+            widget = QrCodeWidget(url, barLevel="M")
+            x1, y1, x2, y2 = widget.getBounds()
+            scale_x = size / max(x2 - x1, 1)
+            scale_y = size / max(y2 - y1, 1)
+            self.drawing = Drawing(size, size, transform=[scale_x, 0, 0, scale_y, 0, 0])
+            self.drawing.add(widget)
+
+        def wrap(self, _aw, _ah):
+            return size, size
+
+        def draw(self):
+            self.drawing.drawOn(self.canv, 0, 0)
+            self.canv.linkURL(url, (0, 0, size, size), relative=1, thickness=0)
+
+    return _LinkedQR()
+
+
+def news_source_table(sources: list, styles: dict, width: float):
+    """Outlet name as the link, QR beside it, no second line of the raw URL."""
+    from reportlab.lib.units import mm
+    from reportlab.platypus import Paragraph, Table
+
+    qr_size = 18 * mm
+    name_width = 34 * mm
+    rows = []
+    for src in sources:
+        if not isinstance(src, dict):
+            continue
+        url = src.get("url") or ""
+        outlet = (src.get("outlet") or "").strip()
+        if is_http(url):
+            label = outlet or "來源"
+            name = Paragraph(link_markup(url, label), styles["source_link"])
+            code = linked_qr(url, qr_size)
+        elif outlet:
+            name = Paragraph(xml_text(outlet), styles["source_link"])
+            code = ""
+        else:
+            continue
+        rows.append([name, code])
+    if not rows:
+        return None
+    table = Table(rows, colWidths=[name_width, qr_size], hAlign="LEFT")
+    table.setStyle(
+        [
+            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+            ("ALIGN", (1, 0), (1, -1), "LEFT"),
+            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING", (0, 0), (0, -1), 3),
+            ("RIGHTPADDING", (1, 0), (1, -1), 0),
+            ("TOPPADDING", (0, 0), (-1, -1), 1),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+        ]
+    )
+    return table
 
 
 def keep_block(flowables: list, width: float):
@@ -818,18 +891,10 @@ def build_story(analysis: dict, news: dict, styles: dict, width: float) -> list:
         story.append(Paragraph(xml_text("摘要"), styles["summary_label"]))
         story.append(Paragraph(xml_text(summary), styles["body"]))
     sources = [src for src in (news.get("sources") or []) if isinstance(src, dict)]
-    if sources:
+    source_table = news_source_table(sources, styles, width)
+    if source_table is not None:
         story.append(Paragraph(xml_text("資料來源"), styles["summary_label"]))
-        for src in sources:
-            outlet = src.get("outlet") or src.get("url") or ""
-            url = src.get("url") or ""
-            if is_http(url):
-                story.append(Paragraph(link_markup(url, outlet), styles["ref_title"]))
-                story.append(Paragraph(link_markup(url, url), styles["field"]))
-            elif outlet:
-                block = P(outlet, styles["body"])
-                if block is not None:
-                    story.append(block)
+        story.append(source_table)
 
     photo = safe_repo_file(news.get("image"))
     if photo is not None:
@@ -1037,11 +1102,29 @@ def verify_pdf(path: Path, analysis: dict, news: dict) -> None:
                 if relevance and compact(relevance[:16]) not in folded:
                     raise SystemExit(f"{path.name} is missing citation relevance: {title[:40]}")
     annots = 0
+    uris: set[str] = set()
     for page in reader.pages:
-        if page.get("/Annots"):
-            annots += len(page["/Annots"])
+        for annot in page.get("/Annots") or []:
+            annots += 1
+            action = annot.get("/A") if hasattr(annot, "get") else None
+            if action is not None and action.get("/URI"):
+                uris.add(str(action.get("/URI")))
     if annots < 1:
         raise SystemExit(f"{path.name} has no clickable links")
+    import json
+
+    analysis_blob = json.dumps(analysis.get("sections") or [], ensure_ascii=False)
+    for src in news.get("sources") or []:
+        if not isinstance(src, dict) or not is_http(src.get("url")):
+            continue
+        url = src["url"]
+        outlet = (src.get("outlet") or "來源").strip()
+        if outlet not in extracted:
+            raise SystemExit(f"{path.name} is missing source name: {outlet}")
+        if url not in uris:
+            raise SystemExit(f"{path.name} source is not linked: {url}")
+        if url not in analysis_blob and url in extracted:
+            raise SystemExit(f"{path.name} repeats the news source URL as text: {url}")
     if reader.metadata and reader.metadata.author and "Chan" in str(reader.metadata.author):
         raise SystemExit(f"{path.name} metadata author looks personal")
 
