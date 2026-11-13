@@ -736,13 +736,45 @@ def build_story(analysis: dict, news: dict, styles: dict, width: float) -> list:
     story.append(ident)
     story.append(Spacer(1, 2.2 * mm))
     story.append(accent_bar(styles, width))
-    story.append(Paragraph(xml_text(report_no), styles["report_no"]))
+
+    from reportlab.lib.enums import TA_RIGHT
+    from reportlab.lib.styles import ParagraphStyle
+
+    number_style = ParagraphStyle(
+        "report_no_inline",
+        parent=styles["report_no"],
+        spaceBefore=0,
+        spaceAfter=0,
+    )
+    date_style = ParagraphStyle(
+        "cover_date_right",
+        parent=styles["cover_date"],
+        alignment=TA_RIGHT,
+        spaceBefore=0,
+        spaceAfter=0,
+        leading=16,
+    )
     cover_date = format_when(analysis.get("writtenAt") or analysis.get("publishedAt"), with_time=False)
-    if cover_date:
-        story.append(Paragraph(xml_text(f"撰寫日期　{cover_date}"), styles["cover_date"]))
-    title = P(analysis.get("title") or "", styles["title"])
-    if title is not None:
-        story.append(title)
+    date_label = f"撰寫日期 {cover_date}" if cover_date else ""
+    number_width = 78 * mm
+    meta_row = Table(
+        [[
+            Paragraph(xml_text(report_no), number_style),
+            Paragraph(xml_text(date_label), date_style),
+        ]],
+        colWidths=[number_width, width - number_width],
+    )
+    meta_row.setStyle(
+        [
+            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+            ("ALIGN", (1, 0), (1, 0), "RIGHT"),
+            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+            ("TOPPADDING", (0, 0), (-1, -1), 6),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
+        ]
+    )
+    story.append(meta_row)
 
     phone = link_markup(PHONE_TEL, PHONE_DISPLAY)
     mail = f'<link href="mailto:{esc_attr(EMAIL)}" color="#0f766e"><u>{esc(EMAIL)}</u></link>'
@@ -753,6 +785,9 @@ def build_story(analysis: dict, news: dict, styles: dict, width: float) -> list:
             styles["contact"],
         )
     )
+    title = P(analysis.get("title") or "", styles["title"])
+    if title is not None:
+        story.append(title)
 
     story.append(Spacer(1, 2 * mm))
     story.append(make_bookmark(f"{report_no}-news", "新聞摘要", level=0))
