@@ -481,14 +481,61 @@ def draw_page(report_no: str, styles: dict):
         canvas.setLineWidth(2.2)
         canvas.line(width - side - 22 * mm, y, width - side, y)
 
+        rule_y = 17.4 * mm
         canvas.setStrokeColor(styles["line"])
-        canvas.setLineWidth(0.4)
-        canvas.line(side, 10 * mm, width - side, 10 * mm)
+        canvas.setLineWidth(0.5)
+        canvas.line(side, rule_y, width - side, rule_y)
+
+        label_size = 6.5
+        value_size = 7.5
+        row_gap = 3.7 * mm
+        col_w = (width - 2 * side) / 2
+        columns = (
+            (
+                side,
+                13.4 * mm,
+                (
+                    ("電話", PHONE_DISPLAY, PHONE_TEL),
+                    ("WhatsApp", PHONE_DISPLAY, WHATSAPP),
+                ),
+            ),
+            (
+                side + col_w,
+                13.4 * mm,
+                (
+                    ("電郵", EMAIL, f"mailto:{EMAIL}"),
+                    ("網站", "synergy-safety.github.io/synergy-safety", SITE),
+                ),
+            ),
+        )
+        for origin_x, top_y, rows in columns:
+            canvas.setFont(FONT, label_size)
+            label_w = max(canvas.stringWidth(label, FONT, label_size) for label, _value, _url in rows)
+            value_x = origin_x + label_w + 1.8 * mm
+            for index, (label, value, url) in enumerate(rows):
+                y = top_y - index * row_gap
+                canvas.setFillColor(styles["muted"])
+                canvas.setFont(FONT, label_size)
+                canvas.drawString(origin_x, y, label)
+                canvas.setFillColor(styles["teal_dark"])
+                canvas.setFont(FONT, value_size)
+                canvas.drawString(value_x, y, value)
+                value_w = canvas.stringWidth(value, FONT, value_size)
+                canvas.setStrokeColor(styles["teal_dark"])
+                canvas.setLineWidth(0.3)
+                canvas.line(value_x, y - 0.7, value_x + value_w, y - 0.7)
+                canvas.linkURL(
+                    url,
+                    (value_x, y - 1.2, value_x + value_w, y + value_size),
+                    relative=0,
+                    thickness=0,
+                )
+
         canvas.setFillColor(styles["muted"])
         canvas.setFont(FONT, 7.5)
-        canvas.drawString(side, 6 * mm, COMPANY_EN)
-        canvas.drawRightString(width - side, 6 * mm, report_no)
-        canvas.drawCentredString(width / 2, 6 * mm, f"第 {canvas.getPageNumber()} 頁")
+        canvas.drawString(side, 5.2 * mm, COMPANY_EN)
+        canvas.drawRightString(width - side, 5.2 * mm, report_no)
+        canvas.drawCentredString(width / 2, 5.2 * mm, f"第 {canvas.getPageNumber()} 頁")
         canvas.restoreState()
 
     return _draw
@@ -866,16 +913,6 @@ def build_story(analysis: dict, news: dict, styles: dict, width: float) -> list:
         ]
     )
     story.append(meta_row)
-
-    phone = link_markup(PHONE_TEL, PHONE_DISPLAY)
-    mail = f'<link href="mailto:{esc_attr(EMAIL)}" color="#0f766e"><u>{esc(EMAIL)}</u></link>'
-    story.append(Paragraph(f"電話 {phone}　　電郵 {mail}", styles["contact"]))
-    story.append(
-        Paragraph(
-            f"WhatsApp {link_markup(WHATSAPP, WHATSAPP)}　　網站 {link_markup(SITE, SITE)}",
-            styles["contact"],
-        )
-    )
     title = P(analysis.get("title") or "", styles["title"])
     if title is not None:
         story.append(title)
@@ -1018,7 +1055,7 @@ def write_pdf(analysis: dict, news: dict, dest: Path, styles: dict) -> None:
         leftMargin=side,
         rightMargin=side,
         topMargin=16 * mm,
-        bottomMargin=15 * mm,
+        bottomMargin=22 * mm,
         title=f"{analysis['reportNo']} {analysis.get('title') or ''}",
         author=COMPANY_EN,
         subject="公開資料分析報告",
@@ -1125,6 +1162,11 @@ def verify_pdf(path: Path, analysis: dict, news: dict) -> None:
             raise SystemExit(f"{path.name} source is not linked: {url}")
         if url not in analysis_blob and url in extracted:
             raise SystemExit(f"{path.name} repeats the news source URL as text: {url}")
+    for required in (PHONE_TEL, f"mailto:{EMAIL}", WHATSAPP, SITE):
+        if required not in uris:
+            raise SystemExit(f"{path.name} footer is missing link: {required}")
+    if "https://wa.me/" in extracted:
+        raise SystemExit(f"{path.name} prints the WhatsApp URL")
     if reader.metadata and reader.metadata.author and "Chan" in str(reader.metadata.author):
         raise SystemExit(f"{path.name} metadata author looks personal")
 
