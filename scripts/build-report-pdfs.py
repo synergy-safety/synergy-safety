@@ -26,6 +26,14 @@ injured people as 不具名; the PDF must not put those surnames back in.
 In the news summary, each outlet name links to its stored URL and sits beside
 a QR code for the same address. The raw URL is not printed again there.
 Reference and legal citations later in the report still show their URLs.
+
+Each PDF opens and prints with no user password. An owner password turns off
+copy, extract, modify, annotate, assemble, and form-fill. The embedded font's
+ToUnicode map does not store the real characters, so selecting or extracting
+text does not yield the report wording. Set ``PDF_OWNER_PASSWORD`` to supply
+the owner password. If it is unset, a random owner password is created in
+memory for that run and is not written to disk, printed, or stored in the
+repository. The password is not needed to read the file later.
 """
 
 from __future__ import annotations
@@ -263,6 +271,50 @@ def prepare_fonts(sample: str) -> None:
     from reportlab.pdfbase import pdfmetrics
     from reportlab.pdfbase.ttfonts import TTFont as RLFont
 
+    class ObfuscatedTTFont(RLFont):
+        """Draws the real glyphs, but the ToUnicode map is not the real text."""
+
+        def addObjects(self, doc):
+            import reportlab.pdfbase.ttfonts as ttfonts
+
+            original = ttfonts.makeToUnicodeCMap
+
+            def scrambled(fontname, subset):
+                count = len(subset)
+                if count <= 0:
+                    return original(fontname, subset)
+                last = min(count - 1, 255)
+                mappings = ["<%02X> <FFFD>" % i for i in range(min(count, 256))]
+                cmap = [
+                    "/CIDInit /ProcSet findresource begin",
+                    "12 dict begin",
+                    "begincmap",
+                    "/CIDSystemInfo",
+                    "<< /Registry (%s)" % fontname,
+                    "/Ordering (%s)" % fontname,
+                    "/Supplement 0",
+                    ">> def",
+                    "/CMapName /%s def" % fontname,
+                    "/CMapType 2 def",
+                    "1 begincodespacerange",
+                    "<00> <%02X>" % last,
+                    "endcodespacerange",
+                    "%d beginbfchar" % len(mappings),
+                    *mappings,
+                    "endbfchar",
+                    "endcmap",
+                    "CMapName currentdict /CMap defineresource pop",
+                    "end",
+                    "end",
+                ]
+                return "\n".join(cmap)
+
+            ttfonts.makeToUnicodeCMap = scrambled
+            try:
+                super().addObjects(doc)
+            finally:
+                ttfonts.makeToUnicodeCMap = original
+
     global FALLBACK_CHARS
 
     vf_path = ensure_noto_variable()
@@ -294,8 +346,8 @@ def prepare_fonts(sample: str) -> None:
         out.seek(0)
         return out
 
-    pdfmetrics.registerFont(RLFont(FONT, instance(400)))
-    pdfmetrics.registerFont(RLFont(FONT_BOLD, instance(700)))
+    pdfmetrics.registerFont(ObfuscatedTTFont(FONT, instance(400)))
+    pdfmetrics.registerFont(ObfuscatedTTFont(FONT_BOLD, instance(700)))
     pdfmetrics.registerFontFamily(FONT, normal=FONT, bold=FONT_BOLD, italic=FONT, boldItalic=FONT_BOLD)
 
     if not missing:
@@ -324,7 +376,7 @@ def prepare_fonts(sample: str) -> None:
     fb_buf = io.BytesIO()
     fallback.save(fb_buf)
     fb_buf.seek(0)
-    pdfmetrics.registerFont(RLFont(FONT_FALLBACK, fb_buf))
+    pdfmetrics.registerFont(ObfuscatedTTFont(FONT_FALLBACK, fb_buf))
     print("Fallback glyphs from WenQuanYi Micro Hei: " + "".join(missing))
 
 
@@ -459,6 +511,64 @@ def link_markup(url: str, label: str) -> str:
     return f'<link href="{href}" color="#0f766e"><u>{xml_text(label)}</u></link>'
 
 
+# Page number, x, y, width, height of each news-source QR, in page space.
+_qr_zones: list[tuple[int, float, float, float, float]] = []
+
+
+def note_qr_zone(canvas, size: float) -> None:
+    x, y = canvas.absolutePosition(0, 0)
+    _qr_zones.append((canvas.getPageNumber(), x, y, size, size))
+
+
+def draw_watermark(canvas, width: float, height: float) -> None:
+    """Diagonal company names and a faint logo, kept off the header, footer, and QR codes."""
+    from reportlab.lib.colors import Color
+    from reportlab.lib.units import mm
+    from reportlab.pdfgen.canvas import FILL_EVEN_ODD
+
+    page = canvas.getPageNumber()
+    top_clear = 76 * mm if page == 1 else 18 * mm
+    bottom_clear = 25 * mm
+    band_height = height - top_clear - bottom_clear
+    if band_height < 40 * mm:
+        return
+    pad = 4 * mm
+    canvas.saveState()
+    band = canvas.beginPath()
+    band.rect(0, bottom_clear, width, band_height)
+    for zone_page, x, y, w, h in _qr_zones:
+        if zone_page != page:
+            continue
+        band.rect(x - pad, y - pad, w + 2 * pad, h + 2 * pad)
+    canvas.clipPath(band, stroke=0, fill=0, fillMode=FILL_EVEN_ODD)
+    ink = Color(0.067, 0.369, 0.349)
+    canvas.setFillColor(ink)
+    canvas.setFillAlpha(0.05)
+    logo = 28 * mm
+    center_y = bottom_clear + band_height / 2
+    canvas.drawImage(
+        str(LOGO_PATH),
+        (width - logo) / 2,
+        center_y - logo / 2,
+        width=logo,
+        height=logo,
+        mask="auto",
+        preserveAspectRatio=True,
+    )
+    canvas.saveState()
+    canvas.translate(width / 2, center_y)
+    canvas.rotate(28)
+    canvas.setFillAlpha(0.075)
+    canvas.setFont(FONT, 12)
+    for dy in range(-240, 241, 88):
+        canvas.drawCentredString(0, dy, COMPANY_ZH)
+        canvas.setFont(FONT, 7.5)
+        canvas.drawCentredString(0, dy - 12, COMPANY_EN)
+        canvas.setFont(FONT, 12)
+    canvas.restoreState()
+    canvas.restoreState()
+
+
 def draw_page(report_no: str, styles: dict):
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.units import mm
@@ -468,6 +578,7 @@ def draw_page(report_no: str, styles: dict):
     def _draw(canvas, _doc) -> None:
         canvas.saveState()
         width, height = A4
+        draw_watermark(canvas, width, height)
         canvas.setFillColor(styles["teal_dark"])
         canvas.setFont(FONT, 8)
         canvas.drawString(side, height - 10 * mm, COMPANY_ZH)
@@ -679,6 +790,7 @@ def linked_qr(url: str, size: float):
 
         def draw(self):
             self.drawing.drawOn(self.canv, 0, 0)
+            note_qr_zone(self.canv, size)
             self.canv.linkURL(url, (0, 0, size, size), relative=1, thickness=0)
 
     return _LinkedQR()
@@ -1041,12 +1153,49 @@ def iter_rendered_text(analysis: dict, news: dict) -> list[str]:
     return chunks
 
 
-def write_pdf(analysis: dict, news: dict, dest: Path, styles: dict) -> None:
+def document_encryption(owner_password: str):
+    """Empty user password; owner password only carries the permission flags."""
+    from reportlab.lib.pdfencrypt import StandardEncryption
+
+    class _Locked(StandardEncryption):
+        def permissionBits(self):
+            bits = StandardEncryption.permissionBits(self)
+            fill_forms = 1 << 8
+            access_extract = 1 << 9
+            assemble = 1 << 10
+            return bits & ~fill_forms & ~access_extract & ~assemble
+
+    return _Locked(
+        "",
+        owner_password,
+        canPrint=1,
+        canModify=0,
+        canCopy=0,
+        canAnnotate=0,
+        # strength 256 is AES-256, but ReportLab's revision-5 files are rejected
+        # by current readers. 128-bit encryption still opens with no user password.
+        strength=128,
+    )
+
+
+def owner_password() -> str:
+    """Owner secret for permission flags. Never log or persist this value."""
+    import os
+    import secrets
+
+    supplied = os.environ.get("PDF_OWNER_PASSWORD", "").strip()
+    if supplied:
+        return supplied
+    return secrets.token_urlsafe(32)
+
+
+def write_pdf(analysis: dict, news: dict, dest: Path, styles: dict, owner_password: str) -> None:
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.units import mm
     from reportlab.platypus import SimpleDocTemplate
 
     dest.parent.mkdir(parents=True, exist_ok=True)
+    _qr_zones.clear()
     side = 16 * mm
     width = A4[0] - 2 * side
     doc = SimpleDocTemplate(
@@ -1056,9 +1205,10 @@ def write_pdf(analysis: dict, news: dict, dest: Path, styles: dict) -> None:
         rightMargin=side,
         topMargin=16 * mm,
         bottomMargin=22 * mm,
-        title=f"{analysis['reportNo']} {analysis.get('title') or ''}",
+        title=analysis["reportNo"],
         author=COMPANY_EN,
         subject="公開資料分析報告",
+        encrypt=document_encryption(owner_password),
     )
     on_page = draw_page(analysis["reportNo"], styles)
     doc.build(build_story(analysis, news, styles, width), onFirstPage=on_page, onLaterPages=on_page)
@@ -1090,8 +1240,27 @@ def heading_lines(text: str) -> list[str]:
 
 def verify_pdf(path: Path, analysis: dict, news: dict) -> None:
     from pypdf import PdfReader
+    from pypdf.constants import UserAccessPermissions
 
     reader = PdfReader(str(path))
+    if not reader.is_encrypted:
+        raise SystemExit(f"{path.name} is not permission-locked")
+    if int(reader.decrypt("")) == 0:
+        raise SystemExit(f"{path.name} cannot be opened without a password")
+    perms = reader.user_access_permissions
+    if perms is None or not (perms & UserAccessPermissions.PRINT):
+        raise SystemExit(f"{path.name} does not allow printing")
+    blocked = (
+        (UserAccessPermissions.MODIFY, "modify"),
+        (UserAccessPermissions.EXTRACT, "copy"),
+        (UserAccessPermissions.ADD_OR_MODIFY, "annotate"),
+        (UserAccessPermissions.FILL_FORM_FIELDS, "form fill"),
+        (UserAccessPermissions.ASSEMBLE_DOC, "assemble"),
+        (UserAccessPermissions.EXTRACT_TEXT_AND_GRAPHICS, "extract"),
+    )
+    for flag, name in blocked:
+        if perms & flag:
+            raise SystemExit(f"{path.name} still allows {name}")
     extracted = "\n".join((page.extract_text() or "") for page in reader.pages)
     folded = compact(extracted)
     author = ""
@@ -1102,42 +1271,16 @@ def verify_pdf(path: Path, analysis: dict, news: dict) -> None:
         for hay in haystacks:
             if token.lower() in hay.lower():
                 raise SystemExit(f"{path.name} contains forbidden text: {token}")
-    lines = [line.strip() for line in extracted.splitlines()]
-    for heading in ("新聞摘要", "報告性質說明"):
-        if heading not in lines:
-            raise SystemExit(f"{path.name} is missing heading: {heading}")
-    found = heading_lines(extracted)
-    if found != list(SECTION_HEADINGS):
-        raise SystemExit(f"{path.name} sections are not in PDF display order: {found}")
-    if analysis["reportNo"] not in extracted and compact(analysis["reportNo"]) not in folded:
-        raise SystemExit(f"{path.name} is missing report number")
+    probes = ["新聞摘要", "預防再發建議", "報告性質說明"]
+    title = (analysis.get("title") or "").strip()
+    if len(title) >= 8:
+        probes.append(title[:12])
     summary = redact_injured_surnames(news.get("summary") or "")
-    if summary and compact(summary[:24]) not in folded:
-        raise SystemExit(f"{path.name} is missing the news summary")
-    notice = analysis.get("reportNotice") or ""
-    if notice and compact(notice[:20]) not in folded:
-        raise SystemExit(f"{path.name} is missing the report notice")
-    for section in analysis.get("sections") or []:
-        for row in section.get("rows") or []:
-            if isinstance(row, (list, tuple)) and len(row) >= 2 and row[1]:
-                probe = compact(str(row[1])[:12])
-                if probe and probe not in folded:
-                    raise SystemExit(f"{path.name} is missing table text: {row[0]}")
-        for entry in section.get("timeline") or []:
-            caveat = (entry or {}).get("caveat") if isinstance(entry, dict) else ""
-            if caveat and compact(caveat[:16]) not in folded:
-                raise SystemExit(f"{path.name} is missing a timeline note")
-        for tier in section.get("legalTiers") or []:
-            for ref in tier.get("refs") or []:
-                title = ref.get("title") or ""
-                if title and compact(title[:18]) not in folded:
-                    raise SystemExit(f"{path.name} is missing citation: {title[:40]}")
-                url = ref.get("url") or ""
-                if url and compact(url) not in folded:
-                    raise SystemExit(f"{path.name} is missing citation URL: {url[:80]}")
-                relevance = ref.get("relevance") or ""
-                if relevance and compact(relevance[:16]) not in folded:
-                    raise SystemExit(f"{path.name} is missing citation relevance: {title[:40]}")
+    if len(summary) >= 12:
+        probes.append(summary[:16])
+    for probe in probes:
+        if probe in extracted or probe in folded:
+            raise SystemExit(f"{path.name} extracted text still contains real wording")
     annots = 0
     uris: set[str] = set()
     for page in reader.pages:
@@ -1155,9 +1298,6 @@ def verify_pdf(path: Path, analysis: dict, news: dict) -> None:
         if not isinstance(src, dict) or not is_http(src.get("url")):
             continue
         url = src["url"]
-        outlet = (src.get("outlet") or "來源").strip()
-        if outlet not in extracted:
-            raise SystemExit(f"{path.name} is missing source name: {outlet}")
         if url not in uris:
             raise SystemExit(f"{path.name} source is not linked: {url}")
         if url not in analysis_blob and url in extracted:
@@ -1222,13 +1362,14 @@ def main() -> None:
 
     prepare_fonts(sample + "・")
     styles = build_styles()
+    secret = owner_password()
 
     written: dict[str, str] = {}
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     for analysis, news in pairs:
         report_no = analysis["reportNo"]
         dest = REPORTS_DIR / f"{report_no}.pdf"
-        write_pdf(analysis, news, dest, styles)
+        write_pdf(analysis, news, dest, styles, secret)
         verify_pdf(dest, analysis, news)
         rel = f"assets/reports/{report_no}.pdf"
         written[report_no] = rel

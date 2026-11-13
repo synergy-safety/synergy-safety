@@ -63,6 +63,8 @@ python3 scripts/build-report-pdfs.py
 
 首次執行會下載 Noto Sans TC 到 `scripts/.font-cache/`（不入庫），再把子集嵌入各 PDF。分析正文照 `analyses.json` 原文輸出；新聞摘要照 `news.json`，但會略去「姓X」形式的傷者姓氏。
 
+PDF 可直接開啟和列印，不設開啟密碼。可設定環境變數 `PDF_OWNER_PASSWORD` 作為擁有者密碼，以限制複製、擷取、修改、註釋、組合及填寫。未設定時，腳本只在記憶體中產生隨機擁有者密碼，不會寫入檔案、終端或儲存庫。請勿把該密碼提交到版本庫。複製出來的文字不會是報告原文。
+
 舊版 `causes` / `lessons` / `legalRefs` / `summary` 仍可由 `analysis.html` 後備顯示，但新稿請使用 `sections`。
 
 ### `data/alerts.json`
