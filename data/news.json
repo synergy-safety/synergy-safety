@@ -1,6 +1,28 @@
 {
-  "updatedAt": "2026-11-11T16:22:00+08:00",
+  "updatedAt": "2026-11-13T08:16:00+08:00",
   "items": [
+    {
+      "id": "2026-11-12-fanling-ntecc-board",
+      "publishedAt": "2026-11-13T08:16:00+08:00",
+      "severity": "non-fatal",
+      "title": "粉嶺新界東文化中心地盤吊運木板墮下砸傷兩名工人",
+      "location": "粉嶺璧峰路新界東文化中心建築地盤",
+      "occurredAt": "2026-11-12T11:26:00+08:00",
+      "summary": "昨日（11月12日）上午11時26分，粉嶺璧峰路新界東文化中心建築地盤，一塊約3米乘1.5米的木板在吊運過程中突然鬆脫，從高空墮下，砸中兩名男工人。55歲姓陳工人腰部受傷，38歲姓蘇工人頭部受傷流血；工友搬開木板將二人救出。兩人均清醒，送往沙田威爾斯親王醫院治理。警員及勞工處人員到場，正調查事故原因。",
+      "accidentType": {
+        "code": "02",
+        "label": "被墮下的物件擊中"
+      },
+      "contractor": "Build King－安保聯營（建築署公開現時合約；報道未有點名）",
+      "contractorConfidence": "medium",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/9KVOvq"
+        }
+      ],
+      "image": "assets/news/2026-11-12-fanling-ntecc-board.jpg"
+    },
     {
       "id": "2026-11-11-tsuenwan-wanglung-biscuit",
       "publishedAt": "2026-11-11T16:22:00+08:00",
