@@ -1,49 +1,43 @@
 (function () {
   var DESKTOP_MQ = window.matchMedia('(min-width: 900px)');
+  var HOVER_MQ = window.matchMedia('(hover: hover) and (pointer: fine)');
 
   function isDesktop() {
     return DESKTOP_MQ.matches;
+  }
+
+  function canHoverOpen() {
+    return isDesktop() && HOVER_MQ.matches;
   }
 
   function setSubNavOpen(parent, btn, open) {
     if (!parent || !btn) return;
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     parent.classList.toggle('is-sub-open', open);
+    if (open) parent.classList.remove('is-sub-dismissed');
   }
 
-  function closeAllSubNavs() {
+  function closeSubNav(parent, btn, lockHover) {
+    if (!parent || !btn) return;
+    if (lockHover && canHoverOpen() && parent.matches(':hover')) {
+      parent.classList.add('is-sub-dismissed');
+    }
+    setSubNavOpen(parent, btn, false);
+  }
+
+  function closeAllSubNavs(lockHover) {
     document.querySelectorAll('.nav-has-sub').forEach(function (parent) {
-      var btn = parent.querySelector('.nav-sub-toggle');
-      setSubNavOpen(parent, btn, false);
+      closeSubNav(parent, parent.querySelector('.nav-sub-toggle'), lockHover);
     });
   }
 
-  function applyMobileDefaultSubnav() {
-    if (isDesktop()) return;
-    document.querySelectorAll('.nav-has-sub[data-subnav-default-open="1"]').forEach(function (parent) {
-      var btn = parent.querySelector('.nav-sub-toggle');
-      setSubNavOpen(parent, btn, true);
-    });
-  }
+  closeAllSubNavs(false);
 
-  function applyDesktopSubnavState() {
-    if (!isDesktop()) return;
-    closeAllSubNavs();
-  }
-
-  document.querySelectorAll('.nav-has-sub').forEach(function (parent) {
-    if (parent.classList.contains('is-sub-open')) {
-      parent.dataset.subnavDefaultOpen = '1';
-    }
-  });
-
-  applyDesktopSubnavState();
   DESKTOP_MQ.addEventListener('change', function () {
-    if (isDesktop()) {
-      applyDesktopSubnavState();
-    } else {
-      applyMobileDefaultSubnav();
-    }
+    document.querySelectorAll('.nav-has-sub').forEach(function (parent) {
+      parent.classList.remove('is-sub-dismissed');
+    });
+    closeAllSubNavs(false);
   });
 
   var toggle = document.querySelector('.nav-toggle');
@@ -56,18 +50,14 @@
       toggle.setAttribute('aria-expanded', String(nextOpen));
       nav.classList.toggle('is-open', nextOpen);
       document.body.classList.toggle('nav-open', nextOpen);
-      if (nextOpen) {
-        applyMobileDefaultSubnav();
-      } else {
-        closeAllSubNavs();
-      }
+      if (!nextOpen) closeAllSubNavs(false);
     });
     nav.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
         toggle.setAttribute('aria-expanded', 'false');
         nav.classList.remove('is-open');
         document.body.classList.remove('nav-open');
-        closeAllSubNavs();
+        closeAllSubNavs(false);
       });
     });
   }
@@ -85,17 +75,27 @@
       if (!open) {
         document.querySelectorAll('.nav-has-sub').forEach(function (other) {
           if (other !== parent) {
+            other.classList.remove('is-sub-dismissed');
             setSubNavOpen(other, other.querySelector('.nav-sub-toggle'), false);
           }
         });
+        setSubNavOpen(parent, btn, true);
+      } else {
+        closeSubNav(parent, btn, true);
       }
-      setSubNavOpen(parent, btn, !open);
+    });
+
+    parent.addEventListener('mouseenter', function () {
+      if (!canHoverOpen()) return;
+      if (parent.classList.contains('is-sub-dismissed')) return;
+      setSubNavOpen(parent, btn, true);
     });
 
     parent.addEventListener('mouseleave', function () {
       if (!isDesktop()) return;
       window.setTimeout(function () {
         if (!parent.matches(':hover')) {
+          parent.classList.remove('is-sub-dismissed');
           setSubNavOpen(parent, btn, false);
         }
       }, 80);
@@ -104,12 +104,12 @@
 
   document.addEventListener('click', function (e) {
     if (e.target.closest('.nav-has-sub')) return;
-    closeAllSubNavs();
+    closeAllSubNavs(true);
   });
 
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape' && e.key !== 'Esc') return;
-    closeAllSubNavs();
+    closeAllSubNavs(true);
     if (toggle && nav && toggle.getAttribute('aria-expanded') === 'true') {
       toggle.setAttribute('aria-expanded', 'false');
       nav.classList.remove('is-open');
