@@ -842,6 +842,7 @@ a:hover {
 .news-list[hidden],
 .news-empty[hidden],
 button[hidden],
+a[hidden],
 .stats-unclassified[hidden] {
   display: none !important;
 }
@@ -937,6 +938,21 @@ button[hidden],
 .news-toc-list a:hover {
   color: var(--orange-dark);
   text-decoration: underline;
+}
+
+@media (max-width: 899px) {
+  .news-list-section {
+    padding-bottom: 6.5rem;
+  }
+
+  .news-toc {
+    padding-bottom: 5.5rem;
+  }
+
+  .news-toc-list a {
+    padding-right: 7rem;
+    scroll-margin-bottom: 5.5rem;
+  }
 }
 
 .news-toc-empty {

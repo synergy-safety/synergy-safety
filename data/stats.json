@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T09:10:03+00:00",
+  "generatedAt": "2026-11-16T09:22:15+00:00",
   "dataStart": "2026-10-01",
   "dataStartLabel": "2026年10月",
   "source": "data/news.json",
@@ -11,9 +11,9 @@
   },
   "disclaimer": "下列數字及意外類別分佈僅反映本網站依公開報導收錄之個案，並非勞工處、僱主或傷者呈報之官方統計。意外類別由本站對照勞工處《僱員補償條例》表格2（Rev.17）第K部「意外類別」歸類，不代表官方調查或呈報定性。",
   "totals": {
-    "all": 16,
+    "all": 17,
     "fatal": 1,
-    "non_fatal": 15
+    "non_fatal": 16
   },
   "byMonth": [
     {
@@ -26,9 +26,9 @@
     {
       "month": "2026-11",
       "label": "2026年11月",
-      "total": 9,
+      "total": 10,
       "fatal": 1,
-      "non_fatal": 8
+      "non_fatal": 9
     }
   ],
   "byRegion": [
@@ -47,6 +47,10 @@
     {
       "label": "葵涌",
       "count": 2
+    },
+    {
+      "label": "其他／未標示",
+      "count": 1
     },
     {
       "label": "粉嶺",
@@ -158,7 +162,7 @@
       "code": "13",
       "label": "觸及開動中的機器或觸及以機器製造中的物件",
       "chartLabel": "13 觸及開動中的機器或觸及以機器製造中的物件",
-      "count": 5
+      "count": 6
     },
     {
       "code": "14",
@@ -186,5 +190,5 @@
     }
   ],
   "unclassifiedAccidentType": 1,
-  "itemCount": 16
+  "itemCount": 17
 }
