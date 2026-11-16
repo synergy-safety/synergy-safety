@@ -73,7 +73,7 @@ PDF 可直接開啟和列印，不設開啟密碼。可設定環境變數 `PDF_O
 
 ### `data/stats.json`
 
-由 `data/news.json` 匯總（自 **2026 年 10 月**起）：總數、致命／非致命、按月、地區（標題／地點關鍵字推斷）及 **`byAccidentType`**（各則新聞之 `accidentType` 計數）。更新新聞後可執行：
+由 `data/news.json` 匯總（自 **2026 年 10 月**起）：總數、致命／非致命、按月、地區（標題／地點關鍵字推斷）及 **`byAccidentType`**。`byAccidentType` 一律列出表格2第K部全部 17 項官方類別（含 0 宗）；中文名稱以代號對照官方用字，不採用新聞項目內可能不一致的 `label`。沒有有效代號的收錄計入 **`unclassifiedAccidentType`**，不併入這 17 項。更新新聞後可執行：
 
 ```bash
 python3 scripts/build-stats.py

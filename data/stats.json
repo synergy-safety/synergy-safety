@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T08:40:59+00:00",
+  "generatedAt": "2026-11-16T09:10:03+00:00",
   "dataStart": "2026-10-01",
   "dataStartLabel": "2026年10月",
   "source": "data/news.json",
@@ -83,9 +83,15 @@
   ],
   "byAccidentType": [
     {
+      "code": "01",
+      "label": "受困於物件之內或物件之間",
+      "chartLabel": "01 受困於物件之內或物件之間",
+      "count": 0
+    },
+    {
       "code": "02",
-      "label": "被墮下的物件擊中",
-      "chartLabel": "02 被墮下的物件擊中",
+      "label": "提舉或搬運物件時受傷",
+      "chartLabel": "02 提舉或搬運物件時受傷",
       "count": 1
     },
     {
@@ -105,6 +111,30 @@
       "label": "與固定或不動的物件碰撞",
       "chartLabel": "05 與固定或不動的物件碰撞",
       "count": 1
+    },
+    {
+      "code": "06",
+      "label": "與移動的物件碰撞",
+      "chartLabel": "06 與移動的物件碰撞",
+      "count": 0
+    },
+    {
+      "code": "07",
+      "label": "踏在物件上",
+      "chartLabel": "07 踏在物件上",
+      "count": 0
+    },
+    {
+      "code": "08",
+      "label": "暴露於有害物質中或接觸有害物質",
+      "chartLabel": "08 暴露於有害物質中或接觸有害物質",
+      "count": 0
+    },
+    {
+      "code": "09",
+      "label": "觸電或接觸放出的電流",
+      "chartLabel": "09 觸電或接觸放出的電流",
+      "count": 0
     },
     {
       "code": "10",
@@ -131,10 +161,28 @@
       "count": 5
     },
     {
+      "code": "14",
+      "label": "遇溺",
+      "chartLabel": "14 遇溺",
+      "count": 0
+    },
+    {
       "code": "15",
       "label": "火警燒傷",
       "chartLabel": "15 火警燒傷",
       "count": 1
+    },
+    {
+      "code": "16",
+      "label": "爆炸受傷",
+      "chartLabel": "16 爆炸受傷",
+      "count": 0
+    },
+    {
+      "code": "17",
+      "label": "其他（請指明）",
+      "chartLabel": "17 其他（請指明）",
+      "count": 0
     }
   ],
   "unclassifiedAccidentType": 1,

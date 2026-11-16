@@ -831,6 +831,132 @@ a:hover {
   background: var(--bg);
 }
 
+.news-tools {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.news-tools[hidden],
+.news-card[hidden],
+.news-list[hidden],
+.news-empty[hidden],
+button[hidden],
+.stats-unclassified[hidden] {
+  display: none !important;
+}
+
+.news-filters {
+  display: grid;
+  gap: 0.85rem 1rem;
+  margin: 0;
+  padding: 1rem 1.1rem 0.95rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.news-filter label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--teal-muted);
+}
+
+.news-filter select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.4;
+}
+
+.news-filter-count {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.news-toc {
+  padding: 1rem 1.1rem 1.05rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.news-toc-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--teal-muted);
+}
+
+.news-toc-groups {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.news-toc-group {
+  min-width: 0;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--teal);
+}
+
+.news-toc-date {
+  margin: 0 0 0.3rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--orange-dark);
+}
+
+.news-toc-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.news-toc-list li {
+  margin: 0;
+}
+
+.news-toc-list a {
+  display: block;
+  padding: 0.32rem 0.1rem;
+  color: var(--teal-dark);
+  font-weight: 500;
+  line-height: 1.45;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.news-toc-list a:hover {
+  color: var(--orange-dark);
+  text-decoration: underline;
+}
+
+.news-toc-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.news-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem;
+}
+
+button.btn {
+  font: inherit;
+  cursor: pointer;
+}
+
 .news-status {
   text-align: center;
   color: var(--muted);
@@ -850,7 +976,13 @@ a:hover {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 1.35rem 1.25rem 1.4rem;
+  scroll-margin-top: calc(var(--header-h) + 0.75rem);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.news-card:target {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.16);
 }
 
 .news-card:hover {
@@ -911,8 +1043,7 @@ a:hover {
 
 .news-figure img {
   width: 100%;
-  max-height: 220px;
-  object-fit: cover;
+  height: auto;
 }
 
 .news-summary {
@@ -1061,8 +1192,24 @@ a:hover {
     gap: 1.15rem;
   }
 
+  .news-filters {
+    grid-template-columns: minmax(9rem, 0.7fr) minmax(16rem, 1.6fr);
+    align-items: end;
+  }
+
+  .news-filter-count {
+    grid-column: 1 / -1;
+  }
+
   .news-meta-row {
     grid-template-columns: 5.5rem 1fr;
+  }
+}
+
+@media (min-width: 900px) {
+  .news-toc-groups {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.25rem;
   }
 }
 
@@ -1104,6 +1251,11 @@ a:hover {
   transform: rotate(-135deg);
 }
 
+.nav-has-sub.is-sub-dismissed .nav-sub-toggle::after,
+.nav-has-sub.is-sub-dismissed:hover .nav-sub-toggle::after {
+  transform: rotate(45deg);
+}
+
 .nav-sub-toggle:hover {
   background: var(--bg-tint);
   color: var(--teal-dark);
@@ -1113,9 +1265,14 @@ a:hover {
   list-style: none;
   margin: 0;
   padding: 0 0 0 0.75rem;
-  display: none;
   flex-direction: column;
   gap: 0.1rem;
+}
+
+/* Beat .site-nav ul { display:flex } so the submenu can actually start closed. */
+.site-nav .nav-submenu {
+  display: none;
+  flex-direction: column;
 }
 
 .nav-has-sub.is-sub-open .nav-submenu {
@@ -1684,6 +1841,25 @@ a:hover {
   min-height: 240px;
 }
 
+.stats-chart-wrap.stats-chart-wrap-accident {
+  height: 1040px;
+  min-height: 1040px;
+}
+
+.stats-unclassified {
+  margin: 0.85rem 0 0;
+  padding: 0.7rem 0.85rem;
+  background: var(--bg-soft);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.stats-unclassified strong {
+  color: var(--teal-muted);
+}
+
 .stats-links {
   display: flex;
   flex-wrap: wrap;
@@ -1725,6 +1901,11 @@ a:hover {
   .stats-chart-card-wide {
     grid-column: span 2;
   }
+
+  .stats-chart-wrap.stats-chart-wrap-accident {
+    height: 820px;
+    min-height: 820px;
+  }
 }
 
 @media (min-width: 900px) {
@@ -1737,7 +1918,7 @@ a:hover {
     padding: 0.55rem 0.85rem;
   }
 
-  .nav-has-sub:hover .nav-submenu,
+  .nav-has-sub:hover:not(.is-sub-dismissed) .nav-submenu,
   .nav-has-sub.is-sub-open .nav-submenu {
     display: flex;
   }

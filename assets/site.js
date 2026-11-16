@@ -14,6 +14,11 @@
   function closeAllSubNavs() {
     document.querySelectorAll('.nav-has-sub').forEach(function (parent) {
       var btn = parent.querySelector('.nav-sub-toggle');
+      if (isDesktop() && parent.matches(':hover')) {
+        parent.classList.add('is-sub-dismissed');
+      } else {
+        parent.classList.remove('is-sub-dismissed');
+      }
       setSubNavOpen(parent, btn, false);
     });
   }
@@ -81,21 +86,33 @@
     btn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      var open = btn.getAttribute('aria-expanded') === 'true';
-      if (!open) {
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      var visuallyOpen = expanded;
+      if (isDesktop() && parent.matches(':hover') && !parent.classList.contains('is-sub-dismissed')) {
+        visuallyOpen = true;
+      }
+      var next = !visuallyOpen;
+      if (isDesktop() && !next) {
+        parent.classList.add('is-sub-dismissed');
+      } else {
+        parent.classList.remove('is-sub-dismissed');
+      }
+      if (next) {
         document.querySelectorAll('.nav-has-sub').forEach(function (other) {
           if (other !== parent) {
+            other.classList.remove('is-sub-dismissed');
             setSubNavOpen(other, other.querySelector('.nav-sub-toggle'), false);
           }
         });
       }
-      setSubNavOpen(parent, btn, !open);
+      setSubNavOpen(parent, btn, next);
     });
 
     parent.addEventListener('mouseleave', function () {
       if (!isDesktop()) return;
       window.setTimeout(function () {
         if (!parent.matches(':hover')) {
+          parent.classList.remove('is-sub-dismissed');
           setSubNavOpen(parent, btn, false);
         }
       }, 80);

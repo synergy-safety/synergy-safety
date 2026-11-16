@@ -18,6 +18,7 @@
     fallDistanceMetres? (code 04), otherSpecify? (code 17) },
     contractor?, contractorConfidence?, sources[{outlet, url}],
   image? (相對路徑，建議置於 assets/news/)
+  目錄與篩選只讀 publishedAt、severity、accidentType.code；類別選項用表格2第K部官方用字，不改寫各則 label。
   -->
 </head>
 <body>
@@ -72,12 +73,36 @@
     <section class="news-list-section" aria-labelledby="news-feed-label">
       <div class="container">
         <h2 id="news-feed-label" class="visually-hidden">新聞列表</h2>
+        <div id="news-tools" class="news-tools" hidden>
+          <form id="news-filters" class="news-filters" action="#" method="get">
+            <div class="news-filter">
+              <label for="news-filter-severity">嚴重程度</label>
+              <select id="news-filter-severity">
+                <option value="">全部</option>
+                <option value="fatal">致命</option>
+                <option value="non-fatal">非致命</option>
+              </select>
+            </div>
+            <div class="news-filter">
+              <label for="news-filter-type">意外類別</label>
+              <select id="news-filter-type"></select>
+            </div>
+            <p id="news-filter-count" class="news-filter-count" aria-live="polite"></p>
+          </form>
+          <nav id="news-toc" class="news-toc" aria-labelledby="news-toc-title">
+            <h2 id="news-toc-title" class="news-toc-title">目錄</h2>
+            <div id="news-toc-groups" class="news-toc-groups"></div>
+          </nav>
+        </div>
         <div id="news-status" class="news-status" role="status" aria-live="polite">載入中…</div>
         <ul id="news-list" class="news-list" hidden></ul>
         <div id="news-empty" class="news-empty" hidden>
           <p class="news-empty-title">暫無新聞項目</p>
           <p class="news-empty-text">當有新資料加入 <code>data/news.json</code> 後，列表會自動顯示於此。</p>
-          <a class="btn btn-secondary" href="index.html">返回首頁</a>
+          <p class="news-empty-actions">
+            <button type="button" id="news-filter-reset" class="btn btn-secondary" hidden>清除篩選</button>
+            <a class="btn btn-secondary" id="news-empty-home" href="index.html">返回首頁</a>
+          </p>
         </div>
         <div id="news-error" class="news-error" hidden>
           <p>無法載入新聞資料，請稍後再試。</p>
@@ -112,6 +137,42 @@
       var listEl = document.getElementById('news-list');
       var emptyEl = document.getElementById('news-empty');
       var errorEl = document.getElementById('news-error');
+      var toolsEl = document.getElementById('news-tools');
+      var filtersForm = document.getElementById('news-filters');
+      var severityEl = document.getElementById('news-filter-severity');
+      var typeEl = document.getElementById('news-filter-type');
+      var countEl = document.getElementById('news-filter-count');
+      var tocGroupsEl = document.getElementById('news-toc-groups');
+      var emptyTitleEl = emptyEl ? emptyEl.querySelector('.news-empty-title') : null;
+      var emptyTextEl = emptyEl ? emptyEl.querySelector('.news-empty-text') : null;
+      var resetBtn = document.getElementById('news-filter-reset');
+      var emptyHomeEl = document.getElementById('news-empty-home');
+      var allItems = [];
+      var EMPTY_DATA_HTML = '當有新資料加入 <code>data/news.json</code> 後，列表會自動顯示於此。';
+
+      var OFFICIAL_ACCIDENT_TYPES = [
+        { code: '01', label: '受困於物件之內或物件之間' },
+        { code: '02', label: '提舉或搬運物件時受傷' },
+        { code: '03', label: '滑倒、絆倒或在同一高度跌倒' },
+        { code: '04', label: '人體從高處墮下' },
+        { code: '05', label: '與固定或不動的物件碰撞' },
+        { code: '06', label: '與移動的物件碰撞' },
+        { code: '07', label: '踏在物件上' },
+        { code: '08', label: '暴露於有害物質中或接觸有害物質' },
+        { code: '09', label: '觸電或接觸放出的電流' },
+        { code: '10', label: '受困於倒塌或翻側的物件' },
+        { code: '11', label: '遭移動或墮下的物件撞擊' },
+        { code: '12', label: '遭移動中的車輛撞倒' },
+        { code: '13', label: '觸及開動中的機器或觸及以機器製造中的物件' },
+        { code: '14', label: '遇溺' },
+        { code: '15', label: '火警燒傷' },
+        { code: '16', label: '爆炸受傷' },
+        { code: '17', label: '其他（請指明）' }
+      ];
+      var OFFICIAL_ACCIDENT_BY_CODE = Object.create(null);
+      OFFICIAL_ACCIDENT_TYPES.forEach(function (type) {
+        OFFICIAL_ACCIDENT_BY_CODE[type.code] = type.label;
+      });
 
       var dateFmt = new Intl.DateTimeFormat('zh-Hant-HK', {
         year: 'numeric',
@@ -145,6 +206,197 @@
         return severity || '';
       }
 
+      function accidentCode(item) {
+        var at = item && item.accidentType;
+        if (!at || at.code == null) return '';
+        var code = String(at.code).trim();
+        if (!/^\d{1,2}$/.test(code)) return '';
+        code = code.padStart(2, '0');
+        return OFFICIAL_ACCIDENT_BY_CODE[code] ? code : '';
+      }
+
+      function itemMatches(item, severity, type) {
+        if (severity && normalizeSeverity(item.severity) !== severity) return false;
+        if (!type) return true;
+        var code = accidentCode(item);
+        if (type === 'unclassified') return !code;
+        return code === type;
+      }
+
+      function fillTypeOptions() {
+        if (!typeEl || typeEl.options.length) return;
+        var all = document.createElement('option');
+        all.value = '';
+        all.textContent = '全部';
+        typeEl.appendChild(all);
+        OFFICIAL_ACCIDENT_TYPES.forEach(function (type) {
+          var opt = document.createElement('option');
+          opt.value = type.code;
+          opt.textContent = type.code + ' ' + type.label;
+          typeEl.appendChild(opt);
+        });
+        var unclassified = document.createElement('option');
+        unclassified.value = 'unclassified';
+        unclassified.textContent = '未分類';
+        typeEl.appendChild(unclassified);
+      }
+
+      function showDataEmpty() {
+        if (toolsEl) toolsEl.hidden = true;
+        if (listEl) listEl.hidden = true;
+        if (!emptyEl) return;
+        if (emptyTitleEl) emptyTitleEl.textContent = '暫無新聞項目';
+        if (emptyTextEl) emptyTextEl.innerHTML = EMPTY_DATA_HTML;
+        if (resetBtn) resetBtn.hidden = true;
+        if (emptyHomeEl) emptyHomeEl.hidden = false;
+        emptyEl.hidden = false;
+      }
+
+      function showFilterEmpty() {
+        if (listEl) listEl.hidden = true;
+        if (!emptyEl) return;
+        if (emptyTitleEl) emptyTitleEl.textContent = '沒有符合篩選的新聞';
+        if (emptyTextEl) emptyTextEl.textContent = '請改選嚴重程度或意外類別，或清除篩選以查看全部新聞。';
+        if (resetBtn) resetBtn.hidden = false;
+        if (emptyHomeEl) emptyHomeEl.hidden = false;
+        emptyEl.hidden = false;
+      }
+
+      function renderToc(items) {
+        if (!tocGroupsEl) return;
+        tocGroupsEl.textContent = '';
+        if (!items.length) {
+          var empty = document.createElement('p');
+          empty.className = 'news-toc-empty';
+          empty.textContent = '沒有符合篩選條件的新聞。';
+          tocGroupsEl.appendChild(empty);
+          return;
+        }
+        var currentLabel = null;
+        var currentList = null;
+        items.forEach(function (item) {
+          if (!item || !item.id) return;
+          var dateLabel = formatDate(item.publishedAt) || '—';
+          if (dateLabel !== currentLabel) {
+            currentLabel = dateLabel;
+            var group = document.createElement('section');
+            group.className = 'news-toc-group';
+            var heading = document.createElement('h3');
+            heading.className = 'news-toc-date';
+            heading.textContent = dateLabel;
+            currentList = document.createElement('ol');
+            currentList.className = 'news-toc-list';
+            group.appendChild(heading);
+            group.appendChild(currentList);
+            tocGroupsEl.appendChild(group);
+          }
+          var li = document.createElement('li');
+          var link = document.createElement('a');
+          link.href = '#news-' + item.id;
+          link.textContent = item.title || '（無標題）';
+          li.appendChild(link);
+          currentList.appendChild(li);
+        });
+      }
+
+      function applyFilters() {
+        var severity = severityEl ? severityEl.value : '';
+        var type = typeEl ? typeEl.value : '';
+        var visible = [];
+        allItems.forEach(function (item) {
+          var match = itemMatches(item, severity, type);
+          var card = item && item.id ? document.getElementById('news-' + item.id) : null;
+          if (card) card.hidden = !match;
+          if (match) visible.push(item);
+        });
+        renderToc(visible);
+        if (countEl) {
+          countEl.textContent = '顯示 ' + visible.length + ' 則，共 ' + allItems.length + ' 則';
+        }
+        if (!visible.length) {
+          showFilterEmpty();
+          return;
+        }
+        if (listEl) listEl.hidden = false;
+        if (emptyEl) emptyEl.hidden = true;
+      }
+
+      function hashElementId() {
+        var raw = location.hash ? location.hash.slice(1) : '';
+        if (!raw) return '';
+        try {
+          raw = decodeURIComponent(raw);
+        } catch (err) {
+          return '';
+        }
+        return /^news-[A-Za-z0-9_-]+$/.test(raw) ? raw : '';
+      }
+
+      var pinHash = false;
+
+      function scrollToElement(el) {
+        if (!el) return;
+        var header = document.querySelector('.site-header');
+        var offset = (header ? header.offsetHeight : 72) + 12;
+        var top = el.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+      }
+
+      function scrollHashIntoView() {
+        if (!pinHash) return;
+        var id = hashElementId();
+        if (!id) return;
+        var el = document.getElementById(id);
+        if (!el || el.hidden) return;
+        scrollToElement(el);
+      }
+
+      function revealHashTarget() {
+        var id = hashElementId();
+        if (!id) return;
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (el.hidden) {
+          if (severityEl) severityEl.value = '';
+          if (typeEl) typeEl.value = '';
+          applyFilters();
+          el = document.getElementById(id);
+        }
+        if (!el || el.hidden) return;
+        pinHash = true;
+        scrollToElement(el);
+        window.requestAnimationFrame(scrollHashIntoView);
+      }
+
+      window.addEventListener('wheel', function () { pinHash = false; }, { passive: true });
+      window.addEventListener('touchmove', function () { pinHash = false; }, { passive: true });
+      document.addEventListener('click', function (event) {
+        var target = event.target;
+        if (target && target.closest && target.closest('#news-toc a, .news-card a')) pinHash = false;
+      });
+
+      fillTypeOptions();
+      if (filtersForm) {
+        filtersForm.addEventListener('submit', function (event) {
+          event.preventDefault();
+        });
+      }
+      if (severityEl) severityEl.addEventListener('change', applyFilters);
+      if (typeEl) typeEl.addEventListener('change', applyFilters);
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+          if (severityEl) severityEl.value = '';
+          if (typeEl) typeEl.value = '';
+          applyFilters();
+        });
+      }
+      window.addEventListener('hashchange', function () {
+        var id = hashElementId();
+        if (!id) return;
+        var el = document.getElementById(id);
+        if (el && el.hidden) revealHashTarget();
+      });
+
       function hideStatus() {
         if (statusEl) {
           statusEl.hidden = true;
@@ -171,6 +423,8 @@
         var li = document.createElement('li');
         li.className = 'news-card';
         if (item.id) li.id = 'news-' + item.id;
+        li.dataset.severity = normalizeSeverity(item.severity);
+        li.dataset.accidentCode = accidentCode(item);
 
         var sev = normalizeSeverity(item.severity) === 'fatal' ? 'fatal' : 'non-fatal';
         var badgeClass = 'news-badge news-badge--' + sev;
@@ -365,14 +619,24 @@
           });
 
           if (!items.length) {
-            emptyEl.hidden = false;
+            showDataEmpty();
             return;
           }
 
+          allItems = items;
+          if (toolsEl) toolsEl.hidden = false;
           listEl.hidden = false;
           items.forEach(function (item) {
             listEl.appendChild(renderItem(item, analysisByNewsId));
           });
+          applyFilters();
+          if (listEl) {
+            listEl.querySelectorAll('img').forEach(function (img) {
+              if (img.complete) return;
+              img.addEventListener('load', scrollHashIntoView);
+            });
+          }
+          revealHashTarget();
         })
         .catch(function () {
           hideStatus();
