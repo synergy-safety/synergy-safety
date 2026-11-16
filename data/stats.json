@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T08:40:59+00:00",
+  "generatedAt": "2026-11-16T09:22:15+00:00",
   "dataStart": "2026-10-01",
   "dataStartLabel": "2026年10月",
   "source": "data/news.json",
@@ -11,9 +11,9 @@
   },
   "disclaimer": "下列數字及意外類別分佈僅反映本網站依公開報導收錄之個案，並非勞工處、僱主或傷者呈報之官方統計。意外類別由本站對照勞工處《僱員補償條例》表格2（Rev.17）第K部「意外類別」歸類，不代表官方調查或呈報定性。",
   "totals": {
-    "all": 16,
+    "all": 17,
     "fatal": 1,
-    "non_fatal": 15
+    "non_fatal": 16
   },
   "byMonth": [
     {
@@ -26,9 +26,9 @@
     {
       "month": "2026-11",
       "label": "2026年11月",
-      "total": 9,
+      "total": 10,
       "fatal": 1,
-      "non_fatal": 8
+      "non_fatal": 9
     }
   ],
   "byRegion": [
@@ -47,6 +47,10 @@
     {
       "label": "葵涌",
       "count": 2
+    },
+    {
+      "label": "其他／未標示",
+      "count": 1
     },
     {
       "label": "粉嶺",
@@ -83,9 +87,15 @@
   ],
   "byAccidentType": [
     {
+      "code": "01",
+      "label": "受困於物件之內或物件之間",
+      "chartLabel": "01 受困於物件之內或物件之間",
+      "count": 0
+    },
+    {
       "code": "02",
-      "label": "被墮下的物件擊中",
-      "chartLabel": "02 被墮下的物件擊中",
+      "label": "提舉或搬運物件時受傷",
+      "chartLabel": "02 提舉或搬運物件時受傷",
       "count": 1
     },
     {
@@ -105,6 +115,30 @@
       "label": "與固定或不動的物件碰撞",
       "chartLabel": "05 與固定或不動的物件碰撞",
       "count": 1
+    },
+    {
+      "code": "06",
+      "label": "與移動的物件碰撞",
+      "chartLabel": "06 與移動的物件碰撞",
+      "count": 0
+    },
+    {
+      "code": "07",
+      "label": "踏在物件上",
+      "chartLabel": "07 踏在物件上",
+      "count": 0
+    },
+    {
+      "code": "08",
+      "label": "暴露於有害物質中或接觸有害物質",
+      "chartLabel": "08 暴露於有害物質中或接觸有害物質",
+      "count": 0
+    },
+    {
+      "code": "09",
+      "label": "觸電或接觸放出的電流",
+      "chartLabel": "09 觸電或接觸放出的電流",
+      "count": 0
     },
     {
       "code": "10",
@@ -128,15 +162,33 @@
       "code": "13",
       "label": "觸及開動中的機器或觸及以機器製造中的物件",
       "chartLabel": "13 觸及開動中的機器或觸及以機器製造中的物件",
-      "count": 5
+      "count": 6
+    },
+    {
+      "code": "14",
+      "label": "遇溺",
+      "chartLabel": "14 遇溺",
+      "count": 0
     },
     {
       "code": "15",
       "label": "火警燒傷",
       "chartLabel": "15 火警燒傷",
       "count": 1
+    },
+    {
+      "code": "16",
+      "label": "爆炸受傷",
+      "chartLabel": "16 爆炸受傷",
+      "count": 0
+    },
+    {
+      "code": "17",
+      "label": "其他（請指明）",
+      "chartLabel": "17 其他（請指明）",
+      "count": 0
     }
   ],
   "unclassifiedAccidentType": 1,
-  "itemCount": 16
+  "itemCount": 17
 }

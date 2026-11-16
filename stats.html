@@ -117,10 +117,12 @@
             </figure>
             <figure class="stats-chart-card stats-chart-card-wide">
               <figcaption class="stats-chart-title">意外類別（表格2第K部）</figcaption>
-              <p class="stats-infer-note">依 <code>data/news.json</code> 各則之 <code>accidentType</code> 匯總；每宗新聞對應一項官方類別代號，由本站依報導內容對照，不代表官方調查定性。</p>
-              <div class="stats-chart-wrap stats-chart-wrap-tall" aria-hidden="true">
-                <canvas id="chart-accident-type" role="img" aria-label="表格2意外類別橫向圖"></canvas>
+              <p class="stats-infer-note">依 <code>data/news.json</code> 各則之 <code>accidentType</code> 代號匯總，並以勞工處表格2第K部官方用字列出全部 17 項（包括 0 宗）。未分類另計，不併入這 17 項。由本站依報導內容對照，不代表官方調查定性。</p>
+              <div class="stats-chart-wrap stats-chart-wrap-accident" aria-hidden="true">
+                <canvas id="chart-accident-type" role="img" aria-label="表格2第K部全部17項意外類別橫向圖，包括沒有個案的類別"></canvas>
               </div>
+              <p id="stats-accident-unclassified" class="stats-unclassified" hidden></p>
+              <ul id="stats-accident-text" class="visually-hidden"></ul>
             </figure>
           </div>
 
@@ -173,6 +175,30 @@
       var ORANGE_SOFT = 'rgba(249, 115, 22, 0.85)';
       var MUTED = '#94a3b8';
 
+      var OFFICIAL_ACCIDENT_TYPES = [
+        { code: '01', label: '受困於物件之內或物件之間' },
+        { code: '02', label: '提舉或搬運物件時受傷' },
+        { code: '03', label: '滑倒、絆倒或在同一高度跌倒' },
+        { code: '04', label: '人體從高處墮下' },
+        { code: '05', label: '與固定或不動的物件碰撞' },
+        { code: '06', label: '與移動的物件碰撞' },
+        { code: '07', label: '踏在物件上' },
+        { code: '08', label: '暴露於有害物質中或接觸有害物質' },
+        { code: '09', label: '觸電或接觸放出的電流' },
+        { code: '10', label: '受困於倒塌或翻側的物件' },
+        { code: '11', label: '遭移動或墮下的物件撞擊' },
+        { code: '12', label: '遭移動中的車輛撞倒' },
+        { code: '13', label: '觸及開動中的機器或觸及以機器製造中的物件' },
+        { code: '14', label: '遇溺' },
+        { code: '15', label: '火警燒傷' },
+        { code: '16', label: '爆炸受傷' },
+        { code: '17', label: '其他（請指明）' }
+      ];
+      var OFFICIAL_ACCIDENT_BY_CODE = Object.create(null);
+      OFFICIAL_ACCIDENT_TYPES.forEach(function (type) {
+        OFFICIAL_ACCIDENT_BY_CODE[type.code] = type.label;
+      });
+
       var DISTRICTS = ['沙田', '將軍澳', '葵涌', '上水', '西貢', '青衣', '香港仔', '中環', '石鼓洲', '九龍', '新界', '港島'];
 
       var statusEl = document.getElementById('stats-status');
@@ -211,15 +237,13 @@
         return '其他／未標示';
       }
 
-      function accidentTypeFromItem(item) {
+      function officialAccidentCode(item) {
         var at = item && item.accidentType;
-        if (!at || !at.code || !at.label) return null;
-        var code = String(at.code).padStart(2, '0');
-        return {
-          code: code,
-          label: at.label,
-          chartLabel: code + ' ' + at.label
-        };
+        if (!at || at.code == null) return '';
+        var code = String(at.code).trim();
+        if (!/^\d{1,2}$/.test(code)) return '';
+        code = code.padStart(2, '0');
+        return OFFICIAL_ACCIDENT_BY_CODE[code] ? code : '';
       }
 
       function normalizeSeverity(sev) {
@@ -236,7 +260,8 @@
         var fatal = 0;
         var byMonthMap = {};
         var regionMap = {};
-        var accidentMap = {};
+        var accidentCounts = {};
+        var unclassified = 0;
 
         items.forEach(function (item) {
           var occurred = parseDate(item.occurredAt) || parseDate(item.publishedAt);
@@ -249,11 +274,11 @@
 
           var region = inferRegion(item.location, item.title);
           regionMap[region] = (regionMap[region] || 0) + 1;
-          var acc = accidentTypeFromItem(item);
-          if (acc) {
-            var mapKey = acc.code + '\t' + acc.label;
-            if (!accidentMap[mapKey]) accidentMap[mapKey] = { code: acc.code, label: acc.label, chartLabel: acc.chartLabel, count: 0 };
-            accidentMap[mapKey].count++;
+          var code = officialAccidentCode(item);
+          if (code) {
+            accidentCounts[code] = (accidentCounts[code] || 0) + 1;
+          } else {
+            unclassified++;
           }
         });
 
@@ -267,9 +292,15 @@
             .sort(function (a, b) { return b.count - a.count; });
         }
 
-        var byAccidentType = Object.keys(accidentMap)
-          .map(function (k) { return accidentMap[k]; })
-          .sort(function (a, b) { return a.code.localeCompare(b.code); });
+        var byAccidentType = OFFICIAL_ACCIDENT_TYPES.map(function (type) {
+          var count = accidentCounts[type.code] || 0;
+          return {
+            code: type.code,
+            label: type.label,
+            chartLabel: type.code + ' ' + type.label,
+            count: count
+          };
+        });
 
         return {
           generatedAt: news.updatedAt || new Date().toISOString(),
@@ -278,20 +309,40 @@
           totals: { all: items.length, fatal: fatal, non_fatal: items.length - fatal },
           byMonth: byMonth,
           byRegion: counterToList(regionMap),
-          byAccidentType: byAccidentType
+          byAccidentType: byAccidentType,
+          unclassifiedAccidentType: unclassified
         };
       }
 
-      function accidentTypeRows(stats) {
-        if (stats.byAccidentType && stats.byAccidentType.length) {
-          return stats.byAccidentType.map(function (row) {
-            return {
-              label: row.chartLabel || (row.code + ' ' + row.label),
-              count: row.count
-            };
-          });
+      function accidentRowCode(row) {
+        if (!row) return '';
+        var code = '';
+        if (row.code != null && String(row.code).trim() !== '') {
+          code = String(row.code).trim();
+          if (/^\d{1,2}$/.test(code)) code = code.padStart(2, '0');
         }
-        return [];
+        if (!OFFICIAL_ACCIDENT_BY_CODE[code]) {
+          var text = String(row.chartLabel || row.label || '');
+          var match = text.match(/^(\d{1,2})(?:\s|$)/);
+          if (match) code = match[1].padStart(2, '0');
+        }
+        return OFFICIAL_ACCIDENT_BY_CODE[code] ? code : '';
+      }
+
+      function accidentTypeRows(stats) {
+        var counts = Object.create(null);
+        var rows = (stats && stats.byAccidentType) || [];
+        rows.forEach(function (row) {
+          var code = accidentRowCode(row);
+          if (!code) return;
+          counts[code] = (counts[code] || 0) + (Number(row.count) || 0);
+        });
+        return OFFICIAL_ACCIDENT_TYPES.map(function (type) {
+          return {
+            label: type.code + ' ' + type.label,
+            count: counts[type.code] || 0
+          };
+        });
       }
 
       function destroyCharts() {
@@ -380,7 +431,117 @@
         }
 
         horizontalBar('chart-region', stats.byRegion, TEAL_SOFT);
-        horizontalBar('chart-accident-type', accidentTypeRows(stats), ORANGE_SOFT);
+        var accidentRows = accidentTypeRows(stats);
+        renderAccidentChart(accidentRows);
+        renderAccidentExtras(stats, accidentRows);
+      }
+
+      function wrapAccidentLabel(text) {
+        var max = window.innerWidth < 720 ? 14 : 24;
+        var value = String(text || '');
+        if (value.length <= max) return value;
+        var lines = [];
+        for (var i = 0; i < value.length; i += max) lines.push(value.slice(i, i + max));
+        return lines;
+      }
+
+      function renderAccidentChart(rows) {
+        charts.push(new Chart(document.getElementById('chart-accident-type'), {
+          type: 'bar',
+          data: {
+            labels: rows.map(function (row) { return row.label; }),
+            datasets: [{
+              label: '宗數',
+              data: rows.map(function (row) { return row.count; }),
+              backgroundColor: rows.map(function (row) {
+                return row.count === 0 ? 'rgba(148, 163, 184, 0.55)' : ORANGE_SOFT;
+              }),
+              borderRadius: 6,
+              maxBarThickness: 22
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            clip: false,
+            layout: { padding: { right: 32, top: 4, bottom: 4 } },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: function (items) {
+                    var index = items[0] ? items[0].dataIndex : -1;
+                    return rows[index] ? rows[index].label : '';
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                grace: '12%',
+                ticks: { precision: 0, color: '#64748b' },
+                grid: { color: '#e2e8f0' }
+              },
+              y: {
+                ticks: {
+                  autoSkip: false,
+                  color: '#334155',
+                  font: { family: '"Noto Sans TC", sans-serif', size: 12 },
+                  callback: function (value) {
+                    return wrapAccidentLabel(this.getLabelForValue(value));
+                  }
+                },
+                grid: { display: false }
+              }
+            }
+          },
+          plugins: [{
+            id: 'accidentCountLabels',
+            afterDatasetsDraw: function (chart) {
+              var ctx = chart.ctx;
+              var meta = chart.getDatasetMeta(0);
+              var data = chart.data.datasets[0].data;
+              ctx.save();
+              ctx.font = '600 12px "Noto Sans TC", sans-serif';
+              ctx.textBaseline = 'middle';
+              meta.data.forEach(function (bar, index) {
+                var value = data[index];
+                ctx.fillStyle = value === 0 ? '#64748b' : '#9a3412';
+                ctx.fillText(String(value), bar.x + 6, bar.y);
+              });
+              ctx.restore();
+            }
+          }]
+        }));
+      }
+
+      function renderAccidentExtras(stats, rows) {
+        var note = document.getElementById('stats-accident-unclassified');
+        var list = document.getElementById('stats-accident-text');
+        var count = Number(stats && stats.unclassifiedAccidentType);
+        var known = isFinite(count) && count >= 0;
+        if (note) {
+          note.hidden = false;
+          note.textContent = '';
+          var strong = document.createElement('strong');
+          strong.textContent = known ? ('未分類：' + count) : '未分類';
+          note.appendChild(strong);
+          note.appendChild(document.createTextNode(
+            known
+              ? '。沒有表格2第K部代號的收錄，另行計算，不計入上方 17 項官方類別。'
+              : '：統計檔未有此數字。未分類獨立於上方 17 項官方類別，不會併入其中。'
+          ));
+        }
+        if (list) {
+          list.textContent = '';
+          rows.forEach(function (row) {
+            var li = document.createElement('li');
+            li.textContent = row.label + '：' + row.count + '宗';
+            list.appendChild(li);
+          });
+        }
       }
 
       function renderKpis(stats) {
@@ -410,6 +571,7 @@
           renderCharts(stats);
         } else {
           console.warn('Chart.js not loaded');
+          renderAccidentExtras(stats, accidentTypeRows(stats));
         }
       }
 

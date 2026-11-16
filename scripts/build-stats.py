@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -31,6 +32,28 @@ DISTRICTS = [
     "新界",
     "港島",
 ]
+
+# 勞工處表格2 Rev.17 第K部官方用字。圖表以代號對照此表，不採用 news.json 內的 label。
+OFFICIAL_ACCIDENT_TYPES: list[tuple[str, str]] = [
+    ("01", "受困於物件之內或物件之間"),
+    ("02", "提舉或搬運物件時受傷"),
+    ("03", "滑倒、絆倒或在同一高度跌倒"),
+    ("04", "人體從高處墮下"),
+    ("05", "與固定或不動的物件碰撞"),
+    ("06", "與移動的物件碰撞"),
+    ("07", "踏在物件上"),
+    ("08", "暴露於有害物質中或接觸有害物質"),
+    ("09", "觸電或接觸放出的電流"),
+    ("10", "受困於倒塌或翻側的物件"),
+    ("11", "遭移動或墮下的物件撞擊"),
+    ("12", "遭移動中的車輛撞倒"),
+    ("13", "觸及開動中的機器或觸及以機器製造中的物件"),
+    ("14", "遇溺"),
+    ("15", "火警燒傷"),
+    ("16", "爆炸受傷"),
+    ("17", "其他（請指明）"),
+]
+OFFICIAL_LABEL_BY_CODE = dict(OFFICIAL_ACCIDENT_TYPES)
 
 DISCLAIMER = (
     "下列數字及意外類別分佈僅反映本網站依公開報導收錄之個案，"
@@ -74,20 +97,25 @@ def normalize_severity(severity: str | None) -> str:
     return "non_fatal"
 
 
-def accident_type_key(item: dict) -> tuple[str, str] | None:
+def accident_code(item: dict) -> str | None:
     at = item.get("accidentType")
     if not isinstance(at, dict):
         return None
     code = at.get("code")
-    label = at.get("label")
-    if not code or not label:
+    if code is None:
         return None
-    return (str(code).zfill(2), label)
+    text = str(code).strip()
+    if text.isdigit():
+        text = text.zfill(2)
+    if text in OFFICIAL_LABEL_BY_CODE:
+        return text
+    return None
 
 
-def counter_to_accident_list(counter: Counter[tuple[str, str]]) -> list[dict]:
+def accident_rows(counter: Counter[str]) -> list[dict]:
     rows = []
-    for (code, label), count in counter.items():
+    for code, label in OFFICIAL_ACCIDENT_TYPES:
+        count = int(counter.get(code, 0))
         rows.append(
             {
                 "code": code,
@@ -96,8 +124,21 @@ def counter_to_accident_list(counter: Counter[tuple[str, str]]) -> list[dict]:
                 "count": count,
             }
         )
-    rows.sort(key=lambda r: r["code"])
     return rows
+
+
+def warn_if_form2_labels_differ(form2_meta: dict) -> None:
+    types = form2_meta.get("types") or []
+    by_code: dict[str, object] = {}
+    for row in types:
+        if isinstance(row, dict) and row.get("code") is not None:
+            by_code[str(row["code"]).zfill(2)] = row.get("label")
+    for code, label in OFFICIAL_ACCIDENT_TYPES:
+        if by_code.get(code) != label:
+            print(
+                f"warning: form2 label for {code} differs from official wording; stats use official wording",
+                file=sys.stderr,
+            )
 
 
 def main() -> None:
@@ -108,6 +149,7 @@ def main() -> None:
     if FORM2_TYPES_PATH.is_file():
         with FORM2_TYPES_PATH.open(encoding="utf-8") as f:
             form2_meta = json.load(f)
+    warn_if_form2_labels_differ(form2_meta)
 
     start = datetime.fromisoformat(DATA_START + "T00:00:00+08:00")
     items_in_range = []
@@ -144,12 +186,12 @@ def main() -> None:
     ]
 
     region_counter = Counter(i["_region"] for i in items_in_range)
-    accident_counter: Counter[tuple[str, str]] = Counter()
+    accident_counter: Counter[str] = Counter()
     unclassified = 0
     for item in items_in_range:
-        key = accident_type_key(item)
-        if key:
-            accident_counter[key] += 1
+        code = accident_code(item)
+        if code:
+            accident_counter[code] += 1
         else:
             unclassified += 1
 
@@ -181,7 +223,7 @@ def main() -> None:
         },
         "byMonth": by_month,
         "byRegion": region_to_list(region_counter),
-        "byAccidentType": counter_to_accident_list(accident_counter),
+        "byAccidentType": accident_rows(accident_counter),
         "unclassifiedAccidentType": unclassified,
         "itemCount": len(items_in_range),
     }
