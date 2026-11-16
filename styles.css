@@ -1246,8 +1246,7 @@ button.btn {
   flex-shrink: 0;
 }
 
-.nav-has-sub.is-sub-open .nav-sub-toggle::after,
-.nav-has-sub:hover .nav-sub-toggle::after {
+.nav-has-sub.is-sub-open .nav-sub-toggle::after {
   transform: rotate(-135deg);
 }
 
@@ -1261,21 +1260,18 @@ button.btn {
   color: var(--teal-dark);
 }
 
-.nav-submenu {
+/* Beat `.site-nav ul`, which would keep this list visible and in a row. */
+.site-nav .nav-submenu {
   list-style: none;
   margin: 0;
   padding: 0 0 0 0.75rem;
+  display: none;
   flex-direction: column;
+  align-items: stretch;
   gap: 0.1rem;
 }
 
-/* Beat .site-nav ul { display:flex } so the submenu can actually start closed. */
-.site-nav .nav-submenu {
-  display: none;
-  flex-direction: column;
-}
-
-.nav-has-sub.is-sub-open .nav-submenu {
+.site-nav .nav-has-sub.is-sub-open .nav-submenu {
   display: flex;
 }
 
@@ -1918,23 +1914,20 @@ button.btn {
     padding: 0.55rem 0.85rem;
   }
 
-  .nav-has-sub:hover:not(.is-sub-dismissed) .nav-submenu,
-  .nav-has-sub.is-sub-open .nav-submenu {
-    display: flex;
-  }
-
   .nav-has-sub:hover .nav-sub-toggle,
   .nav-has-sub.is-sub-open .nav-sub-toggle {
     background: var(--bg-tint);
     color: var(--teal-dark);
   }
 
-  .nav-submenu {
+  .site-nav .nav-submenu {
     position: absolute;
     top: 100%;
     left: 0;
     min-width: 11.5rem;
     padding: 0.4rem;
+    flex-direction: column;
+    align-items: stretch;
     background: #fff;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);

@@ -1,6 +1,32 @@
 {
-  "updatedAt": "2026-11-13T08:16:00+08:00",
+  "updatedAt": "2026-11-16T16:00:00+08:00",
   "items": [
+    {
+      "id": "2026-11-16-hsk-shekpo-grinder",
+      "publishedAt": "2026-11-16T16:00:00+08:00",
+      "severity": "non-fatal",
+      "title": "洪水橋石埗村地盤男工使用風車鋸鎅傷大腿送院",
+      "location": "元朗洪水橋石埗村（石埗路／石埗東路一帶）地盤",
+      "occurredAt": "2026-11-16T10:25:00+08:00",
+      "summary": "今日（11月16日）上午10時25分，元朗洪水橋石埗村（石埗路／石埗東路一帶）一地盤，一名53歲姓石釘板男工在進行土地平整、固定渠道喉管期間，使用電動風車鋸切割喉管及木板時，右大腿被風車鋸鎅傷，血流如注。救護員到場包紮後，將清醒的傷者送往屯門醫院治理。警方列作「工業意外有人受傷」跟進。",
+      "accidentType": {
+        "code": "13",
+        "label": "觸及開動中的機器或觸及以機器製造中的物件"
+      },
+      "contractor": "生興–豐利聯營（土木工程拓展署公開洪水橋／厦村新發展區第二期合約一，範圍包括連接石埗路及石埗東路的工地平整；報道未有點名）",
+      "contractorConfidence": "medium",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/ITy9eE"
+        },
+        {
+          "outlet": "星島頭條",
+          "url": "https://is.gd/ob9j29"
+        }
+      ],
+      "image": "assets/news/2026-11-16-hsk-shekpo-grinder.jpg"
+    },
     {
       "id": "2026-11-12-fanling-ntecc-board",
       "publishedAt": "2026-11-13T08:16:00+08:00",
