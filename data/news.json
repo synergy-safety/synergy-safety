@@ -1,6 +1,36 @@
 {
-  "updatedAt": "2026-11-16T16:00:00+08:00",
+  "updatedAt": "2026-11-18T19:00:00+08:00",
   "items": [
+    {
+      "id": "2026-11-18-northpoint-hke-switchroom",
+      "publishedAt": "2026-11-18T19:00:00+08:00",
+      "severity": "non-fatal",
+      "title": "北角港燈電燈中心電掣房起火爆炸男職員燒傷送院",
+      "location": "北角城市花園道28號港燈電燈中心地下停車場電掣房",
+      "occurredAt": "2026-11-18T17:17:00+08:00",
+      "summary": "今日（11月18日）下午5時17分，北角城市花園道28號港燈電燈中心地下停車場電掣房突然起火爆炸，一名20多歲男子走避不及，臉部、雙手及右邊身體燒傷，報道指全身嚴重熏黑，仍然清醒，由救護車送往瑪麗醫院治理。消防出動一條喉及一隊煙帽隊灌救，至下午5時30分停止動員。現場約10名職員自行疏散。警方及消防正調查起因。",
+      "accidentType": {
+        "code": "15",
+        "label": "火警燒傷"
+      },
+      "contractor": "香港電燈有限公司（港燈）（場所為港燈電燈中心；報道稱傷者為「職員」或「工人」，僱主／外判身份尚未確認）",
+      "contractorConfidence": "medium",
+      "sources": [
+        {
+          "outlet": "東網",
+          "url": "https://is.gd/b7fTwg"
+        },
+        {
+          "outlet": "香港01",
+          "url": "https://is.gd/DMRFxP"
+        },
+        {
+          "outlet": "星島頭條",
+          "url": "https://is.gd/fkQQqU"
+        }
+      ],
+      "image": "assets/news/2026-11-18-northpoint-hke-switchroom.jpg"
+    },
     {
       "id": "2026-11-16-hsk-shekpo-grinder",
       "publishedAt": "2026-11-16T16:00:00+08:00",
