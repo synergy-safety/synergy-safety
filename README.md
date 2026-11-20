@@ -61,11 +61,20 @@ python3 -m pip install reportlab pillow fonttools
 python3 scripts/build-report-pdfs.py
 ```
 
-首次執行會下載 Noto Sans TC 到 `scripts/.font-cache/`（不入庫），再把子集嵌入各 PDF。分析正文照 `analyses.json` 原文輸出；新聞摘要照 `news.json`，但會略去「姓X」形式的傷者姓氏。
+首次執行會下載 Noto Sans TC 到 `scripts/.font-cache/`（不入庫），再把子集嵌入各 PDF。分析正文照 `analyses.json` 原文輸出；新聞摘要照 `news.json`，但會略去「姓X」形式的傷者姓氏。若姓氏與「男／女／工／友／人」之間只有短職稱（例如「姓石釘板男工」），同樣略去該姓氏。
 
 PDF 可直接開啟和列印，不設開啟密碼。可設定環境變數 `PDF_OWNER_PASSWORD` 作為擁有者密碼，以限制複製、擷取、修改、註釋、組合及填寫。未設定時，腳本只在記憶體中產生隨機擁有者密碼，不會寫入檔案、終端或儲存庫。請勿把該密碼提交到版本庫。複製出來的文字不會是報告原文。
 
 舊版 `causes` / `lessons` / `legalRefs` / `summary` 仍可由 `analysis.html` 後備顯示，但新稿請使用 `sections`。
+
+### 發布檢查清單
+
+其後每一則意外分析上線時都要做下面幾步，包括新聞早已刊登、報告其後才補上的個案：
+
+1. 把核准報告併入 `data/analyses.json`（維持 `schemaVersion` 2），保留全文、免責聲明、來源分歧，以及「公開資料分析、並非到場調查」的報告聲明。不要把原始研究筆記放進公開儲存庫。
+2. 產生該則合併新聞與分析的 PDF，並確認分析項目有 `pdf` 路徑。已核准的舊 PDF 不要無故重造。
+3. 打開新聞頁及意外分析頁，確認該則同時出現「下載 PDF」和「閱讀意外分析」／「對應新聞項目」。分析錨點維持 `#analysis-analysis-{slug}`。
+4. 核對 JSON 可解析、PDF 可以開頁、來源名稱可點及附有 QR、權限為可列印而不可複製或修改，並且沒有個人姓名、公司辦公室地址或內地電話。公開聯絡只沿用網站已有的公司電話、電郵、WhatsApp 及網址。
 
 ### `data/alerts.json`
 

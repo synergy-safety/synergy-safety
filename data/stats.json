@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T09:22:15+00:00",
+  "generatedAt": "2026-11-20T08:40:52+00:00",
   "dataStart": "2026-10-01",
   "dataStartLabel": "2026年10月",
   "source": "data/news.json",
@@ -11,9 +11,9 @@
   },
   "disclaimer": "下列數字及意外類別分佈僅反映本網站依公開報導收錄之個案，並非勞工處、僱主或傷者呈報之官方統計。意外類別由本站對照勞工處《僱員補償條例》表格2（Rev.17）第K部「意外類別」歸類，不代表官方調查或呈報定性。",
   "totals": {
-    "all": 17,
+    "all": 20,
     "fatal": 1,
-    "non_fatal": 16
+    "non_fatal": 19
   },
   "byMonth": [
     {
@@ -26,12 +26,20 @@
     {
       "month": "2026-11",
       "label": "2026年11月",
-      "total": 10,
+      "total": 13,
       "fatal": 1,
-      "non_fatal": 9
+      "non_fatal": 12
     }
   ],
   "byRegion": [
+    {
+      "label": "其他／未標示",
+      "count": 3
+    },
+    {
+      "label": "葵涌",
+      "count": 3
+    },
     {
       "label": "西貢",
       "count": 2
@@ -43,14 +51,6 @@
     {
       "label": "上水",
       "count": 2
-    },
-    {
-      "label": "葵涌",
-      "count": 2
-    },
-    {
-      "label": "其他／未標示",
-      "count": 1
     },
     {
       "label": "粉嶺",
@@ -150,7 +150,7 @@
       "code": "11",
       "label": "遭移動或墮下的物件撞擊",
       "chartLabel": "11 遭移動或墮下的物件撞擊",
-      "count": 1
+      "count": 2
     },
     {
       "code": "12",
@@ -174,7 +174,7 @@
       "code": "15",
       "label": "火警燒傷",
       "chartLabel": "15 火警燒傷",
-      "count": 1
+      "count": 2
     },
     {
       "code": "16",
@@ -186,9 +186,9 @@
       "code": "17",
       "label": "其他（請指明）",
       "chartLabel": "17 其他（請指明）",
-      "count": 0
+      "count": 1
     }
   ],
   "unclassifiedAccidentType": 1,
-  "itemCount": 17
+  "itemCount": 20
 }
