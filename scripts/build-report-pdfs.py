@@ -19,8 +19,10 @@ A few simplified glyphs that Noto Sans TC does not contain (currently 热 and
 Hei when that font is installed, so those characters are not dropped.
 
 The analysis body is copied from the JSON. It is not rewritten. The news
-summary is also copied, except a surname marker of the form 姓X immediately
-before 男, 女, 工, 友 or 人 is omitted. Published analyses already refer to
+summary is also copied, except a surname marker of the form 姓X is omitted
+when it identifies a person. The marker may sit immediately before 男, 女,
+工, 友 or 人, or before a short job title that is itself followed by one of
+those words (for example 姓石釘板男工). Published analyses already refer to
 injured people as 不具名; the PDF must not put those surnames back in.
 
 In the news summary, each outlet name links to its stored URL and sits beside
@@ -70,8 +72,9 @@ SITE = "https://synergy-safety.github.io/synergy-safety/"
 
 HK = ZoneInfo("Asia/Hong_Kong")
 REPORT_NO_RE = re.compile(r"^SSC-\d{4}-AR-\d{3,}$")
-# 姓X only when it identifies a person (姓陳工人, 姓林男工友). Leaves 姓名 alone.
-SURNAME_RE = re.compile(r"姓[\u4e00-\u9fff](?=[男女工友人])")
+# 姓X only when it identifies a person (姓陳工人, 姓林男工友, 姓石釘板男工).
+# A short job title may sit between the surname and 男/女/工/友/人. Leaves 姓名 alone.
+SURNAME_RE = re.compile(r"姓[\u4e00-\u9fff](?=(?:[\u4e00-\u9fff]{0,4})?[男女工友人])")
 FORBIDDEN = (
     "陳昱同",
     "Tony Y. T. Chan",
@@ -87,6 +90,7 @@ FORBIDDEN = (
     "姓盧",
     "姓李",
     "姓楊",
+    "姓石",
 )
 # PDF display order only. data/analyses.json and analysis.html keep the
 # stored sequence, which still places 相關法例及守則 before 預防再發建議.
@@ -1220,7 +1224,9 @@ def assert_self_checks() -> None:
         "51歲姓林男工友": "51歲男工友",
         "69歲姓曾男工": "69歲男工",
         "62歲姓歐男工半昏迷、57歲姓盧女工": "62歲男工半昏迷、57歲女工",
+        "一名53歲姓石釘板男工": "一名53歲釘板男工",
         "姓名與金門建築": "姓名與金門建築",
+        "不公布其姓名或姓氏": "不公布其姓名或姓氏",
     }
     for raw, expected in samples.items():
         got = redact_injured_surnames(raw)
