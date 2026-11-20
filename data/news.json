@@ -1,6 +1,24 @@
 {
-  "updatedAt": "2026-11-19T16:55:00+08:00",
+  "updatedAt": "2026-11-20T11:53:00+08:00",
   "items": [
+    {
+      "id": "2026-11-20-laichikok-kaming-fire",
+      "publishedAt": "2026-11-20T11:53:00+08:00",
+      "severity": "non-fatal",
+      "title": "荔枝角青山道嘉名工廠大廈火警60人疏散兩人不適送院",
+      "location": "荔枝角青山道688至690號嘉名工廠大廈（Ka Ming Factory Building）",
+      "occurredAt": "2026-11-20T10:33:00+08:00",
+      "summary": "今日（11月20日）上午10時33分，荔枝角青山道688至690號嘉名工廠大廈約7至8樓一處露天有簷篷位置發生火警，現場可見火光及濃煙。消防員到場灌救，架起雲梯射水，約15分鐘後將火救熄。事件中60人自行疏散，兩人感到不適，由救護車送往明愛醫院治理；報道指其中一人戴上氧氣罩。人員經初步調查，相信是雜物起火。火警期間通州西街與永康街曾封閉。",
+      "contractor": "報道未有點名",
+      "contractorConfidence": "unknown",
+      "sources": [
+        {
+          "outlet": "香港01",
+          "url": "https://is.gd/UKyzCs"
+        }
+      ],
+      "image": "assets/news/2026-11-20-laichikok-kaming-fire.jpg"
+    },
     {
       "id": "2026-11-19-kwaichung-hoover-gypsum",
       "publishedAt": "2026-11-19T16:55:00+08:00",
